@@ -1,141 +1,1047 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Body Age Quiz</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Neck Pain Insider</title>
+<!--
+  SETUP CHECKLIST:
+  1. Replace [YOUR PRODUCT NAME] with real name
+  2. Replace hero image src (id="heroImg")
+  3. Replace product images in slider (advSlides data)
+  4. Set Stripe key OR use Shopify checkout (see JS comments)
+  5. Set real variant IDs for Shopify bundles
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Georgia&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
-:root{color-scheme:light;--b:#0b63c4;--bd:#08498f;--bl:#eaf3fc;--tx:#10212e;--mu:#44566a;--ln:#cddbe8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:#fff;color:var(--tx);font:17px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
-.top{border-bottom:1px solid var(--ln);padding:10px 16px;display:flex;justify-content:space-between;font-size:12px;color:var(--mu)}.top b{color:var(--bd);font-size:14px;letter-spacing:.4px}
-#app{max-width:500px;margin:0 auto;padding:12px 18px 110px}
-.bar{height:7px;background:var(--bl);border-radius:9px;overflow:hidden;margin:2px 0 16px}.bar i{display:block;height:100%;width:0;background:var(--b);transition:width .5s}
-h1{font-size:24px;line-height:1.25;margin:0 0 10px}h2{font-size:19px;margin:24px 0 8px}p{margin:0 0 12px}.mu{color:var(--mu);font-size:15px}
-.opt,.btn{display:block;width:100%;text-align:left;font:inherit;background:#fff;color:var(--tx);border:2px solid var(--ln);border-radius:12px;padding:15px 16px;margin:10px 0;cursor:pointer;transition:.12s}
-.opt.on{border-color:var(--b);background:var(--bl);font-weight:600;transform:scale(.99)}
-.btn{background:var(--b);color:#fff;border:0;text-align:center;font-weight:700;font-size:18px;text-decoration:none;box-shadow:0 3px 0 var(--bd)}
-.fade{animation:f .3s}@keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
-.rx{background:var(--bl);border-left:4px solid var(--b);padding:11px 14px;border-radius:6px;margin-top:12px;font-size:15px}
-.ph{width:100%;aspect-ratio:16/10;border-radius:14px;margin:0 0 14px;overflow:hidden;background:radial-gradient(circle at 25% 30%,#fff 0,#dcebf8 22%,transparent 23%),radial-gradient(circle at 72% 62%,#bcd8f2 0,#cfe3f6 30%,transparent 31%),linear-gradient(135deg,#eaf3fc,#9fc4e8)}.ph img{width:100%;height:100%;object-fit:cover;display:block}
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{border:2px solid var(--ln);border-radius:12px;overflow:hidden;background:#fff;font:inherit;color:var(--tx);cursor:pointer;padding:0}.tile .ph{aspect-ratio:1/1;border-radius:0;margin:0}.tile span{display:block;padding:8px 6px;font-size:14px;font-weight:600}.tile.on{border-color:var(--b);background:var(--bl)}
-.yn{display:grid;grid-template-columns:1fr 1fr;gap:10px}.yn .opt{text-align:center;font-weight:700}
-.big{font-size:21px;font-weight:700;margin:6px 0 16px}
-.row{margin:14px 0}.row b{display:flex;justify-content:space-between;font-size:15px;margin-bottom:4px}.row div{height:14px;background:var(--bl);border-radius:9px;overflow:hidden}.row i{display:block;height:100%;width:0;background:var(--b);transition:width 1.2s}
-input[type=range]{width:100%;accent-color:var(--b);margin:14px 0 2px}.sl b{display:flex;justify-content:space-between;font-size:15px}
-.card{border:1px solid var(--ln);border-radius:12px;padding:14px 16px;margin:12px 0}.card.bl{background:var(--bl);border-color:#b9d4ee}
-.st{color:#d79a00;letter-spacing:2px}.tag{background:var(--b);color:#fff;font-size:12px;padding:2px 9px;border-radius:9px;font-weight:700}
-details{border-bottom:1px solid var(--ln);padding:11px 0}summary{font-weight:700;cursor:pointer}
-.sp{width:46px;height:46px;border:5px solid var(--bl);border-top-color:var(--b);border-radius:50%;margin:26px auto;animation:r 1s linear infinite}@keyframes r{to{transform:rotate(360deg)}}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:8px 5px;border-bottom:1px solid var(--ln);text-align:center}td:first-child,th:first-child{text-align:left}th:last-child,td:last-child{background:var(--bl);font-weight:700;color:var(--bd)}
-small{display:block;color:var(--mu);font-size:12px;margin-top:22px;line-height:1.4}
-</style></head><body>
-<div class="top"><b>VITALiIS HEALTH</b><span>Women's Wellness Quiz</span></div>
-<div id="app"></div>
-<script>
-/* ===== CONFIG ===== */
-const CFG={brand:"Lumera",product:"Marine Collagen Complex",checkout:"https://YOUR-STORE.com/checkout",
- count:"128,400", /* REPLACE with real number */
- img:{a:"",b:"",c:"",d:""}, /* your photo URLs (own domain) or data URIs */
- tiles:["","","",""],goals:["","","",""], /* optional photo URLs for scenario + goal tiles */
- packs:[{id:1,n:"1 month",p:"$39",o:"$49",s:"Starter"},{id:3,n:"3 months",p:"$89",o:"$147",s:"Most popular",best:1},{id:6,n:"6 months",p:"$149",o:"$294",s:"Best value"}],
- rev:[["Karen M., 52","I'd tried every cream. This was the first routine I actually stuck with. I feel more like myself."],["Diane R., 47","No taste, takes 10 seconds. After two months my hands and nails look better to me."],["Susan L., 58","I was skeptical. The guarantee made me try it. I've reordered twice."]] /* REPLACE with real reviews */
-};
-const AREA={skin:"skin firmness",hair:"hair and nails",joints:"joint comfort"};
-let A={},i=0;const $=document.getElementById("app");
-try{const s=JSON.parse(sessionStorage.q||"null");if(s&&s.i>0&&s.i<24){A=s.A;i=s.i}}catch(e){}
-const ev=(n,d)=>{try{fbq("trackCustom",n,d||{})}catch(e){}}; /* steps only, never answers */
-const art=n=>{const P=[["#dcebf8","#7fb2e5"],["#e6f4f1","#8cc9bd"],["#fdeee4","#f0b997"],["#eaf0fb","#9ab0e8"],["#f3ecf8","#c5a6e0"],["#e8f6ff","#6cc3e8"]][n%6],u="g"+n+Math.random().toString(36).slice(2,6);let s='<svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block"><defs><linearGradient id="'+u+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+P[0]+'"/><stop offset="1" stop-color="'+P[1]+'"/></linearGradient><filter id="'+u+'b"><feGaussianBlur stdDeviation="'+(3+n%3)+'"/></filter></defs><rect width="160" height="100" fill="url(#'+u+')"/><g filter="url(#'+u+'b)" fill="#fff">';for(let k=0;k<7;k++){s+='<circle cx="'+((n*37+k*53)%160)+'" cy="'+((n*29+k*41)%100)+'" r="'+(8+(k*7+n*5)%18)+'" opacity="'+(.25+((k+n)%4)*.12)+'"/>'}return s+'</g><path d="M0 '+(70+n%4*4)+' Q40 '+(55+n%3*6)+' 80 72 T160 66 V100 H0Z" fill="#fff" opacity=".35"/></svg>'};
-const im=k=>'<div class="ph">'+(CFG.img[k]?'<img src="'+CFG.img[k]+'" alt="">':art("abcd".indexOf(k)+1))+'</div>';
-const FIN=()=>'<div style="margin-top:30px;padding:28px 18px;border-radius:18px;background:linear-gradient(135deg,#0b63c4,#08498f);color:#fff;text-align:center"><div style="font-size:13px;letter-spacing:1.5px;opacity:.85">YOUR PLAN IS WAITING</div><div style="font-size:27px;line-height:1.2;font-weight:800;margin:10px 0 12px">Ninety days from now, you could be looking back at today as the day you started</div><p style="opacity:.95">You told us you want <b>'+(A.goal||"to feel like yourself").toLowerCase()+'</b>. One small scoop a day is how it starts.</p><div style="text-align:left;background:rgba(255,255,255,.12);border-radius:12px;padding:12px 16px;margin:14px 0;font-size:15px;line-height:1.9">✔ Personal plan for your '+AREA[topA()]+' profile<br>✔ 10 seconds a day<br>✔ 90-day money-back guarantee<br>✔ Free shipping on 3+ months</div><a class="btn" style="background:#fff;color:#08498f;font-size:20px;padding:20px;box-shadow:0 4px 0 #b9d4ee" href="#packs">Get my plan now</a><p style="font-size:13px;opacity:.85;margin:12px 0 0">Secure checkout · Full refund within 90 days</p></div><div style="position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--ln);z-index:9"><a class="btn" style="max-width:468px;margin:0 auto" href="#packs">Get my plan</a></div>';
-const sv=()=>{try{sessionStorage.q=JSON.stringify({i,A})}catch(e){}};
-const age=()=>A.age||"your age group";
-const topA=()=>{const a=(A.areas||[]).filter(x=>AREA[x]);return a[0]||"skin"};
-const S=(k,q,o,r)=>({t:"s",k,q,o,r}),M=(k,q,o,r)=>({t:"m",k,q,o,r});
-/* ===== 24 CARDS ===== */
-const C=[
-{t:"s",k:"guess",q:"At what age do you think the body really starts to change?",o:["25","35","45","55"],r:"Earlier than most women guess. It starts quietly in the mid-20s, long before anything shows."},
-S("age","How old are you?",["35–44","45–54","55–64","65+"],"Thanks. We'll use this to personalize everything that follows."),
-{t:"qf",q:["Photos of me look different than they did 5 years ago.","My mornings feel stiffer than they used to.","I spend more on skincare every year.","My hair or nails feel different than before.","I notice it a bit more each year."]},
-{t:"n",img:"a",h:"You're not imagining it.",x:"Over "+CFG.count+" women have taken this quiz. Most noticed the same quiet changes and never knew they were connected. In a few minutes you'll see how."},
-M("areas","Where do you notice it most?",[["Skin","skin"],["Hair","hair"],["Nails","hair"],["Joints","joints"],["Not sure yet","none"]],"Different places, one common root. Remember this."),
-{t:"mf",q:"Drinking more water keeps skin firm.",a:"myth",x:"Mostly a myth. Water hydrates, but skin's firmness comes from structural proteins. That's the part that quietly declines with age."},
-{t:"ti",k:"scene",q:"Which morning looks most like yours?",o:["Checking the mirror","Taking the stairs","Looking at old photos","Getting dressed"],r:"Many women say the same. Small moments add up."},
-{t:"n",chart:1,h:"Here's what the body does after 25.",x:"Natural collagen production slowly declines with age. It's gradual, so most women connect it to what they see only years later. It isn't your fault. It's biology."},
-{t:"sl",k:"chg",q:"How much has changed in the last 3 years?",l:["Barely","Slightly","Noticeably","Quite a lot","A great deal"]},
-M("tried","What have you already tried?",[["Creams and serums","x"],["General vitamins","x"],["Drinking more water","x"],["Salon or clinic treatments","x"],["Nothing yet","none"]],"Most of these work on the surface or in general. Keep that in mind."),
-{t:"n",surf:1,h:"Why most routines go halfway.",x:"Creams act on the surface. General vitamins don't supply the structural building blocks. Support that works from the inside, every day, is the missing piece for many women."},
-{t:"mf",q:"Collagen creams add collagen to your skin.",a:"myth",x:"Mostly a myth. Collagen molecules in creams are too large to reach deep layers. They mainly moisturize the surface."},
-S("skep","Be honest: do you doubt that anything really works?",["Yes, I've been let down","A little","Not really"],"Fair, and common. That's why your results are based on your answers, not on promises."),
-S("diet","How often do you eat collagen-rich foods like bone broth or fish with skin?",["Almost never","Sometimes","Often"],"Most modern diets contain very little. That's one reason many women look into support."),
-{t:"ms",q:"Three quick sliders. Watch your profile fill in.",o:[["Sleep quality","Poor","Great"],["Sun over the years","A lot","Little"],["Stress level","High","Low"]]},
-S("future","If nothing changes, how do you expect to feel in 5 years?",["Worse than today","About the same","Not sure"],"A small daily habit started now matters more than a big effort later."),
-{t:"ti",k:"goal",q:"What would you most like back?",o:["Confidence in the mirror","Easy movement","Photos without filters","My younger self"],g:1},
-S("commit","Could you commit 10 seconds a day?",["Yes, easily","Yes, if it's simple"],"Great. The plan we're building takes exactly that."),
-{t:"a"},{t:"r"},{t:"p"},
-S("obj","What has held you back from acting on this so far?",["Price","Not sure it works","No time","Didn't know what to choose"],0),
-{t:"b"},{t:"o"}];
-C[20].rx=0;
-const RX={"Price":"Fair. Most women spend more on creams in a month than this plan costs per day.","Not sure it works":"Fair. That's why every order has a 90-day money-back guarantee.","No time":"It takes 10 seconds. One scoop in coffee or water.","Didn't know what to choose":"That's what your profile solves. Your plan is ready."};
-/* ===== RENDER ===== */
-function shell(h,p){$.innerHTML=(p==null?'':'<div class="bar"><i style="width:'+p+'%"></i></div>')+'<div class="fade">'+h+'</div>';scrollTo(0,0)}
-const btn=t=>'<button class="btn" id="go">'+t+'</button>';
-const nx=()=>{i++;sv();draw()};
-const rxh=r=>'<div class="rx fade">'+r+'</div>';
-function draw(){
- const c=C[i],p=Math.round(10+i/(C.length-1)*90);ev("QuizStep",{step:i+1});if(i==0)ev("QuizStart");
- const hd=c.q&&typeof c.q=="string"?'<h1>'+c.q+'</h1>':'';
- if(c.t=="s"){
-  shell(hd+c.o.map((o,n)=>'<button class="opt" data-n="'+n+'">'+o+'</button>').join('')+'<div id="rx"></div>',p);
-  const ob=[...$.querySelectorAll(".opt")];
-  ob.forEach(b=>b.onclick=()=>{const o=c.o[b.dataset.n];A[c.k]=o;b.classList.add("on");ob.forEach(x=>x.onclick=null);const r=c.r===0?RX[o]:c.r;if(r)rx.innerHTML=rxh(r);setTimeout(nx,r?2100:350)});
- }else if(c.t=="m"){
-  A[c.k]=[];shell(hd+'<p class="mu">Tap all that apply</p>'+c.o.map((o,n)=>'<button class="opt" data-n="'+n+'">'+o[0]+'</button>').join('')+'<div id="rx"></div>'+btn("Continue"),p);
-  const ob=[...$.querySelectorAll(".opt")];
-  ob.forEach(b=>b.onclick=()=>{const v=c.o[b.dataset.n][1];b.classList.toggle("on");if(v=="none")ob.forEach(x=>x!=b&&x.classList.remove("on"));else ob[ob.length-1].classList.remove("on");A[c.k]=ob.filter(x=>x.classList.contains("on")).map(x=>c.o[x.dataset.n][1])});
-  go.onclick=()=>{if(!c.d){c.d=1;rx.innerHTML=rxh(c.r);go.textContent="Continue";setTimeout(nx,1900)}};
- }else if(c.t=="qf"){
-  let n=0,y=0;const show=()=>{shell('<p class="mu">Statement '+(n+1)+' of '+c.q.length+'</p><div class="big">'+c.q[n]+'</div><div class="yn"><button class="opt" data-v="1">Yes</button><button class="opt" data-v="0">No</button></div>',p);
-   $.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{b.classList.add("on");y+=+b.dataset.v;n++;setTimeout(()=>{if(n<c.q.length)show();else{A.qf=y;shell('<div class="big">'+y+' of '+c.q.length+'</div><div class="rx">Women with this pattern very often share one thing in common. You\'re about to find out what.</div>',p);setTimeout(nx,2200)}},280)})};show();
- }else if(c.t=="mf"){
-  shell('<span class="tag">MYTH OR FACT?</span><div class="big" style="margin-top:10px">'+c.q+'</div><div class="yn"><button class="opt" data-v="myth">Myth</button><button class="opt" data-v="fact">Fact</button></div><div id="rx"></div>',p);
-  const ob=[...$.querySelectorAll(".opt")];ob.forEach(b=>b.onclick=()=>{b.classList.add("on");ob.forEach(x=>x.onclick=null);rx.innerHTML=rxh((b.dataset.v==c.a?"Correct. ":"Most women guess wrong. ")+c.x);setTimeout(nx,3200)});
- }else if(c.t=="ti"){
-  const arr=c.g?CFG.goals:CFG.tiles;shell(hd+'<div class="tiles">'+c.o.map((o,n)=>'<button class="tile" data-n="'+n+'"><div class="ph">'+(arr[n]?'<img src="'+arr[n]+'" alt="">':art(n+(c.g?3:0)))+'</div><span>'+o+'</span></button>').join('')+'</div><div id="rx"></div>',p);
-  const ob=[...$.querySelectorAll(".tile")];ob.forEach(b=>b.onclick=()=>{A[c.k]=c.o[b.dataset.n];b.classList.add("on");ob.forEach(x=>x.onclick=null);if(c.r)rx.innerHTML=rxh(c.r);setTimeout(nx,c.r?1800:350)});
- }else if(c.t=="sl"){
-  A[c.k]=3;shell(hd+'<input type="range" min="1" max="5" value="3" id="sl"><p id="lb" style="text-align:center;font-weight:700">'+c.l[2]+'</p>'+btn("Continue"),p);sl.oninput=()=>{A[c.k]=+sl.value;lb.textContent=c.l[sl.value-1]};go.onclick=nx;
- }else if(c.t=="ms"){
-  shell(hd+c.o.map((o,n)=>'<div class="sl"><b><span>'+o[0]+'</span></b><input type="range" min="1" max="5" value="3" data-n="'+n+'"><b class="mu"><span>'+o[1]+'</span><span>'+o[2]+'</span></b></div>').join('')+'<div class="row"><b><span>Profile completeness</span><span id="pc">40%</span></b><div><i id="pb" style="width:40%"></i></div></div>'+btn("Continue"),p);
-  const up=()=>{let m=0;$.querySelectorAll("input").forEach(e=>m+=e.dataset.touched?1:0);const v=40+m*20;pc.textContent=v+"%";pb.style.width=v+"%"};
-  $.querySelectorAll("input").forEach(e=>e.oninput=()=>{e.dataset.touched=1;A["ms"+e.dataset.n]=+e.value;up()});go.onclick=nx;
- }else if(c.t=="n"){
-  const vis=c.chart?'<div class="card bl"><svg viewBox="0 0 300 140" style="width:100%"><line x1="30" y1="10" x2="30" y2="115" stroke="#cddbe8"/><line x1="30" y1="115" x2="290" y2="115" stroke="#cddbe8"/><path d="M30 20C100 22 160 55 290 100L290 115L30 115Z" fill="#cfe3f6"/><path d="M30 20C100 22 160 55 290 100" fill="none" stroke="#0b63c4" stroke-width="4"/><g font-size="11" fill="#44566a"><text x="30" y="132">25</text><text x="105" y="132">35</text><text x="175" y="132">45</text><text x="245" y="132">60+</text><text x="34" y="8">Collagen production (illustrative)</text></g></svg></div>':c.surf?'<div class="card bl"><svg viewBox="0 0 300 120" style="width:100%"><rect x="10" y="10" width="280" height="26" rx="6" fill="#bcd8f2"/><text x="20" y="28" font-size="12" fill="#10212e">Surface: creams work here</text><rect x="10" y="44" width="280" height="64" rx="6" fill="#0b63c4"/><text x="20" y="70" font-size="12" fill="#fff">Inside: where structure is built</text><text x="20" y="90" font-size="12" fill="#fff">Daily support starts here</text></svg></div>':c.img?im(c.img):'';
-  shell(vis+'<h1>'+c.h+'</h1><p>'+c.x+'</p>'+btn("Continue"),p);go.onclick=nx;
- }else if(c.t=="a"){
-  const st=["Comparing you with women aged "+age()+"…","Mapping skin, hair and joint areas…","Checking sleep, sun and stress factors…","Building your personal profile…"];
-  shell('<h1 style="text-align:center">Analyzing your answers</h1><div class="sp"></div><p class="mu" id="st" style="text-align:center">'+st[0]+'</p>',p);st.forEach((s,n)=>setTimeout(()=>{const e=document.getElementById("st");if(e)e.textContent=s},n*1500));setTimeout(nx,6200);
- }else if(c.t=="r"){
-  const ag=["35–44","45–54","55–64","65+"].indexOf(A.age),n=A.areas||[];
-  const sc=a=>Math.min(96,46+(n.includes(a)?20:0)+ag*4+Math.min(A.qf||0,5)*2+(A.diet=="Almost never"?4:0)+(a=="joints"&&A.ms0&&A.ms0<3?4:0));
-  const rows=[["Skin firmness",sc("skin")],["Hair & nails",sc("hair")],["Joint comfort",sc("joints")]];
-  shell(im("d")+'<span class="tag">YOUR RESULT</span><h1 style="margin-top:10px">The Quiet Decline Profile</h1><p>Your answers suggest your body may benefit from <b>collagen support</b>. Highest match:</p>'+rows.map(r=>'<div class="row"><b><span>'+r[0]+'</span><span>'+r[1]+'%</span></b><div><i data-w="'+r[1]+'"></i></div></div>').join('')+'<p class="mu">Compared with women aged '+age()+' reporting similar patterns. Informational only, not a diagnosis.</p>'+btn("What does this mean for me?"),p);
-  setTimeout(()=>$.querySelectorAll("i[data-w]").forEach(e=>e.style.width=e.dataset.w+"%"),150);go.onclick=nx;ev("QuizResult");
- }else if(c.t=="p"){
-  const tr=(A.tried||[]).filter(x=>x!="none").length;
-  shell(im("b")+'<h1>Here is what your answers say</h1><p>At <b>'+age()+'</b>, with changes in <b>'+AREA[topA()]+'</b>'+(tr?' and '+tr+' approach'+(tr>1?'es':'')+' already tried':'')+', your profile fits a common pattern: the body makes less collagen over time, and surface routines can only do so much.</p><p>Women with a similar profile often describe the same thing: <i>they stopped looking for one more product and started supporting their body from within.</i></p><div class="card"><div class="st">★★★★★</div><p style="margin:4px 0">“'+CFG.rev[0][1]+'”</p><p class="mu" style="margin:0">— '+CFG.rev[0][0]+'</p></div>'+btn("Continue"),p);go.onclick=nx;
- }else if(c.t=="b"){
-  shell(im("c")+'<h1>What your plan looks like</h1><div class="card bl"><p><b>Collagen peptides</b> supply the building blocks the body uses for skin, hair, nails and joints.</p><p><b>Vitamin C</b> supports the body\'s own collagen formation.</p><p style="margin:0"><b>One scoop a day.</b> No taste, 10 seconds, in water or coffee.</p></div><p class="mu">Different from creams (surface only) and generic vitamins (no structural building blocks).</p>'+btn("See my plan"),p);go.onclick=nx;
- }else if(c.t=="o"){
-  const qs=location.search,o=A.obj||"";
-  const cmp='<h2>How it compares</h2><div class="card"><table><tr><th></th><th>Creams</th><th>Vitamins</th><th>'+CFG.brand+'</th></tr><tr><td>Works from inside</td><td>✗</td><td>✓</td><td>✓</td></tr><tr><td>Collagen building blocks</td><td>✗</td><td>✗</td><td>✓</td></tr><tr><td>Skin, hair, joints</td><td>Skin</td><td>General</td><td>All three</td></tr><tr><td>10 seconds a day</td><td>✗</td><td>✓</td><td>✓</td></tr></table></div>';
-  const rev='<h2>What women say</h2>'+CFG.rev.map(r=>'<div class="card"><div class="st">★★★★★</div><p style="margin:4px 0">“'+r[1]+'”</p><p class="mu" style="margin:0">— '+r[0]+' · Verified buyer</p></div>').join('');
-  const gu='<div class="card bl" style="margin-top:20px"><b>90-day money-back guarantee.</b><p class="mu" style="margin:6px 0 0">Use it for up to 90 days. If you are not happy, contact us for a full refund.</p></div>';
-  const order=o=="Price"?gu+cmp+rev:o=="Not sure it works"?rev+gu+cmp:gu+rev+cmp;
-  shell('<span class="tag">YOUR PLAN IS READY</span><h1 style="margin-top:10px">Your personal daily plan</h1><p class="mu">Based on your '+AREA[topA()]+' profile at '+age()+'.</p>'+
-  '<h2 id="packs" style="margin-top:6px">Choose your plan</h2>'+CFG.packs.map(k=>'<a class="btn" style="text-align:left;'+(k.best?'':'background:#fff;color:var(--tx);border:2px solid var(--b);box-shadow:none')+'" href="'+CFG.checkout+qs+(qs?'&':'?')+'pack='+k.id+'" data-p="'+k.id+'"><span class="tag" style="'+(k.best?'background:#fff;color:var(--b)':'')+'">'+k.s+'</span><br>'+k.n+' — '+k.p+' <s style="opacity:.7;font-weight:400">'+k.o+'</s></a>').join('')+
-  '<p class="mu" style="text-align:center">Free shipping on 3+ months · Secure checkout · 90-day guarantee</p>'+order+
-  '<details><summary>When will I notice something?</summary><p class="mu">It is a daily habit. Most people take it consistently for 8–12 weeks before judging.</p></details><details><summary>How do I take it?</summary><p class="mu">One scoop in water, coffee or a smoothie.</p></details><details><summary>Is it safe?</summary><p class="mu">Made with food-grade ingredients. Ask your doctor if you are pregnant, nursing or on medication.</p></details><details><summary>What if it does not work for me?</summary><p class="mu">Contact us within 90 days for a full refund.</p></details>'+
-  FIN()+'<small>'+CFG.product+' is a food supplement, not intended to diagnose, treat, cure or prevent any disease. Quiz results are informational only, not medical advice. Individual results vary. © '+CFG.brand+'</small>',100);
-  $.querySelectorAll("a[data-p]").forEach(a=>a.onclick=()=>ev("InitiateCheckoutClick",{pack:a.dataset.p}));
- }
+/* ─── RESET ─────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+img{display:block;max-width:100%}
+
+/* ─── TOKENS ─────────────────────────────── */
+:root{
+  --navy:#1a2e5a;
+  --green:#2e7d32;
+  --green-bg:#e8f5e9;
+  --green-border:#a5d6a7;
+  --red:#c62828;
+  --orange:#e65100;
+  --gray:#5f6368;
+  --lightgray:#f7f8fa;
+  --border:#e0e0e0;
+  --text:#1a1a1a;
 }
-draw();
-</script></body></html>
+
+/* ─── BODY ────────────────────────────────── */
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:#fff;
+  color:var(--text);
+  font-size:17px;
+  line-height:1.85;
+}
+
+/* ─── STICKY TOP TRUST BAR ───────────────── */
+.trust-bar{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:8px 16px;
+  text-align:center;
+  font-size:12px;
+  color:var(--gray);
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:14px;
+}
+.trust-bar span{display:flex;align-items:center;gap:4px}
+
+/* ─── SITE HEADER ────────────────────────── */
+.site-header{
+  background:var(--navy);
+  padding:13px 16px;
+  text-align:center;
+}
+.site-header .brand{
+  color:#fff;
+  font-family:'Source Sans 3',sans-serif;
+  font-weight:700;
+  font-size:13px;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+}
+
+/* ─── LAYOUT ──────────────────────────────── */
+.page-layout{
+  max-width:700px;
+  margin:0 auto;
+  padding:0 16px 60px;
+}
+
+/* ─── META ────────────────────────────────── */
+.article-meta{
+  font-size:13px;
+  color:var(--gray);
+  margin:20px 0 12px;
+}
+
+/* ─── H1 ──────────────────────────────────── */
+h1.headline{
+  font-family:'Merriweather',Georgia,serif;
+  font-size:clamp(22px,5.5vw,33px);
+  font-weight:900;
+  line-height:1.22;
+  color:var(--text);
+  margin-bottom:18px;
+}
+
+/* ─── PULL QUOTE / GREEN BOX ──────────────── */
+.pull-quote{
+  background:var(--green-bg);
+  border-left:4px solid var(--green);
+  padding:14px 18px;
+  margin:0 0 22px;
+  border-radius:0 6px 6px 0;
+  font-style:italic;
+  font-size:15px;
+  color:#1b5e20;
+  line-height:1.72;
+}
+
+/* ─── HERO IMAGE ──────────────────────────── */
+.hero-wrap{
+  margin:0 0 28px;
+  border-radius:5px;
+  overflow:hidden;
+  background:var(--lightgray);
+}
+.hero-wrap img{
+  width:100%;
+  height:auto;
+  max-height:340px;
+  object-fit:cover;
+}
+.hero-placeholder{
+  width:100%;
+  height:240px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  color:var(--gray);
+  background:linear-gradient(135deg,#e3e8f0,#c9d4e8);
+}
+
+/* ─── BODY TEXT ───────────────────────────── */
+.body-text p{
+  margin-bottom:20px;
+  line-height:1.9;
+}
+.body-text strong{font-weight:700}
+.body-text em{font-style:italic}
+
+.hook-line{
+  font-family:'Merriweather',Georgia,serif;
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:20px;
+  line-height:1.35;
+}
+
+/* ─── H2 SECTION HEADS ────────────────────── */
+.body-text h2{
+  font-family:'Merriweather',Georgia,serif;
+  font-size:clamp(17px,4vw,22px);
+  font-weight:900;
+  margin:36px 0 14px;
+  line-height:1.3;
+  color:var(--text);
+}
+
+/* ─── HIGHLIGHT BOX ───────────────────────── */
+.highlight-box{
+  background:#fff8e1;
+  border:1px solid #ffe082;
+  border-radius:7px;
+  padding:18px 20px;
+  margin:24px 0;
+}
+.highlight-box p{margin-bottom:10px}
+.highlight-box p:last-child{margin-bottom:0}
+
+/* ─── BULLET LIST ─────────────────────────── */
+.fail-list{
+  margin:16px 0 20px 4px;
+  padding:0;
+  list-style:none;
+}
+.fail-list li{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+  font-size:16px;
+  line-height:1.6;
+  align-items:flex-start;
+}
+.fail-list li::before{
+  content:"✕";
+  color:var(--red);
+  font-weight:700;
+  flex-shrink:0;
+  margin-top:1px;
+}
+
+/* ─── CTA BUTTON ──────────────────────────── */
+.cta-btn{
+  display:block;
+  width:100%;
+  background:var(--navy);
+  color:#fff;
+  text-align:center;
+  font-family:'Source Sans 3',sans-serif;
+  font-size:16px;
+  font-weight:700;
+  padding:17px 20px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin:28px 0 8px;
+  letter-spacing:.3px;
+  text-decoration:none;
+  transition:background .18s;
+}
+.cta-btn:hover{background:#243e7a}
+.cta-sub{
+  text-align:center;
+  font-size:13px;
+  color:var(--gray);
+  margin-bottom:26px;
+}
+
+/* ─── TESTIMONIAL ─────────────────────────── */
+.testimonial{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:18px 20px;
+  margin:18px 0;
+  background:#fff;
+}
+.t-stars{color:#f9a825;font-size:15px;margin-bottom:6px}
+.t-text{font-style:italic;font-size:15px;line-height:1.75;margin-bottom:10px}
+.t-name{font-weight:700;font-size:14px}
+.t-loc{font-size:13px;color:var(--gray)}
+
+/* ─── DISCLAIMER ──────────────────────────── */
+.disclaimer{
+  font-size:11px;
+  color:var(--gray);
+  border-top:1px solid var(--border);
+  padding-top:18px;
+  margin-top:36px;
+  line-height:1.6;
+}
+
+/* ═══════════════════════════════════════════
+   CHECKOUT MODAL
+═══════════════════════════════════════════ */
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:9000;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.modal-overlay.open{display:block}
+
+.modal-box{
+  background:#fff;
+  max-width:500px;
+  margin:12px auto;
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+/* Modal trust bar at top */
+.modal-trust-top{
+  background:#e8f5e9;
+  border-bottom:1px solid #a5d6a7;
+  padding:9px 16px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  font-size:12px;
+  color:#1b5e20;
+  font-weight:600;
+}
+.modal-trust-top span{display:flex;align-items:center;gap:4px}
+
+.modal-header{
+  background:var(--navy);
+  padding:12px 48px 12px 18px;
+}
+.modal-header p{
+  color:#fff;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin:0;
+}
+.modal-close{
+  position:absolute;
+  top:34px;right:14px;
+  background:none;border:none;
+  color:#fff;font-size:24px;
+  cursor:pointer;line-height:1;
+  padding:4px;
+}
+
+.modal-body{padding:18px 18px 26px}
+
+/* Image slider */
+.img-slider{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/2;
+  background:var(--lightgray);
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.img-slide{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .35s;
+  font-size:12px;color:var(--gray);
+}
+.img-slide img{width:100%;height:100%;object-fit:cover}
+.img-slide.active{opacity:1}
+.slider-dots{
+  display:flex;justify-content:center;
+  gap:6px;margin-bottom:14px;
+}
+.sdot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);border:none;cursor:pointer;
+  padding:0;transition:background .2s;
+}
+.sdot.active{background:var(--navy)}
+
+/* Product title block */
+.prod-title{
+  font-family:'Merriweather',serif;
+  font-size:17px;font-weight:900;
+  margin-bottom:3px;line-height:1.3;
+}
+.prod-sub{font-size:13px;color:var(--gray);margin-bottom:12px}
+.prod-stars{
+  display:flex;align-items:center;gap:6px;margin-bottom:14px;
+}
+.prod-stars .st{color:#f9a825;font-size:14px}
+.prod-stars span{font-size:13px;color:var(--gray)}
+
+/* Bundle selector */
+.bundle-label{
+  font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:9px;
+}
+.bundles{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.bundle{
+  border:2px solid var(--border);border-radius:8px;
+  padding:12px 14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:border-color .18s,background .18s;
+  position:relative;
+}
+.bundle.sel{border-color:var(--navy);background:#f0f4ff}
+.bundle-left{display:flex;align-items:center;gap:11px}
+.brad{
+  width:17px;height:17px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:border-color .18s;
+}
+.bundle.sel .brad{border-color:var(--navy)}
+.brad::after{
+  content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--navy);display:none;
+}
+.bundle.sel .brad::after{display:block}
+.bname{font-weight:700;font-size:14px}
+.bper{font-size:11px;color:var(--gray)}
+.bright{text-align:right}
+.bprice{font-size:17px;font-weight:700}
+.borig{font-size:11px;color:var(--gray);text-decoration:line-through}
+.bbadge{
+  display:inline-block;background:var(--red);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:1px 6px;border-radius:20px;margin-left:5px;
+}
+.bpop{
+  background:var(--orange);color:#fff;
+  font-size:10px;font-weight:700;
+  padding:2px 9px;border-radius:4px;
+  position:absolute;top:-9px;left:50%;
+  transform:translateX(-50%);white-space:nowrap;
+}
+
+/* Divider */
+.mdivider{border:none;border-top:1px solid var(--border);margin:16px 0}
+
+/* Form */
+.fsec-title{
+  font-weight:700;font-size:12px;
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:10px;color:var(--navy);
+}
+.frow{display:flex;gap:9px;margin-bottom:10px}
+.frow .fg{flex:1}
+.fg{margin-bottom:10px}
+.fg label{
+  display:block;font-size:11px;font-weight:700;
+  color:#444;margin-bottom:3px;
+  text-transform:uppercase;letter-spacing:.4px;
+}
+.fg input,.fg select{
+  width:100%;padding:11px 12px;
+  border:1px solid #d0d0d0;border-radius:6px;
+  font-size:15px;font-family:inherit;
+  outline:none;transition:border-color .18s;
+  background:#fff;
+}
+.fg input:focus,.fg select:focus{border-color:var(--navy)}
+
+/* Card element */
+.card-wrap{
+  border:1px solid #d0d0d0;border-radius:6px;
+  padding:12px;background:#fff;
+  transition:border-color .18s;
+}
+.card-wrap.focused{border-color:var(--navy)}
+
+/* SSL */
+.ssl-line{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;color:var(--gray);
+  margin:7px 0 14px;
+}
+
+/* Order summary */
+.order-sum{
+  background:var(--lightgray);border-radius:7px;
+  padding:13px 15px;margin-bottom:14px;
+}
+.orow{
+  display:flex;justify-content:space-between;
+  font-size:14px;margin-bottom:5px;
+}
+.orow:last-child{margin-bottom:0}
+.orow.total{
+  font-weight:700;font-size:16px;
+  border-top:1px solid var(--border);
+  padding-top:8px;margin-top:8px;
+}
+.free-tag{color:var(--green);font-weight:700}
+.save-tag{color:var(--red);font-weight:700}
+
+/* Submit */
+.submit-btn{
+  width:100%;padding:16px;
+  background:#2e7d32;color:#fff;
+  font-size:17px;font-weight:700;
+  border:none;border-radius:7px;
+  cursor:pointer;font-family:inherit;
+  transition:background .18s;letter-spacing:.3px;
+}
+.submit-btn:hover{background:#1b5e20}
+.submit-btn:disabled{background:#9e9e9e;cursor:not-allowed}
+
+/* Bottom trust badges */
+.modal-badges{
+  display:flex;flex-wrap:wrap;gap:7px;
+  justify-content:center;margin-top:14px;
+}
+.mbadge{
+  display:flex;align-items:center;gap:4px;
+  font-size:11px;color:#333;
+  background:var(--lightgray);
+  border:1px solid var(--border);
+  padding:5px 9px;border-radius:5px;
+}
+
+/* Guarantee */
+.modal-guarantee{
+  background:#e8f5e9;border:1px solid #a5d6a7;
+  border-radius:8px;padding:13px 15px;
+  margin-top:12px;display:flex;
+  align-items:flex-start;gap:10px;
+}
+.mg-icon{font-size:26px;flex-shrink:0}
+.mg-title{font-weight:700;font-size:13px;margin-bottom:2px}
+.mg-text{font-size:12px;color:#2e7d32;line-height:1.5}
+
+/* Error */
+.form-err{
+  color:var(--red);font-size:13px;
+  margin-top:8px;text-align:center;display:none;
+}
+
+/* Success */
+.success-screen{
+  display:none;text-align:center;
+  padding:40px 18px;
+}
+.success-screen .ck{font-size:52px;margin-bottom:14px}
+.success-screen h3{font-size:20px;font-weight:900;margin-bottom:9px}
+.success-screen p{color:var(--gray);font-size:15px}
+
+@media(max-width:540px){
+  .modal-box{margin:0;border-radius:0;min-height:100svh}
+  .frow{flex-direction:column;gap:0}
+  .modal-trust-top{gap:8px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<!-- Trust bar -->
+<div class="trust-bar">
+  <span>🛡️ 30-Day Money-Back Guarantee</span>
+  <span>🚚 Free Shipping</span>
+  <span>↩️ Easy Returns</span>
+  <span>🔒 Secure Checkout</span>
+</div>
+
+<!-- Header -->
+<header class="site-header">
+  <span class="brand">Neck Pain Insider</span>
+</header>
+
+<!-- Article -->
+<div class="page-layout">
+
+  <p class="article-meta">June 16, 2025 &nbsp;·&nbsp; Neck Pain Insider Editorial</p>
+
+  <h1 class="headline">
+    Physio Told Her to "Just Manage It." Four Years Later, She Finally Found Out Why Her Neck Pain Was Never Going to Stop on Its Own.
+  </h1>
+
+  <div class="pull-quote">
+    "Most patients who come to me have already spent thousands on treatments that gave them temporary relief. There's a reason none of it lasted — and almost nobody is honest enough to explain it." — Dr. Amanda Reeves, Pain Physiotherapy Specialist
+  </div>
+
+  <!-- HERO IMAGE — replace src with your image -->
+  <div class="hero-wrap">
+    <img id="heroImg" src="" alt="Woman with neck pain" onerror="this.parentNode.innerHTML='<div class=hero-placeholder>[Replace: woman with neck pain, natural/realistic photo]</div>'" />
+  </div>
+
+  <div class="body-text">
+
+    <p class="hook-line">I almost missed my daughter's wedding because of my neck.</p>
+
+    <p>Not because I wasn't there. I was. I was standing in the front row.</p>
+
+    <p>But during every single photo, the photographer kept telling me to "lift your chin a little." And I couldn't. The pain was so sharp I had to keep looking down.</p>
+
+    <p>I smiled through it. I cried in the bathroom afterwards — not because my daughter was getting married, but because I had missed most of it trying not to visibly wince.</p>
+
+    <p>That was four years into daily neck pain.</p>
+
+    <p>If you wake up every morning and your neck is already tense before you've touched your pillow...</p>
+
+    <p>If you've had physio, massage, heat packs, anti-inflammatories, or those little patches from the chemist...</p>
+
+    <p>If the relief lasts a day, maybe two — then it's back exactly like before...</p>
+
+    <p>If your doctor has looked at your scans and said "nothing serious" — but the pain tells a completely different story...</p>
+
+    <p><strong>Then I need you to read this.</strong> Because I spent four years being treated for the wrong thing. And when I finally found out what was actually happening, I was furious at how simple the explanation was.</p>
+
+    <h2>Everything I Tried. Everything That Failed.</h2>
+
+    <p>My name is Karen. I'm 47. I live in Brisbane with my husband and our two kids.</p>
+
+    <p>My neck pain started after a minor car accident. Nothing dramatic — a small rear-end collision in a car park. The whiplash was real but mild. My GP said it would settle in 6–8 weeks.</p>
+
+    <p>It didn't.</p>
+
+    <p>Over the next four years I tried everything I was told to try:</p>
+
+    <ul class="fail-list">
+      <li>Physiotherapy — twice a week for 6 months. Felt better during sessions. Back to square one within 48 hours.</li>
+      <li>Remedial massage — monthly, then fortnightly. Two hours of relief, then same pain again.</li>
+      <li>Ibuprofen — took it so often my stomach started protesting. Stopped working after a while anyway.</li>
+      <li>Heat packs every night — helped me fall asleep. Woke up stiff and sore every morning regardless.</li>
+      <li>A specialist chiropractor — $180 a session. Six sessions. Zero lasting change.</li>
+      <li>Acupuncture — gave it a genuine go. Felt odd. Did nothing for my neck.</li>
+    </ul>
+
+    <p>I wasn't lazy about it. I wasn't a bad patient. I showed up, I did the exercises, I followed the advice.</p>
+
+    <p><strong>The pain just kept coming back.</strong></p>
+
+    <p>And nobody ever explained why.</p>
+
+    <h2>The Thing Nobody Ever Told Me</h2>
+
+    <p>The answer came from the most unlikely place — an offhand comment from a physio I saw once for a second opinion.</p>
+
+    <p>She was looking at my notes and said, almost to herself: "After this long, it's probably not the muscle anymore. It's likely nerve sensitisation."</p>
+
+    <p>I asked her to explain that.</p>
+
+    <p>She stopped what she was doing, sat down, and said: "Your original injury healed. Or mostly healed. But the nerve pathway that was sending pain signals during the injury — it got stuck. It's still firing. Even though there's nothing to warn you about anymore, the signal keeps going. Your brain keeps receiving pain because the pathway never switched off."</p>
+
+    <p>She called it a <strong>"pain loop."</strong></p>
+
+    <p>That one sentence explained four years of my life.</p>
+
+    <div class="highlight-box">
+      <p><strong>Here is the part that made me genuinely angry:</strong></p>
+      <p>Every single treatment I had tried — physio stretches, massage, heat, anti-inflammatories — works on the muscle layer. Which is why they give temporary relief. The muscle relaxes. But the nerve pathway underneath? Still firing. Still looping. Still sending the signal.</p>
+      <p>Nobody was reaching the actual cause. They were treating a wound that had already closed, while the alarm system inside kept screaming.</p>
+      <p>Research suggests this pattern — called <strong>central sensitisation</strong> — affects up to 70% of people with chronic neck pain that lasts more than 3 months. Most of them never find out that's what it is.</p>
+    </div>
+
+    <p>I wasn't broken. I wasn't imagining it. I wasn't "just stressed."</p>
+
+    <p><strong>My nervous system had learned to stay in pain mode. And nothing I had tried was designed to reach it.</strong></p>
+
+    <h2>What Finally Broke the Loop</h2>
+
+    <p>After that conversation, I started researching obsessively. Eleven PM searches, half-finished cups of tea going cold beside me.</p>
+
+    <p>I found study after study confirming what she had said. And then I found something that the researchers kept referencing as the one method that directly reaches the nerve pathway level — not just the muscle layer above it.</p>
+
+    <p>It was called <strong>dual-frequency neuromuscular electrical stimulation</strong> — TENS and EMS combined.</p>
+
+    <p>Not the cheap TENS pads from the pharmacy. Those deliver a generic, low-level signal and mostly just distract you from pain for a while.</p>
+
+    <p>I mean <strong>clinical-grade</strong> TENS/EMS — with a waveform specifically calibrated to travel along the nerve pathways.</p>
+
+    <p>Here's what makes it different to everything else I had tried:</p>
+
+    <p>The electrical pulses travel along the same nerve pathways that are stuck in the pain loop. They don't mask the signal. They <strong>compete with it and interrupt it</strong> at the source. At the same time, the EMS component activates the deep cervical muscles that pain and tension have been keeping locked — muscles you can't voluntarily engage when everything is seized up.</p>
+
+    <p>Two things happening at once that no massage, stretch, pill or heat pack can do simultaneously.</p>
+
+    <p>I found one device that had taken this clinical technology — the kind used in hospital pain clinics — and made it accessible for home use. Specifically designed for the neck and cervical area.</p>
+
+    <p>I ordered it. Honestly, with very low expectations. I'd been disappointed so many times.</p>
+
+    <h2>What Happened After 10 Days</h2>
+
+    <p>The first session felt strange. A gentle pulsing sensation. No pain. A little warmth spreading through my neck and shoulders.</p>
+
+    <p>On day four, I woke up and lay still for a moment before getting out of bed. Something was different.</p>
+
+    <p>The tightness that was always there when I woke — the clenching feeling I had normalised over years — was noticeably less.</p>
+
+    <p>By day ten, I turned my head at dinner to answer my husband and he stopped mid-sentence.</p>
+
+    <p>"You just did that without wincing," he said.</p>
+
+    <p>I hadn't even noticed.</p>
+
+    <p>Three months on, my daily pain has dropped from what I'd describe as a 6 or 7 most days to a 1 or 2. Some days zero. I use the device for 20 minutes every morning while I have coffee.</p>
+
+    <p>I've been back to a physio since — the same one who first mentioned nerve sensitisation. She tested my cervical range of motion and said it was better than it had been in any of my notes. She asked what had changed.</p>
+
+    <p>I told her about the device. She nodded like she wasn't surprised.</p>
+
+    <p>"That's one of the few things that actually reaches the right level," she said.</p>
+
+    <button class="cta-btn" onclick="openModal()">→ Check Availability &amp; Price</button>
+    <p class="cta-sub">⚡ 55% discount currently active · Limited stock</p>
+
+    <h2>Why I'm Sharing This Here</h2>
+
+    <p>I've had so many people — friends, people in my mum's group, colleagues — ask me what changed. I've sent so many individual messages explaining it that I decided to write it all down properly.</p>
+
+    <p>That's why this article exists. Not to sell you something — I'm just a person who found something that worked after years of nothing working. I'm including the link because every time I don't, someone messages me asking for it.</p>
+
+    <p>The device I used is called <strong>[YOUR PRODUCT NAME]</strong>. It was designed specifically for neck and shoulder pain with the cervical nerve pathway calibration I've described.</p>
+
+    <p>It comes with a full 30-day money-back guarantee. If it doesn't work for you, you return it and pay nothing. That's what made me feel comfortable trying it after spending so much on things that failed.</p>
+
+    <h2>Who This Is and Isn't For</h2>
+
+    <p>This is most effective for chronic, recurring neck and shoulder pain — the kind that keeps returning despite treatment, with no clear structural cause on imaging.</p>
+
+    <p>If you have a pacemaker or implanted cardiac device, this technology is not appropriate for you.</p>
+
+    <p>If your pain started very recently (within the last few weeks), see a healthcare professional first.</p>
+
+    <p>But if you've been suffering for months or years, trying treatment after treatment with only temporary results — this is almost certainly reaching a mechanism that nothing else has.</p>
+
+    <button class="cta-btn" onclick="openModal()">→ Check Availability &amp; Get 55% Off Today</button>
+    <p class="cta-sub">🔒 Free shipping · 30-day returns · No risk</p>
+
+    <h2>What Others Are Saying</h2>
+
+    <div class="testimonial">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"I had neck pain every single day for six years. Physio, chiro, massage — I tried all of it. Nothing lasted more than two days. I used this device for three weeks and the daily pain just... stopped being constant. I'm not saying it's a miracle but I genuinely cannot explain why nothing else worked and this did. I'm just glad someone finally told me about it."</p>
+      <p class="t-name">Margaret T.</p>
+      <p class="t-loc">53 years old · Brisbane</p>
+    </div>
+
+    <div class="testimonial">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"My physio actually laughed when I told her how much my pain had improved. She said my muscle tension had reduced more than she'd seen from her sessions alone. I've been using it every morning for two months. The pain went from a 7 most days to maybe a 2 on a bad day. I wish I'd found this three years ago."</p>
+      <p class="t-name">Sandra R.</p>
+      <p class="t-loc">46 years old · Melbourne</p>
+    </div>
+
+    <div class="testimonial">
+      <div class="t-stars">★★★★★</div>
+      <p class="t-text">"I sit at a desk for nine hours a day and the neck pain had become just part of my life. I accepted it. I don't know why I decided to try this but I'm so glad I did. After two weeks I was turning to look at people without bracing myself first. Small thing. Huge difference to actually living your life."</p>
+      <p class="t-name">Diane H.</p>
+      <p class="t-loc">44 years old · Sydney</p>
+    </div>
+
+    <button class="cta-btn" onclick="openModal()">→ Check Availability &amp; Current Discount</button>
+    <p class="cta-sub">Stock is limited — discount may not last</p>
+
+  </div><!-- /body-text -->
+
+  <div class="disclaimer">
+    <strong>EDITORIAL DISCLOSURE:</strong> This article reflects the personal experience of the narrator and is not intended as medical advice. Always consult a qualified healthcare professional before beginning any new treatment. The author may receive compensation if you purchase through links in this article. Individual results vary. This article is produced as sponsored editorial content. Statements have not been evaluated by the TGA or any regulatory body.<br><br>
+    THIS IS AN ADVERTISEMENT AND NOT AN ACTUAL NEWS ARTICLE OR MEDICAL PUBLICATION.
+  </div>
+
+</div><!-- /page-layout -->
+
+
+<!-- ═══════════════════════════════════════════
+     CHECKOUT MODAL
+═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal-box">
+
+    <!-- Trust bar at very top of modal -->
+    <div class="modal-trust-top">
+      <span>🛡️ 30-Day Guarantee</span>
+      <span>🚚 Free Shipping</span>
+      <span>↩️ Easy Returns</span>
+      <span>🔒 Secure</span>
+    </div>
+
+    <div class="modal-header">
+      <p>🔒 Secure Order — Official Stockist</p>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-screen" id="successScreen">
+      <div class="ck">✅</div>
+      <h3>Order Confirmed!</h3>
+      <p>Check your inbox for a confirmation email.<br>[YOUR PRODUCT NAME] ships in 1–2 business days.</p>
+    </div>
+
+    <!-- ORDER FORM -->
+    <div class="modal-body" id="orderFormWrap">
+
+      <!-- Product images slider -->
+      <div class="img-slider" id="imgSlider">
+        <!-- REPLACE: add real product images here -->
+        <div class="img-slide active">[Product image 1 — front view]</div>
+        <div class="img-slide">[Product image 2 — in use on neck]</div>
+        <div class="img-slide">[Product image 3 — package contents]</div>
+      </div>
+      <div class="slider-dots">
+        <button class="sdot active" onclick="goSlide(0)"></button>
+        <button class="sdot" onclick="goSlide(1)"></button>
+        <button class="sdot" onclick="goSlide(2)"></button>
+      </div>
+
+      <p class="prod-title">[YOUR PRODUCT NAME]</p>
+      <p class="prod-sub">Cervical TENS/EMS Pain Relief Device</p>
+      <div class="prod-stars">
+        <span class="st">★★★★★</span>
+        <span>4.8/5 · 1,240 reviews</span>
+      </div>
+
+      <p class="bundle-label">Select Your Package:</p>
+      <div class="bundles">
+
+        <div class="bundle" id="b1" onclick="selBundle(1)">
+          <div class="bundle-left">
+            <div class="brad"></div>
+            <div>
+              <div class="bname">1 Device</div>
+              <div class="bper">Standard — ships today</div>
+            </div>
+          </div>
+          <div class="bright">
+            <div class="bprice">$129</div>
+            <div class="borig">Was $289</div>
+          </div>
+        </div>
+
+        <div class="bundle" id="b2" onclick="selBundle(2)" style="position:relative">
+          <span class="bpop">⭐ MOST POPULAR</span>
+          <div class="bundle-left">
+            <div class="brad"></div>
+            <div>
+              <div class="bname">2 Devices <span class="bbadge">SAVE $39</span></div>
+              <div class="bper">$110 each — for you + partner</div>
+            </div>
+          </div>
+          <div class="bright">
+            <div class="bprice">$219</div>
+            <div class="borig">Was $578</div>
+          </div>
+        </div>
+
+        <div class="bundle" id="b3" onclick="selBundle(3)">
+          <div class="bundle-left">
+            <div class="brad"></div>
+            <div>
+              <div class="bname">3 Devices <span class="bbadge">BEST VALUE</span></div>
+              <div class="bper">$96 each — share with family</div>
+            </div>
+          </div>
+          <div class="bright">
+            <div class="bprice">$289</div>
+            <div class="borig">Was $867</div>
+          </div>
+        </div>
+
+      </div>
+
+      <hr class="mdivider"/>
+      <p class="fsec-title">📦 Shipping Details</p>
+
+      <div class="frow">
+        <div class="fg"><label>First Name</label><input type="text" id="fFirst" placeholder="Jane" autocomplete="given-name"/></div>
+        <div class="fg"><label>Last Name</label><input type="text" id="fLast" placeholder="Smith" autocomplete="family-name"/></div>
+      </div>
+      <div class="fg"><label>Email</label><input type="email" id="fEmail" placeholder="jane@email.com" autocomplete="email"/></div>
+      <div class="fg"><label>Phone</label><input type="tel" id="fPhone" placeholder="+61 400 000 000" autocomplete="tel"/></div>
+      <div class="fg"><label>Street Address</label><input type="text" id="fAddr" placeholder="123 Main Street" autocomplete="street-address"/></div>
+      <div class="frow">
+        <div class="fg"><label>City</label><input type="text" id="fCity" placeholder="Sydney" autocomplete="address-level2"/></div>
+        <div class="fg"><label>Postcode</label><input type="text" id="fPost" placeholder="2000" autocomplete="postal-code"/></div>
+      </div>
+      <div class="fg">
+        <label>Country</label>
+        <select id="fCountry" autocomplete="country">
+          <option value="AU">Australia</option>
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="CA">Canada</option>
+          <option value="NZ">New Zealand</option>
+          <option value="IE">Ireland</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <hr class="mdivider"/>
+      <p class="fsec-title">💳 Payment</p>
+
+      <div class="card-wrap" id="cardWrap">
+        <div id="cardEl"></div>
+      </div>
+      <div id="cardErr" style="color:#c62828;font-size:13px;margin-top:6px;display:none"></div>
+
+      <div class="ssl-line">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        256-bit SSL · Your card details are never stored
+      </div>
+
+      <div class="order-sum">
+        <div class="orow"><span id="sumDesc">1 × [YOUR PRODUCT NAME]</span><span id="sumPrice">$129</span></div>
+        <div class="orow"><span>Shipping</span><span class="free-tag">FREE</span></div>
+        <div class="orow" id="sumSaveRow" style="display:none"><span>You save</span><span class="save-tag" id="sumSave"></span></div>
+        <div class="orow total"><span>Total Today</span><span id="sumTotal">$129</span></div>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitOrder()">✅ Complete Secure Order →</button>
+      <div id="formErrMsg" class="form-err"></div>
+
+      <div class="modal-badges">
+        <div class="mbadge">🛡️ 30-Day Returns</div>
+        <div class="mbadge">🔒 SSL Secure</div>
+        <div class="mbadge">🚚 Free Shipping</div>
+        <div class="mbadge">⚡ Ships 24–48h</div>
+      </div>
+
+      <div class="modal-guarantee">
+        <div class="mg-icon">🛡️</div>
+        <div>
+          <div class="mg-title">30-Day Money-Back Guarantee</div>
+          <div class="mg-text">Try [YOUR PRODUCT NAME] for 30 days. If you don't feel a real difference, contact us for a full refund — no questions, no hassle.</div>
+        </div>
+      </div>
+
+    </div><!-- /orderFormWrap -->
+  </div><!-- /modal-box -->
+</div><!-- /modal-overlay -->
+
+
+<script>
+/* ─── BUNDLE DATA ─────────────────────────── */
+const BUNDLES = {
+  1:{desc:'1 × [YOUR PRODUCT NAME]',price:129,save:0},
+  2:{desc:'2 × [YOUR PRODUCT NAME]',price:219,save:39},
+  3:{desc:'3 × [YOUR PRODUCT NAME]',price:289,save:98}
+};
+let curBundle = 1;
+
+function selBundle(n){
+  curBundle = n;
+  [1,2,3].forEach(i=>document.getElementById('b'+i).classList.remove('sel'));
+  document.getElementById('b'+n).classList.add('sel');
+  const b = BUNDLES[n];
+  document.getElementById('sumDesc').textContent  = b.desc;
+  document.getElementById('sumPrice').textContent = '$'+b.price;
+  document.getElementById('sumTotal').textContent = '$'+b.price;
+  const sr = document.getElementById('sumSaveRow');
+  if(b.save>0){
+    sr.style.display='flex';
+    document.getElementById('sumSave').textContent='-$'+b.save;
+  } else { sr.style.display='none'; }
+}
+selBundle(1);
+
+/* ─── SLIDER ──────────────────────────────── */
+let curSlide = 0;
+const slides  = document.querySelectorAll('.img-slide');
+const dots    = document.querySelectorAll('.sdot');
+function goSlide(n){
+  slides[curSlide].classList.remove('active');
+  dots[curSlide].classList.remove('active');
+  curSlide = n;
+  slides[n].classList.add('active');
+  dots[n].classList.add('active');
+}
+setInterval(()=>goSlide((curSlide+1)%slides.length),3600);
+
+/* ─── MODAL ───────────────────────────────── */
+function openModal(){
+  document.getElementById('checkoutModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(!stripeReady) initStripe();
+}
+function closeModal(){
+  document.getElementById('checkoutModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('checkoutModal').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+/* ─── STRIPE ──────────────────────────────── */
+let stripe, cardEl, stripeReady = false;
+function initStripe(){
+  try {
+    stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); /* ← REPLACE */
+    const els = stripe.elements();
+    cardEl = els.create('card',{
+      style:{base:{
+        fontSize:'15px',color:'#1a1a1a',
+        fontFamily:"'Source Sans 3',sans-serif",
+        '::placeholder':{color:'#9e9e9e'}
+      }}
+    });
+    cardEl.mount('#cardEl');
+    cardEl.on('focus',()=>document.getElementById('cardWrap').classList.add('focused'));
+    cardEl.on('blur', ()=>document.getElementById('cardWrap').classList.remove('focused'));
+    cardEl.on('change',e=>{
+      const el=document.getElementById('cardErr');
+      el.style.display=e.error?'block':'none';
+      if(e.error) el.textContent=e.error.message;
+    });
+    stripeReady=true;
+  } catch(e){
+    document.getElementById('cardEl').innerHTML=
+      '<input style="width:100%;border:none;outline:none;font-size:15px;font-family:inherit" placeholder="Configure Stripe key to enable card input" />';
+  }
+}
+
+/* ─── VALIDATION ──────────────────────────── */
+function validate(){
+  const ids=['fFirst','fLast','fEmail','fPhone','fAddr','fCity','fPost'];
+  for(const id of ids){
+    const el=document.getElementById(id);
+    if(!el.value.trim()){el.focus();return 'Please complete all fields.';}
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('fEmail').value))
+    return 'Please enter a valid email.';
+  return null;
+}
+
+/* ─── SUBMIT ──────────────────────────────── */
+async function submitOrder(){
+  const err=validate();
+  if(err){
+    const el=document.getElementById('formErrMsg');
+    el.textContent=err; el.style.display='block'; return;
+  }
+  document.getElementById('formErrMsg').style.display='none';
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.textContent='Processing…';
+
+  try {
+    /*
+    ═══════════════════════════════════════════════════
+    SHOPIFY OPTION (recommended — no backend needed):
+    ═══════════════════════════════════════════════════
+    Replace VARIANT_ID_X with your Shopify variant IDs.
+
+    const variants = { 1:'VARIANT_ID_1', 2:'VARIANT_ID_2', 3:'VARIANT_ID_3' };
+    window.location.href = '/cart/'+variants[curBundle]+':1?checkout';
+
+    ═══════════════════════════════════════════════════
+    STRIPE OPTION (needs backend /api/create-payment-intent):
+    ═══════════════════════════════════════════════════
+    const r = await fetch('/api/create-payment-intent',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        bundle: curBundle,
+        amount: BUNDLES[curBundle].price * 100,
+        email: document.getElementById('fEmail').value,
+        name: document.getElementById('fFirst').value+' '+document.getElementById('fLast').value
+      })
+    });
+    const {clientSecret} = await r.json();
+    const result = await stripe.confirmCardPayment(clientSecret,{
+      payment_method:{
+        card: cardEl,
+        billing_details:{
+          name: document.getElementById('fFirst').value+' '+document.getElementById('fLast').value,
+          email: document.getElementById('fEmail').value
+        }
+      }
+    });
+    if(result.error) throw new Error(result.error.message);
+    */
+
+    /* DEMO — remove in production: */
+    await new Promise(r=>setTimeout(r,1500));
+
+    document.getElementById('orderFormWrap').style.display='none';
+    document.getElementById('successScreen').style.display='block';
+
+  } catch(e){
+    const el=document.getElementById('formErrMsg');
+    el.textContent=e.message||'Payment failed. Please try again.';
+    el.style.display='block';
+    btn.disabled=false;
+    btn.textContent='✅ Complete Secure Order →';
+  }
+}
+</script>
+
+</body>
+</html>
