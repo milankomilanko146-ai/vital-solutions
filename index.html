@@ -1,92 +1,558 @@
-function doPost(e) {
-  var lock = LockService.getScriptLock();
-  lock.tryLock(10000);
-  
-  try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var rawSheet = ss.getSheetByName("Návštevníci");
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
+    <title>Health Assessment Portal</title>
     
-    // Ak hárky neexistujú, skript ich sám vytvorí a naformátuje
-    if (!rawSheet) {
-      rawSheet = ss.insertSheet("Návštevníci");
-      rawSheet.appendRow([
-        "Session ID", "Čas príchodu", "Posledná aktivita", "Posledný krok (Status)", 
-        "Štart kvízu", "Otázka 1", "Otázka 2", "Otázka 3", "Otázka 4", "Otázka 5", "Otázka 6", 
-        "Videl Ponuku", "ODOSLAL LEAD"
-      ]);
-      rawSheet.getRange("A1:M1").setFontWeight("bold").setBackground("#F87666").setFontColor("#ffffff");
-      rawSheet.setFrozenRows(1);
-    }
-    
-    var dashSheet = ss.getSheetByName("📊 DASHBOARD");
-    if (!dashSheet) {
-      dashSheet = ss.insertSheet("📊 DASHBOARD", 0);
-      dashSheet.getRange("A1:D1").setValues([["Krok vo Funneli", "Počet ľudí", "% z celku (Konverzia)", "Drop-off (Odpad v kroku)"]]).setFontWeight("bold").setBackground("#2c3e50").setFontColor("#ffffff");
-      
-      var steps = [
-        ["1. Prišli na stránku (Welcome)", '=COUNTA(\'Návštevníci\'!A2:A)', '=IFERROR(B2/B2; 0)', '-'],
-        ["2. Klikli na Štart (Otázka 1)", '=COUNTIF(\'Návštevníci\'!E2:E; "ÁNO")', '=IFERROR(B3/$B$2; 0)', '=IFERROR(1-(B3/B2); 0)'],
-        ["3. Odpovedali na Otázku 1", '=COUNTA(\'Návštevníci\'!F2:F)', '=IFERROR(B4/$B$2; 0)', '=IFERROR(1-(B4/B3); 0)'],
-        ["4. Odpovedali na Otázku 2", '=COUNTA(\'Návštevníci\'!G2:G)', '=IFERROR(B5/$B$2; 0)', '=IFERROR(1-(B5/B4); 0)'],
-        ["5. Odpovedali na Otázku 3", '=COUNTA(\'Návštevníci\'!H2:H)', '=IFERROR(B6/$B$2; 0)', '=IFERROR(1-(B6/B5); 0)'],
-        ["6. Odpovedali na Otázku 4", '=COUNTA(\'Návštevníci\'!I2:I)', '=IFERROR(B7/$B$2; 0)', '=IFERROR(1-(B7/B6); 0)'],
-        ["7. Odpovedali na Otázku 5", '=COUNTA(\'Návštevníci\'!J2:J)', '=IFERROR(B8/$B$2; 0)', '=IFERROR(1-(B8/B7); 0)'],
-        ["8. Dokončili kvíz (Otázka 6)", '=COUNTA(\'Návštevníci\'!K2:K)', '=IFERROR(B9/$B$2; 0)', '=IFERROR(1-(B9/B8); 0)'],
-        ["9. Videli predajnú ponuku", '=COUNTIF(\'Návštevníci\'!L2:L; "ÁNO")', '=IFERROR(B10/$B$2; 0)', '=IFERROR(1-(B10/B9); 0)'],
-        ["10. VYPLNILI FORMULÁR (LEAD)", '=COUNTIF(\'Návštevníci\'!M2:M; "🔥 LEAD")', '=IFERROR(B11/$B$2; 0)', '=IFERROR(1-(B11/B10); 0)']
-      ];
-      dashSheet.getRange("A2:D11").setValues(steps);
-      dashSheet.getRange("C2:D11").setNumberFormat("0.0%");
-      dashSheet.setColumnWidth(1, 250);
-      dashSheet.setColumnWidth(2, 120);
-      dashSheet.setColumnWidth(3, 160);
-      dashSheet.setColumnWidth(4, 160);
-    }
+    <style>
+        :root {
+            --primary: #F87666; /* Brainway Coral */
+            --primary-hover: #e56353;
+            --bg: #ffffff;
+            --text-main: #1A1A1A;
+            --text-muted: #6E6E73;
+            --card-border: #E5E5EA;
+            --card-bg: #F9F9FB;
+        }
 
-    // Zápis dát ku konkrétnemu návštevníkovi do jedného riadku
-    var p = e.parameter;
-    var sid = p.session_id || "unknown";
-    var step = p.step || "";
-    var answer = p.answer || "";
-    var now = Utilities.formatDate(new Date(), "GMT+2", "dd.MM.yyyy HH:mm:ss");
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    var data = rawSheet.getDataRange().getValues();
-    var rowIndex = -1;
-    for (var i = 1; i < data.length; i++) {
-      if (data[i][0] === sid) {
-        rowIndex = i + 1;
-        break;
-      }
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    if (rowIndex === -1) {
-      rowIndex = rawSheet.getLastRow() + 1;
-      rawSheet.getRange(rowIndex, 1, 1, 4).setValues([[sid, now, now, step]]);
-    } else {
-      rawSheet.getRange(rowIndex, 3, 1, 2).setValues([[now, step]]);
-    }
+        /* Top Navigation & Progress Bar (Brainway Style) */
+        .top-nav {
+            height: 4.25rem;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
 
-    var colMap = {
-      "Started_Quiz": 5,
-      "Q1": 6,
-      "Q2": 7,
-      "Q3": 8,
-      "Q4": 9,
-      "Q5": 10,
-      "Q6": 11,
-      "Viewed_Offer": 12,
-      "Lead": 13
-    };
+        .btn-back {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-main);
+            cursor: pointer;
+            visibility: hidden;
+            padding: 8px;
+        }
 
-    if (colMap[step]) {
-      rawSheet.getRange(rowIndex, colMap[step]).setValue(answer);
-      if (step === "Lead") {
-        rawSheet.getRange(rowIndex, 1, 1, 13).setBackground("#d4edda"); // Zvýrazní riadok s leadom na zeleno
-      }
-    }
+        .progress-container {
+            flex: 1;
+            height: 6px;
+            background-color: #EFEFF4;
+            border-radius: 99px;
+            margin: 0 16px;
+            overflow: hidden;
+        }
 
-    return ContentService.createTextOutput("OK");
-  } finally {
-    lock.releaseLock();
-  }
-}
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary);
+            border-radius: 99px;
+            transition: width 0.35s ease;
+        }
+
+        .step-counter {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 35px;
+            text-align: right;
+        }
+
+        /* Main Centered Viewport */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 4.25rem);
+            width: 100%;
+            padding: 20px;
+        }
+
+        .quiz-card {
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1 { font-size: 26px; font-weight: 700; line-height: 1.25; text-align: center; margin-bottom: 12px; }
+        h2 { font-size: 22px; font-weight: 700; line-height: 1.3; text-align: center; margin-bottom: 10px; }
+        p.subtitle { font-size: 15px; color: var(--text-muted); text-align: center; margin-bottom: 28px; line-height: 1.5; }
+
+        /* Hero Image */
+        .hero-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Option Cards */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 18px 20px;
+            background-color: var(--card-bg);
+            border: 1.5px solid var(--card-border);
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover, .option-btn:active {
+            border-color: var(--primary);
+            background-color: #FFF5F3;
+            transform: translateY(-1px);
+        }
+
+        .option-arrow {
+            color: #C7C7CC;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Primary CTA Button */
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(248, 118, 102, 0.35);
+            transition: background-color 0.2s ease;
+        }
+
+        .cta-btn:hover { background-color: var(--primary-hover); }
+
+        /* Brainway Exact SVG Loader */
+        .loader-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .spinner-svg {
+            width: 3.5rem;
+            height: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Sales / Result Section */
+        .diagnosis-badge {
+            display: inline-block;
+            background: #FFF0ED;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .product-box {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #fff;
+            border: 1.5px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 20px;
+        }
+
+        .product-box img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .price-highlight {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        /* Form Inputs */
+        .orderForm {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .orderForm input[type="text"],
+        .orderForm input[type="tel"] {
+            width: 100%;
+            padding: 16px;
+            border: 1.5px solid var(--card-border);
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--card-bg);
+            outline: none;
+        }
+
+        .orderForm input[type="text"]:focus,
+        .orderForm input[type="tel"]:focus {
+            border-color: var(--primary);
+            background: #fff;
+        }
+
+        .trust-note {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 12px;
+        }
+    </style>
+
+    <!-- Meta Pixel (Pre-prepared) -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      // fbq('init', 'YOUR_PIXEL_ID_HERE');
+      // fbq('track', 'PageView');
+    </script>
+</head>
+<body>
+
+    <!-- Top Progress Header -->
+    <header class="top-nav" id="top-nav">
+        <button class="btn-back" id="btn-back" onclick="goBack()">←</button>
+        <div class="progress-container">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="step-counter" id="step-counter"></div>
+    </header>
+
+    <main>
+        <div class="quiz-card">
+
+            <!-- STEP 0: WELCOME -->
+            <div id="welcome" class="step">
+                <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80" alt="Clinical Assessment" class="hero-img"/>
+                <h1>Urinary Comfort & Bladder Assessment</h1>
+                <p class="subtitle">Take this 45-second clinical evaluation to uncover the root cause of frequent urges, nighttime waking, and recurring discomfort.</p>
+                <button class="cta-btn" onclick="selectOption('welcome', 'q1', 'Started_Quiz', 'ÁNO')">Start Assessment →</button>
+            </div>
+
+            <!-- STEP 1: AGE -->
+            <div id="q1" class="step">
+                <h2>Select your age group</h2>
+                <p class="subtitle">Age helps us calibrate your mucosal protection profile.</p>
+                <div class="options-list">
+                    <button class="option-btn" onclick="selectOption('q1', 'q2', 'Q1', '40 - 49')"><span>40 – 49 years</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q1', 'q2', 'Q1', '50 - 59')"><span>50 – 59 years</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q1', 'q2', 'Q1', '60+')"><span>60+ years</span><span class="option-arrow">›</span></button>
+                </div>
+            </div>
+
+            <!-- STEP 2: NIGHTTIME WAKING -->
+            <div id="q2" class="step">
+                <h2>How often do you wake up at night to use the bathroom?</h2>
+                <p class="subtitle">Interrupted sleep is a primary indicator of bladder sensitivity.</p>
+                <div class="options-list">
+                    <button class="option-btn" onclick="selectOption('q2', 'q3', 'Q2', '1x za noc')"><span>Once per night</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q2', 'q3', 'Q2', '2-3x za noc')"><span>2 to 3 times per night</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q2', 'q3', 'Q2', '4x+ (Nespavosť)')"><span>More than 3 times (Exhausting)</span><span class="option-arrow">›</span></button>
+                </div>
+            </div>
+
+            <!-- STEP 3: SYMPTOMS -->
+            <div id="q3" class="step">
+                <h2>Which symptom bothers you the most right now?</h2>
+                <p class="subtitle">Choose the one you experience most frequently.</p>
+                <div class="options-list">
+                    <button class="option-btn" onclick="selectOption('q3', 'q4', 'Q3', 'Pálenie a rezanie')"><span>Burning sensation or sharp discomfort</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q3', 'q4', 'Q3', 'Tlak v podbrušku')"><span>Constant pressure in the lower abdomen</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q3', 'q4', 'Q3', 'Pocit neúplného vyprázdnenia')"><span>Feeling of incomplete emptying ("two drops")</span><span class="option-arrow">›</span></button>
+                </div>
+            </div>
+
+            <!-- STEP 4: FALSE BELIEFS -->
+            <div id="q4" class="step">
+                <h2>Have you tried herbal teas or pharmacy products before?</h2>
+                <p class="subtitle">Understanding past solutions helps identify resistance.</p>
+                <div class="options-list">
+                    <button class="option-btn" onclick="selectOption('q4', 'q5', 'Q4', 'Áno, vrátilo sa to')"><span>Yes, but the problem always comes back</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q4', 'q5', 'Q4', 'Pomohlo len krátkodobo')"><span>Only gave me temporary relief for a few days</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q4', 'q5', 'Q4', 'Zatiaľ nič')"><span>I haven't tried anything specific yet</span><span class="option-arrow">›</span></button>
+                </div>
+            </div>
+
+            <!-- STEP 5: IMPACT -->
+            <div id="q5" class="step">
+                <h2>How much does this limit your daily life or travel?</h2>
+                <p class="subtitle">Be honest about your daily comfort level.</p>
+                <div class="options-list">
+                    <button class="option-btn" onclick="selectOption('q5', 'q6', 'Q5', 'Veľmi obmedzuje')"><span>Severely — I always plan around toilets</span><span class="option-arrow">›</span></button>
+                    <button class="option-btn" onclick="selectOption('q5', 'q6', 'Q5', 'Stredne obmedzuje')"><span>Moderately — it causes daily stress</span><span class="option-arrow">›</span></button>
+                </div>
+            </div>
+
+            <!-- STEP 6: MICRO-COMMITMENT -->
+            <div id="q6" class="step">
+                <h2>Are you ready to restore your bladder's protective barrier naturally?</h2>
+                <p class="subtitle">If a concentrated natural protocol could stop recurring urges, would you follow a simple daily routine at home?</p>
+                <div class="options-list">
+                    <button class="cta-btn" onclick="startAnalysis('Q6', 'Áno - Chce riešenie')">Yes, Show My Custom Report →</button>
+                </div>
+            </div>
+
+            <!-- LOADING SCREEN (Exact Brainway SVG Spinner) -->
+            <div id="loading" class="step">
+                <div class="loader-wrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="spinner-svg">
+                        <path fill="#F87666" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"></path>
+                        <path fill="#F87666" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
+                            <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"></animateTransform>
+                        </path>
+                    </svg>
+                    <h2 id="loading-title">Analyzing your profile...</h2>
+                    <p class="subtitle" id="loading-sub">Evaluating mucosal barrier sensitivity</p>
+                </div>
+            </div>
+
+            <!-- STEP 7: RESULT & DIRECT RESPONSE OFFER -->
+            <div id="result" class="step">
+                <div style="text-align: center;">
+                    <span class="diagnosis-badge">Analysis Complete</span>
+                </div>
+                <h2>Result: Thinning Mucosal Barrier</h2>
+                <p class="subtitle" style="margin-bottom: 16px;">Your answers indicate high bladder wall sensitivity.</p>
+
+                <div class="result-card">
+                    <strong>Why ordinary teas failed you:</strong> Standard teas only flush water through your system, leaving the bladder walls exposed. To stop nighttime waking and burning, you must coat the lining with concentrated <strong>Cranberry, Blueberry & Grapefruit bioflavonoids</strong> so bacteria cannot attach.
+                </div>
+
+                <div class="product-box">
+                    <img src="https://images.unsplash.com/photo-1584308666744-24d5e4a831e5?auto=format&fit=crop&w=300&q=80" alt="Cystiolla"/>
+                    <div>
+                        <div style="font-weight: 700; font-size: 17px;">Cystiolla Complex</div>
+                        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;">50% Assessment Discount Applied</div>
+                        <div class="price-highlight">111 RON</div>
+                    </div>
+                </div>
+
+                <!-- DR.CASH ORDER FORM -->
+                <form class="orderForm">
+                    <input type="text" name="name" placeholder="Your Full Name" required />
+                    <input type="tel" name="phone" placeholder="Phone Number (for delivery)" required />
+                    <input type="hidden" name="ip" value="" />
+                    <input type="submit" class="cta-btn" value="Order With 50% Discount →" />
+                </form>
+                <div class="trust-note">🔒 Pay in cash upon delivery to the courier. No online card needed.</div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- QUIZ & GOOGLE SHEETS TRACKING LOGIC -->
+    <script>
+        // VLOŽ SEM SVOJU WEB APP URL Z GOOGLE APPS SCRIPTU:
+        const GOOGLE_SHEETS_WEBHOOK_URL = "VLOZTE_URL_Z_GOOGLE_TABULKY_TU";
+
+        const stepOrder = ['welcome', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'result'];
+
+        // Vygeneruje unikátne ID pre návštevníka (aby mal v tabuľke 1 riadok)
+        function getSessionId() {
+            let sid = sessionStorage.getItem('quiz_session_id');
+            if (!sid) {
+                sid = 'USER_' + Math.random().toString(36).substring(2, 9).toUpperCase();
+                sessionStorage.setItem('quiz_session_id', sid);
+            }
+            return sid;
+        }
+
+        function sendTrackData(stepCode, answerValue) {
+            // 1. Meta Pixel Tracking
+            if (typeof fbq === 'function') {
+                if (stepCode === 'Lead') {
+                    fbq('track', 'Lead');
+                } else {
+                    fbq('trackCustom', stepCode, { answer: answerValue });
+                }
+            }
+
+            // 2. Google Sheets Clean Row Tracking
+            if (GOOGLE_SHEETS_WEBHOOK_URL.startsWith("http")) {
+                const formData = new FormData();
+                formData.append("session_id", getSessionId());
+                formData.append("step", stepCode);
+                formData.append("answer", answerValue);
+
+                fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                }).catch(() => {});
+            }
+        }
+
+        function updateUI(stepId) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById(stepId);
+            if (target) target.classList.add('active');
+
+            const backBtn = document.getElementById('btn-back');
+            const progressFill = document.getElementById('progress-fill');
+            const counter = document.getElementById('step-counter');
+
+            const qMap = { 'welcome': 0, 'q1': 1, 'q2': 2, 'q3': 3, 'q4': 4, 'q5': 5, 'q6': 6, 'loading': 6, 'result': 6 };
+            const currentNum = qMap[stepId] || 0;
+
+            if (stepId === 'welcome' || stepId === 'loading' || stepId === 'result') {
+                backBtn.style.visibility = 'hidden';
+            } else {
+                backBtn.style.visibility = 'visible';
+            }
+
+            const percent = Math.round((currentNum / 6) * 100);
+            progressFill.style.width = percent + '%';
+            counter.innerText = currentNum > 0 && stepId !== 'result' ? `${currentNum}/6` : '';
+
+            sessionStorage.setItem('currentQuizStep', stepId);
+            window.scrollTo(0, 0);
+        }
+
+        function selectOption(currentId, nextId, stepCode, answerValue) {
+            sendTrackData(stepCode, answerValue);
+            updateUI(nextId);
+        }
+
+        function goBack() {
+            const current = sessionStorage.getItem('currentQuizStep') || 'welcome';
+            const idx = stepOrder.indexOf(current);
+            if (idx > 0) {
+                updateUI(stepOrder[idx - 1]);
+            }
+        }
+
+        function startAnalysis(stepCode, answerValue) {
+            sendTrackData(stepCode, answerValue);
+            updateUI('loading');
+
+            setTimeout(() => {
+                document.getElementById('loading-title').innerText = "Cross-referencing symptoms...";
+                document.getElementById('loading-sub').innerText = "Checking recurrence factors";
+            }, 1400);
+
+            setTimeout(() => {
+                document.getElementById('loading-title').innerText = "Preparing your protocol...";
+                document.getElementById('loading-sub').innerText = "Applying assessment discount";
+            }, 2800);
+
+            setTimeout(() => {
+                updateUI('result');
+                sendTrackData('Viewed_Offer', 'ÁNO');
+            }, 4000);
+        }
+
+        window.onload = function() {
+            getSessionId();
+            const saved = sessionStorage.getItem('currentQuizStep');
+            if (saved && document.getElementById(saved) && saved !== 'loading') {
+                updateUI(saved);
+            } else {
+                updateUI('welcome');
+                sendTrackData('Visited_Welcome', 'ÁNO');
+            }
+        };
+    </script>
+
+    <!-- DR.CASH API INTEGRATION -->
+    <script src="https://static.statthroat.tech/dist/api/lead-1.1.0.min.js"></script>
+    <script>
+      drlead.init({
+        params: {
+          token: "MJM1MDDLOTGTZTQ3ZI00ZDE5LTK0ZDUTNJHHMWZIOGZKZDM1",
+          stream_code: "5futh",
+          thanks_page: "./thanks.html"
+        },
+        subs: {
+          sub1: drlead.formInputGet("sub1") || drlead.queryGet("sub1"),
+          sub2: drlead.formInputGet("sub2") || drlead.queryGet("sub2"),
+          sub3: drlead.formInputGet("sub3") || drlead.queryGet("sub3"),
+          sub4: drlead.formInputGet("sub4") || drlead.queryGet("sub4"),
+          sub5: drlead.formInputGet("sub5") || drlead.queryGet("sub5")
+        },
+        callback: function (error, response) {
+          if (!error) {
+            sessionStorage.removeItem('currentQuizStep');
+            sendTrackData('Lead', '🔥 LEAD');
+          }
+        }
+      });
+    </script>
+</body>
+</html>
