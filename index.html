@@ -6,44 +6,68 @@
 <meta name="google" content="notranslate">
 <title>vital-solutions | Bladder Comfort Quiz</title>
 <style>
-:root{--ink:#3E3C85;--ink2:#2F2D6B;--bg:#fff;--card:#FBF7F1;--line:#E3DDD5;--txt:#14131F;--mut:#6B6A78}
+:root{--ink:#3E3C85;--ink2:#2F2D6B;--card:#FBF7F1;--line:#E3DDD5;--txt:#14131F;--mut:#6B6A78;--soft:#E6E5F2}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#fff;color:var(--txt);min-height:100vh}
 header{position:sticky;top:0;background:#fff;z-index:9}
 .hin{max-width:520px;margin:0 auto;height:64px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}
 .back{width:38px;height:38px;border:1.5px solid #CFCDD8;background:#F6F5FA;border-radius:8px;font-size:18px;color:var(--txt);cursor:pointer;visibility:hidden}
-.back:hover{border-color:var(--ink)}
 .logo{display:flex;align-items:center;gap:7px;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.3px}
-.logo i{width:24px;height:24px;border-radius:50%;border:2.5px solid var(--ink);display:inline-block;position:relative}
+.logo i{width:24px;height:24px;border-radius:50%;border:2.5px solid var(--ink);position:relative}
 .logo i:after{content:"";position:absolute;left:5px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--ink)}
 .cnt{min-width:42px;text-align:right;font-size:15px;color:var(--mut)}
-.bar{height:4px;background:#E6E5F2}.bar div{height:100%;width:0;background:var(--ink);transition:width .3s}
-main{max-width:480px;margin:0 auto;padding:34px 18px 70px}
+.bar{height:4px;background:var(--soft)}.bar div{height:100%;width:0;background:var(--ink);transition:width .3s}
+main{max-width:480px;margin:0 auto;padding:32px 18px 90px}
 section{display:none;animation:in .2s ease-out}section.on{display:block}
 @keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){section{animation:none}}
-h1,h2{text-align:center;font-weight:800;line-height:1.22;margin-bottom:10px;font-size:clamp(25px,6.4vw,31px)}
-.sub{text-align:center;color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:26px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+h1,h2{text-align:center;font-weight:800;line-height:1.22;margin-bottom:10px;font-size:clamp(24px,6.2vw,30px)}
+h3{font-size:18px;margin:26px 0 10px}
+.sub{text-align:center;color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:24px}
 .opts{display:flex;flex-direction:column;gap:12px}
-.opt{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:64px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:6px;font:inherit;font-size:16px;color:var(--txt);text-align:left;cursor:pointer;transition:border-color .12s,background .12s}
-.opt:hover{border-color:#A9A7C9}
-.opt.sel{border-color:var(--ink);background:#EEEDFA}
-.opt:after{content:"›";font-size:24px;color:#8A8898;line-height:1}
-.cta{display:block;width:100%;padding:17px;background:var(--ink);color:#fff;border:0;border-radius:8px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;margin-top:18px}
-.cta:hover{background:var(--ink2)}
-.hero{width:100%;height:190px;object-fit:cover;border-radius:10px;margin-bottom:22px;background:#E6E5F2}
-.spin{width:54px;height:54px;border:5px solid #E6E5F2;border-top-color:var(--ink);border-radius:50%;animation:sp .8s linear infinite;margin:50px auto 24px}
-@keyframes sp{to{transform:rotate(360deg)}}
-.box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:18px;font-size:15px;line-height:1.55}
-.box li{margin:6px 0 0 18px}
-.prod{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:18px}
-.prod .img{width:84px;height:84px;border-radius:8px;background:#E6E5F2;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mut);text-align:center}
-.price{font-size:24px;font-weight:800;color:var(--ink)}
-form{display:flex;flex-direction:column;gap:12px}
-input[type=text],input[type=tel]{width:100%;padding:15px;border:1.5px solid #CFCDD8;border-radius:8px;font-size:16px;background:#FAFAFC;outline:none}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:62px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:6px;font:inherit;font-size:16px;color:var(--txt);text-align:left;cursor:pointer}
+.opt:hover{border-color:#A9A7C9}.opt.sel{border-color:var(--ink);background:#EEEDFA}
+.opt span{flex:1}.opt:after{content:"›";font-size:24px;color:#8A8898}
+.opt.m:after{content:"";width:22px;height:22px;border:1.5px solid #B5B3C4;border-radius:5px;background:#fff;order:-1}
+.opt.m{flex-direction:row}.opt.m.sel:after{background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='3' d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/16px no-repeat;border-color:var(--ink)}
+.cta{display:block;width:100%;padding:17px;background:var(--ink);color:#fff;border:0;border-radius:8px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;margin-top:20px}
+.cta:hover{background:var(--ink2)}.cta:disabled{background:#C9C8DA;cursor:default}
+.hero{width:100%;height:190px;object-fit:cover;border-radius:10px;margin-bottom:22px;background:var(--soft)}
+.ic{width:84px;height:84px;margin:6px auto 18px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:40px}
+.big{font-size:56px;font-weight:800;color:var(--ink);text-align:center;line-height:1}
+.rng{width:100%;margin:18px 0 6px;accent-color:var(--ink);height:32px}
+.rl{display:flex;justify-content:space-between;font-size:13px;color:var(--mut)}
+.lk{display:flex;justify-content:space-between;gap:8px;margin-top:6px}
+.lk button{flex:1;height:58px;border:1px solid var(--line);background:var(--card);border-radius:8px;font:inherit;font-size:18px;font-weight:700;cursor:pointer}
+.lk button.sel,.lk button:hover{border-color:var(--ink);background:#EEEDFA;color:var(--ink)}
+input[type=text],input[type=tel]{width:100%;padding:16px;border:1.5px solid #CFCDD8;border-radius:8px;font-size:17px;background:#FAFAFC;outline:none}
 input:focus{border-color:var(--ink);background:#fff}
-input[type=submit]{margin-top:4px}
+.spin{width:54px;height:54px;border:5px solid var(--soft);border-top-color:var(--ink);border-radius:50%;animation:sp .8s linear infinite;margin:30px auto 20px}
+@keyframes sp{to{transform:rotate(360deg)}}
+#chk{list-style:none;max-width:300px;margin:0 auto}
+#chk li{padding:9px 0 9px 32px;position:relative;color:#A5A4B3;font-size:15px}
+#chk li:before{content:"";position:absolute;left:0;top:9px;width:20px;height:20px;border-radius:50%;border:2px solid #CFCDD8}
+#chk li.d{color:var(--txt)}#chk li.d:before{background:var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='3.5' d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/13px no-repeat;border-color:var(--ink)}
+.br{margin:0 0 16px}.bl{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}.bl b{color:var(--ink)}
+.bt{height:10px;border-radius:9px;background:var(--soft);overflow:hidden}.bt i{display:block;height:100%;border-radius:9px;width:var(--w);animation:gr 1s ease-out}
+@keyframes gr{from{width:0}}
+.ring{width:150px;height:150px;border-radius:50%;margin:8px auto 14px;display:flex;align-items:center;justify-content:center}
+.ring div{width:114px;height:114px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring b{font-size:34px;color:var(--ink);line-height:1}.ring small{font-size:12px;color:var(--mut)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px;font-size:15px;line-height:1.55}
+.box li{margin:7px 0 0 18px}.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px}
+.chips span{background:var(--soft);color:var(--ink);font-size:13px;font-weight:600;padding:6px 12px;border-radius:99px}
+.prod{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:14px}
+.pim{width:88px;height:88px;border-radius:8px;background:var(--soft);object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mut);text-align:center}
+.price{font-size:26px;font-weight:800;color:var(--ink)}
+.steps{counter-reset:s;list-style:none}.steps li{counter-increment:s;position:relative;padding:4px 0 14px 42px;font-size:15px;line-height:1.45}
+.steps li:before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+details{border-bottom:1px solid var(--line);padding:13px 0}summary{font-weight:600;cursor:pointer;font-size:15px}details p{font-size:14px;color:var(--mut);line-height:1.5;margin-top:8px}
+form{display:flex;flex-direction:column;gap:12px;background:#fff;border:2px solid var(--ink);border-radius:12px;padding:18px;margin-top:22px}
 .note{text-align:center;font-size:12px;color:var(--mut);margin-top:14px;line-height:1.5}
+.stick{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);display:none;z-index:8}
+.stick .cta{margin:0 auto;max-width:480px;padding:15px}
+#dbg{position:fixed;left:6px;bottom:6px;background:#000;color:#0f0;font:11px monospace;padding:4px 7px;border-radius:4px;z-index:99;display:none}
 </style>
 </head>
 <body>
@@ -55,131 +79,192 @@ input[type=submit]{margin-top:4px}
 <main>
 <section id="welcome" class="on">
 <img class="hero" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=700&q=75" alt="">
-<h1>Bladder comfort quiz</h1>
-<p class="sub">Answer 15 short questions about your daily routine and get a personal summary with a suggestion for what could help.</p>
+<h1>Is your bladder running your day?</h1>
+<p class="sub">Take the 2-minute Bladder Comfort Quiz. Get a personal profile of your sleep, daytime and comfort, plus simple habits that fit your answers.</p>
 <button class="cta" onclick="startQuiz()">Start the quiz</button>
-<p class="note">Takes about 2 minutes. Not a medical diagnosis.</p>
+<p class="note" id="social">Free · 21 quick steps · Not a medical diagnosis</p>
 </section>
-
 <section id="qbox"></section>
-
-<section id="loading"><div class="spin"></div><h2 id="lt">Reading your answers…</h2><p class="sub">Preparing your summary</p></section>
-
-<section id="doctor">
-<h2>Please see a doctor first</h2>
-<p class="sub">Fever, blood in urine or strong back or side pain can point to an infection that needs medical care. A food supplement is not the right first step. Please contact your doctor or urgent care.</p>
-</section>
+<section id="loading"><div class="spin"></div><h2>Building your profile</h2><p class="sub" id="pct">0%</p>
+<ul id="chk"><li>Sleep and night-time habits</li><li>Daytime frequency</li><li>Comfort and daily impact</li><li>Lifestyle factors</li></ul></section>
+<section id="stop"><div class="ic">🩺</div><h2>Please see a doctor first</h2><p class="sub" id="stopx"></p></section>
 
 <section id="result">
-<h2>Your personal summary</h2>
-<p class="sub">Based on your answers</p>
-<div class="box"><ul id="sumlist" style="list-style:disc"></ul></div>
-<div class="box" id="why"></div>
-<div class="prod"><div class="img" id="pimg">Product photo</div>
-<div><div style="font-weight:700;font-size:17px" id="pname"></div><div style="font-size:13px;color:var(--mut);margin:2px 0 4px">Pay the courier on delivery</div><div class="price" id="pprice"></div></div></div>
-<form class="orderForm">
+<h2 id="rh">Your Bladder Comfort Profile</h2>
+<p class="sub">Calculated only from your answers. It is not a medical test.</p>
+<div class="ring" id="ring"><div><b id="rn"></b><small>impact score</small></div></div>
+<p class="sub" id="rw" style="margin-bottom:20px"></p>
+<div id="rbars"></div>
+<div class="chips" id="goals"></div>
+<h3>What stands out in your answers</h3>
+<div class="box"><ul id="tips" style="list-style:disc"></ul></div>
+<h3>A simple daily routine to go with it</h3>
+<div class="prod"><div class="pim" id="pim">Product photo</div>
+<div><div style="font-weight:700;font-size:17px" id="pname"></div><div style="font-size:13px;color:var(--mut);margin:2px 0 4px">Food supplement · pay on delivery</div><div class="price" id="pprice"></div></div></div>
+<div class="box"><ul id="bul" style="list-style:disc"></ul></div>
+<h3>How ordering works</h3>
+<ol class="steps"><li>Leave your name and phone number below.</li><li>Our team calls you to confirm the details and delivery address.</li><li>Pay the courier in cash when the parcel arrives. No card needed online.</li></ol>
+<h3>Common questions</h3>
+<details><summary>Is this a medicine?</summary><p>No. It is a food supplement. It is not intended to diagnose, treat, cure or prevent any disease.</p></details>
+<details><summary>Who should not use it?</summary><p>Pregnant or breastfeeding women and anyone allergic to an ingredient. If you take medication or have a medical condition, ask your doctor first.</p></details>
+<details><summary>How do I pay?</summary><p>In cash to the courier when your parcel arrives.</p></details>
+<details><summary>What if my symptoms get worse?</summary><p>Stop and see a doctor, especially with fever, blood in urine or strong back or side pain.</p></details>
+<form class="orderForm" id="order">
+<div style="font-weight:800;font-size:18px;text-align:center">Reserve your package</div>
 <input type="text" name="name" placeholder="Full name" required>
 <input type="tel" name="phone" placeholder="Phone number" required>
 <input type="hidden" name="ip" value="">
-<input type="submit" class="cta" value="Order now, pay on delivery">
+<input type="submit" class="cta" style="margin-top:2px" value="Order now, pay on delivery">
 </form>
-<p class="note">No online payment. Our team will call you to confirm the order.<br>This quiz is not a medical diagnosis. Food supplements are not a substitute for medical treatment or a varied diet.</p>
+<p class="note">This quiz is not a medical diagnosis. Food supplements are not a substitute for medical treatment or a varied diet.</p>
 </section>
 </main>
+<div class="stick" id="stick"><button class="cta" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">Order now, pay on delivery</button></div>
+<div id="dbg"></div>
 
 <script>
-/* ================= JEDINÉ MIESTO, KDE UPRAVUJEŠ ================= */
+/* ============ JEDINÉ MIESTO NA ÚPRAVY: CONFIG ============ */
 var CONFIG={
-  webhook:"",            // Web App URL z Google Apps Scriptu
-  pixelId:"",            // Meta Pixel ID (prázdne = pixel vypnutý)
-  token:"MJM1MDDLOTGTZTQ3ZI00ZDE5LTK0ZDUTNJHHMWZIOGZKZDM1", // POZOR: skopíruj znova z dr.cash "api examples"
+  webhook:"",          // Web App URL z Google Apps Scriptu (končí na /exec)
+  pixelId:"",          // Meta Pixel ID (prázdne = vypnuté)
+  token:"MJM1MDDLOTGTZTQ3ZI00ZDE5LTK0ZDUTNJHHMWZIOGZKZDM1", // skopíruj znova z dr.cash "api examples"
   stream:"5futh",
   thanks:"./thanks.html",
   productName:"Cystiolla",
   price:"111 RON",
-  productImg:"",         // URL fotky krabičky z dr.cash Product Materials
-  why:"Based on your answers, a daily routine focused on urinary comfort may suit you. <b>Cystiolla</b> is a food supplement. Replace this text with the exact wording from the official offer materials."
+  productImg:"",       // URL fotky krabičky z dr.cash Product Materials
+  social:"",           // napr. skutočné číslo "Over 1,200 women took this quiz" (nechaj prázdne, ak nemáš reálne dáta)
+  bullets:[            // PRESNE podľa oficiálnych materiálov ponuky (zložky, dávkovanie). Nič si nevymýšľaj.
+    "Food supplement for daily urinary comfort support",
+    "One simple routine you can keep for a few weeks",
+    "Replace these lines with the official ingredients and directions"
+  ]
 };
-/* sum:1 = odpoveď sa zobrazí v súhrne na konci. red:[index] = odpoveď, po ktorej sa kvíz ukončí odporúčaním lekára */
-var Q=[
-{k:"Vek",q:"What is your age group?",s:"Select one option to continue.",sum:1,o:["Under 40","40 – 49","50 – 59","60 or older"]},
-{k:"Ako dlho",q:"How long have you had these troubles?",s:"",sum:1,o:["Less than 1 month","1 – 6 months","6 – 12 months","More than a year","I'm not sure"]},
-{k:"Nočné budenie",q:"How often do you wake up at night to use the bathroom?",s:"",sum:1,o:["Not at all","Once","2 – 3 times","More than 3 times"]},
-{k:"Cez deň",q:"How often do you need the bathroom during the day?",s:"",o:["Every 3 – 4 hours or less often","Every 2 – 3 hours","Almost every hour"]},
-{k:"Varovné príznaky",q:"Do you currently have fever, blood in your urine or strong back or side pain?",s:"Your safety comes first.",red:[0],o:["Yes","No"]},
-{k:"Hlavný problém",q:"Which problem bothers you the most?",s:"",sum:1,o:["Burning or stinging","Pressure in the lower belly","Feeling the bladder is not empty","Sudden urgent need to go"]},
-{k:"Spúšťače",q:"What usually makes it worse?",s:"",o:["Cold or damp weather","Stress","Certain drinks or food","Long sitting","Nothing specific"]},
-{k:"Návrat",q:"How often do the troubles come back?",s:"",o:["Every few weeks","A few times a year","They never fully go away","This is the first time"]},
-{k:"Lekár",q:"Have you talked to a doctor about it?",s:"",o:["Yes, recently","Yes, long ago","Not yet"]},
-{k:"Čo skúšala",q:"What have you tried so far?",s:"",o:["Herbal teas","Pharmacy products","More water","Nothing yet"]},
-{k:"Spánok",q:"How much does it affect your sleep and energy?",s:"",o:["A lot","Somewhat","Only a little","Not at all"]},
-{k:"Cestovanie",q:"Does it limit your trips, walks or social life?",s:"",o:["Yes, I always plan around toilets","Sometimes","Rarely","No"]},
-{k:"Pitný režim",q:"How much water do you drink on a typical day?",s:"",o:["Less than 1 litre","1 – 1.5 litres","1.5 – 2 litres","More than 2 litres"]},
-{k:"Prístup",q:"What kind of support would you prefer?",s:"",o:["A natural daily supplement","Something recommended by a pharmacist","Whatever works best"]},
-{k:"Záväzok",q:"Would you follow a simple daily routine for a few weeks?",s:"It takes about a minute a day.",sum:1,o:["Yes, definitely","Yes, if it is easy","I'm not sure yet"]}
+/* ============ OTÁZKY A KARTY: pridávaj, mazaj, preusporiadaj ============
+ t: single | multi | slider | likert | text | info | peek
+ d: dimenzia skóre (night, day, comfort, life), v: body 0-3 pre možnosti, red: odpoveď, ktorá kvíz ukončí */
+var LK=["Strongly disagree","Disagree","Neutral","Agree","Strongly agree"];
+var S=[
+{t:"single",k:"Age",q:"What is your age group?",s:"Select one option to continue.",o:["Under 40","40–49","50–59","60+"]},
+{t:"text",k:"Name",q:"First, what should we call you?",s:"We use it to personalise your results."},
+{t:"single",k:"Duration",d:"comfort",v:[0,1,2,3],q:"{n}, how long have bladder troubles been part of your life?",o:["Less than 3 months","3–12 months","1–3 years","More than 3 years"]},
+{t:"multi",k:"Symptoms",d:"comfort",q:"Which of these do you notice?",s:"Select all that apply.",o:["Sudden urgent need to go","Burning or stinging","Pressure in the lower belly","Feeling the bladder isn't empty","Waking up at night to go","None of these"]},
+{t:"info",k:"Not alone",ic:"💬",q:"You are far from alone",x:"Bladder comfort concerns are very common, especially after 40. Hormonal changes, sleep, hydration and daily habits all play a part, and small habits add up."},
+{t:"slider",k:"Night wake-ups",d:"night",q:"On a typical night, how many times do you get up to use the bathroom?",min:0,max:5,u:"time(s)",f:function(x){return Math.min(3,x)}},
+{t:"likert",k:"Tired",d:"night",q:"I often feel tired during the day because my sleep is interrupted."},
+{t:"info",k:"Sleep",ic:"😴",q:"Why nights matter",x:"Getting up once a night is common. Repeated trips can break up deep sleep, and poor sleep affects energy, mood and focus the next day."},
+{t:"slider",k:"Daytime visits",d:"day",q:"How many times do you use the bathroom between waking up and bedtime?",min:3,max:12,u:"times",f:function(x){return x<=6?0:x<=8?1:x<=10?2:3}},
+{t:"likert",k:"Plan around toilets",d:"life",q:"I plan trips and outings around where the toilets are."},
+{t:"likert",k:"Confidence",d:"life",q:"{n}, these troubles affect my confidence or mood."},
+{t:"peek",k:"Profile forming",q:"Your profile is taking shape"},
+{t:"multi",k:"Tried",q:"What have you already tried?",s:"Select all that apply.",o:["Herbal teas","Drinking more water","Pharmacy products","Cranberry products","Treatment from a doctor","Nothing yet"]},
+{t:"info",k:"Consistency",ic:"📅",q:"Why consistency beats quick fixes",x:"Most people judge a new habit after a few days. A daily routine usually needs a few weeks to show whether it suits you, so the best plan is one you can actually stick to."},
+{t:"single",k:"Hydration",q:"How much do you drink on a typical day?",o:["Less than 1 litre","1–1.5 litres","1.5–2 litres","More than 2 litres"]},
+{t:"single",k:"Caffeine",q:"How many coffees, strong teas or fizzy drinks do you have per day?",o:["None","1–2","3–4","5 or more"]},
+{t:"multi",k:"Goals",q:"What would you most like to get back?",s:"Choose all that matter to you.",o:["Full nights of sleep","Confidence on trips","Carefree days","Everyday comfort"]},
+{t:"single",k:"Safety: fever",q:"Do you currently have fever, blood in your urine or strong back or side pain?",s:"Your safety comes first.",red:[0],stop:"Fever, blood in urine or strong back or side pain can point to an infection that needs medical care. Please contact your doctor or urgent care before anything else.",o:["Yes","No"]},
+{t:"single",k:"Safety: pregnancy",q:"Are you pregnant or breastfeeding?",red:[0],stop:"This supplement is not recommended during pregnancy or breastfeeding. Please speak with your doctor about what is right for you.",o:["Yes","No"]},
+{t:"single",k:"Motivation",q:"{n}, how ready are you to change this?",o:["Ready to start now","I'd like to start soon","Just exploring for now"]},
+{t:"single",k:"Commitment",q:"Would you follow a simple daily routine for a few weeks?",s:"It takes about a minute a day.",o:["Yes, definitely","Yes, if it's easy","Not sure yet"]}
 ];
-/* ================================================================ */
+var DIM={night:"Night-time sleep",day:"Daytime frequency",comfort:"Comfort",life:"Daily-life impact"};
+/* ======================================================== */
 
-var i=-1,ans=[],sent={};
-var $=function(x){return document.getElementById(x)};
-function show(id){document.querySelectorAll("section").forEach(function(s){s.classList.remove("on")});$(id).classList.add("on");window.scrollTo(0,0)}
+if(CONFIG.pixelId){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq("init",CONFIG.pixelId);fbq("track","PageView")}
+
+var $=function(x){return document.getElementById(x)},i=-1,A={},name="",sent={},nSent=0,M=[];
 function pad(n){return(n<10?"0":"")+n}
+function show(id){document.querySelectorAll("section").forEach(function(s){s.classList.remove("on")});$(id).classList.add("on");window.scrollTo(0,0);$("stick").style.display=id==="result"?"block":"none"}
+function fmt(s){return s.replace("{n}",name||"Friend")}
 
-/* TRACKING: Google Sheets + Meta Pixel */
-function track(type,name,answer,once){
-  var key=type+"|"+name+"|"+(type==="answer"?"":answer);
-  if(once&&sent[key])return;sent[key]=1;
-  if(window.fbq){type==="kpi"&&name.indexOf("LEAD")>-1?fbq("track","Lead"):fbq("trackCustom",type==="answer"?"Answer":"Step",{name:name,answer:answer})}
-  if(CONFIG.webhook){var f=new FormData();f.append("type",type);f.append("name",name);f.append("answer",answer||"-");
-    try{fetch(CONFIG.webhook,{method:"POST",mode:"no-cors",body:f,keepalive:true})}catch(e){}}
+/* ---- TRACKING: Google Sheets (GET beacon) + Meta Pixel ---- */
+function send(o){
+  nSent++;
+  if(CONFIG.webhook){var u=CONFIG.webhook+(CONFIG.webhook.indexOf("?")>-1?"&":"?")+new URLSearchParams(o).toString();(new Image()).src=u}
+  if(/[?&]debug/.test(location.search)){$("dbg").style.display="block";$("dbg").textContent="tracking: "+nSent+" sent | webhook "+(CONFIG.webhook?"set":"MISSING");console.log("TRACK",o)}
 }
-function stepName(n){return"S"+pad(n+2)+" "+Q[n].k}
+function track(type,nm,ans,uniq){
+  var key=type+"|"+nm+(type==="answer"?"|"+ans:"");
+  if(sent[key])return;sent[key]=1;
+  if(window.fbq){type==="kpi"&&nm.indexOf("LEAD")>-1?fbq("track","Lead"):fbq("trackCustom",type==="answer"?"Answer":"Step",{n:nm,a:ans})}
+  send({type:type,name:nm,answer:ans===undefined?"-":String(ans)});
+}
+function stepName(n){return"S"+pad(n+2)+" "+S[n].k}
 
-function header(){
-  var t=Q.length,inQ=i>=0&&i<t;
-  $("back").style.visibility=inQ?"visible":"hidden";
-  $("cnt").textContent=inQ?(i+1)+"/"+t:"";
-  $("fill").style.width=(i<0?0:Math.min(100,(i+1)/t*100))+"%";
+/* ---- SCORE ---- */
+function sc(dim){var v=[];S.forEach(function(d,n){if(d.d===dim&&A[n]&&A[n].v!=null)v.push(A[n].v)});return v.length?v.reduce(function(a,b){return a+b},0)/v.length/3*100:null}
+function lvl(p){return p<25?"Low":p<55?"Moderate":"High"}
+function bars(keys){return keys.map(function(k){var p=sc(k);if(p==null)return"";var c=p<25?"#4BA36B":p<55?"#E0A83A":"#D8604C";
+  return'<div class="br"><div class="bl"><span>'+DIM[k]+'</span><b>'+lvl(p)+'</b></div><div class="bt"><i style="--w:'+Math.max(6,p)+'%;background:'+c+'"></i></div></div>'}).join("")}
+
+/* ---- RENDER ---- */
+function header(){var inQ=i>=0&&i<S.length;$("back").style.visibility=inQ?"visible":"hidden";$("cnt").textContent=inQ?(i+1)+"/"+S.length:"";$("fill").style.width=(i<0?0:Math.min(100,(i+1)/S.length*100))+"%"}
+function R(){
+  var d=S[i],q=fmt(d.q),h="",old=A[i];M=old&&d.t==="multi"?old.l.slice():[];
+  if(d.t==="info")h='<div class="ic">'+d.ic+'</div><h2>'+q+'</h2><p class="sub">'+d.x+'</p><button class="cta" onclick="nx()">Continue</button>';
+  else if(d.t==="peek")h='<h2>'+q+'</h2><p class="sub">Here is what your answers show so far.</p>'+bars(["night","day","comfort"])+'<p class="sub" style="margin-top:20px">A few questions about your habits, then your full profile.</p><button class="cta" onclick="nx()">Continue</button>';
+  else{
+    h='<h2>'+q+'</h2><p class="sub">'+(d.s||"")+'</p>';
+    if(d.t==="single")h+='<div class="opts">'+d.o.map(function(o,n){return'<button class="opt'+(old&&old.t===o?" sel":"")+'" onclick="pick('+n+',this)"><span>'+o+'</span></button>'}).join("")+'</div>';
+    if(d.t==="multi")h+='<div class="opts">'+d.o.map(function(o,n){return'<button class="opt m'+(M.indexOf(o)>-1?" sel":"")+'" onclick="tog('+n+',this)"><span>'+o+'</span></button>'}).join("")+'</div><button class="cta" id="go" onclick="doneMulti()"'+(M.length?"":" disabled")+'>Continue</button>';
+    if(d.t==="slider"){var v=old?old.raw:d.min;h+='<div class="big" id="sv">'+v+'</div><p class="sub" style="margin:4px 0 0">'+d.u+'</p><input class="rng" type="range" min="'+d.min+'" max="'+d.max+'" value="'+v+'" oninput="$(\'sv\').textContent=this.value"><div class="rl"><span>'+d.min+'</span><span>'+d.max+(d.max?"+":"")+'</span></div><button class="cta" onclick="doneSlider()">Continue</button>'}
+    if(d.t==="likert")h+='<div class="lk">'+[1,2,3,4,5].map(function(n){return'<button class="'+(old&&old.t===LK[n-1]?"sel":"")+'" onclick="lik('+(n-1)+')">'+n+'</button>'}).join("")+'</div><div class="rl" style="margin-top:10px"><span>Strongly disagree</span><span>Strongly agree</span></div>';
+    if(d.t==="text")h+='<input type="text" id="tx" maxlength="30" placeholder="Your first name" autocomplete="given-name" value="'+(name||"")+'" oninput="$(\'go\').disabled=this.value.trim().length<2" onkeydown="if(event.key===\'Enter\'&&!$(\'go\').disabled)doneText()"><button class="cta" id="go" onclick="doneText()"'+(name.length>1?"":" disabled")+'>Continue</button>';
+  }
+  $("qbox").innerHTML=h;show("qbox");header();track("step",stepName(i),"-");
+  var t=$("tx");if(t&&!/Mobi/.test(navigator.userAgent))t.focus();
 }
-function renderQ(){
-  var d=Q[i],h='<h2>'+d.q+'</h2>'+(d.s?'<p class="sub">'+d.s+'</p>':'<p class="sub" style="margin-bottom:22px"></p>')+'<div class="opts">';
-  d.o.forEach(function(o,n){h+='<button class="opt'+(ans[i]===o?" sel":"")+'" onclick="pick('+n+',this)">'+o+'</button>'});
-  $("qbox").innerHTML=h+'</div>';show("qbox");header();
-  track("step",stepName(i),"-",true);
-}
-function startQuiz(){i=0;track("kpi","2 Štart","-",true);renderQ()}
-function pick(n,el){
-  var d=Q[i],o=d.o[n];ans[i]=o;
+function nx(){if(i+1<S.length){i++;R()}else{i=S.length;header();analyse()}}
+function startQuiz(){i=0;track("kpi","2 Start");R()}
+function goBack(){if(i>0){i--;R()}else if(i===0){i=-1;header();show("welcome")}}
+function stop(d){track("step","S98 Stop: "+d.k);i=S.length;header();$("stopx").textContent=d.stop;show("stop")}
+function pick(n,el){var d=S[i],o=d.o[n];A[i]={t:o,v:d.v?d.v[n]:null};
   el.parentNode.querySelectorAll(".opt").forEach(function(b){b.classList.remove("sel")});el.classList.add("sel");
-  track("answer",stepName(i),o,true);
-  setTimeout(function(){
-    if(d.red&&d.red.indexOf(n)>-1){track("step","S98 Odporúčanie lekára","-",true);i=Q.length;header();show("doctor");return}
-    if(i+1<Q.length){i++;renderQ()}else{i=Q.length;header();analyse()}
-  },200);
-}
-function goBack(){if(i>0){i--;renderQ()}else if(i===0){i=-1;header();show("welcome")}}
+  track("answer",stepName(i),o);
+  setTimeout(function(){d.red&&d.red.indexOf(n)>-1?stop(d):nx()},200)}
+function tog(n,el){var o=S[i].o[n],ex=/^(None of these|Nothing yet)$/.test(o),at=M.indexOf(o);
+  if(at>-1)M.splice(at,1);else{if(ex)M=[o];else M=M.filter(function(x){return!/^(None of these|Nothing yet)$/.test(x)}).concat(o)}
+  document.querySelectorAll("#qbox .opt").forEach(function(b,k){b.classList.toggle("sel",M.indexOf(S[i].o[k])>-1)});$("go").disabled=!M.length}
+function doneMulti(){var d=S[i],real=M.filter(function(x){return!/^(None of these|Nothing yet)$/.test(x)});
+  A[i]={l:M.slice(),t:M.join(", "),v:d.d?Math.min(3,real.length):null};M.forEach(function(x){track("answer",stepName(i),x)});nx()}
+function doneSlider(){var d=S[i],x=+document.querySelector(".rng").value;A[i]={raw:x,t:String(x),v:d.f(x)};track("answer",stepName(i),x);nx()}
+function lik(n){A[i]={t:LK[n],v:n*.75};track("answer",stepName(i),LK[n]);document.querySelectorAll(".lk button").forEach(function(b,k){b.classList.toggle("sel",k===n)});setTimeout(nx,200)}
+function doneText(){name=$("tx").value.trim();name=name.charAt(0).toUpperCase()+name.slice(1);A[i]={t:name};nx()}
+function key(k){for(var n=0;n<S.length;n++)if(S[n].k===k)return A[n]}
 
+/* ---- LOADING + RESULT ---- */
 function analyse(){
-  show("loading");var m=["Reading your answers…","Comparing your habits…","Preparing your summary…"];
-  m.forEach(function(t,n){setTimeout(function(){$("lt").textContent=t},n*1000)});
-  setTimeout(function(){
-    var h="";Q.forEach(function(d,n){if(d.sum&&ans[n])h+="<li><b>"+d.k+":</b> "+ans[n]+"</li>"});
-    $("sumlist").innerHTML=h;$("why").innerHTML=CONFIG.why;
-    $("pname").textContent=CONFIG.productName;$("pprice").textContent=CONFIG.price;
-    if(CONFIG.productImg)$("pimg").outerHTML='<img class="img" src="'+CONFIG.productImg+'" alt="">';
-    track("step","S90 Dokončil kvíz (ponuka)","-",true);track("kpi","3 Ponuka","-",true);show("result");
-  },3000);
+  show("loading");var li=document.querySelectorAll("#chk li");li.forEach(function(x){x.className=""});$("pct").textContent="0%";
+  li.forEach(function(x,n){setTimeout(function(){x.className="d";$("pct").textContent=Math.round((n+1)/li.length*100)+"%"},(n+1)*950)});
+  setTimeout(result,li.length*950+600);
+}
+function result(){
+  var ks=["night","day","comfort","life"],ps=ks.map(sc).filter(function(x){return x!=null}),tot=Math.round(ps.reduce(function(a,b){return a+b},0)/ps.length);
+  var c=tot<25?"#4BA36B":tot<55?"#E0A83A":"#D8604C";
+  $("rh").textContent=(name||"Your")+(name?", here is your":"")+" Bladder Comfort Profile";
+  $("ring").style.background="conic-gradient("+c+" "+tot*3.6+"deg,#E6E5F2 0)";$("rn").textContent=tot;
+  $("rw").innerHTML="Impact on your daily comfort: <b>"+lvl(tot)+"</b>";$("rbars").innerHTML=bars(ks);
+  var g=key("Goals");$("goals").innerHTML=g&&g.l?g.l.map(function(x){return"<span>"+x+"</span>"}).join(""):"";
+  var t=[],a=key("Night wake-ups"),h=key("Hydration"),cf=key("Caffeine");
+  if(a&&a.raw>=1)t.push("You wake up "+a.raw+" time(s) a night. Finishing most drinks 2–3 hours before bed is a simple first step.");
+  if(h&&/Less than 1|1–1.5/.test(h.t))t.push("You drink "+h.t.toLowerCase()+" a day. Very low intake can make urine more concentrated and irritating, so steady sips through the day often feel better than large amounts at once.");
+  if(cf&&/3–4|5 or more/.test(cf.t))t.push("Coffee, strong tea and fizzy drinks can irritate the bladder in some people. Swapping one a day is an easy test.");
+  var tr=key("Tried");if(tr&&tr.t&&!/Nothing yet/.test(tr.t))t.push("You have already tried: "+tr.t.toLowerCase()+". If you judged it after a few days, a routine kept for a few weeks is a fairer test.");
+  t.push("A small routine you can really keep is worth more than a quick fix.");
+  $("tips").innerHTML=t.map(function(x){return"<li>"+x+"</li>"}).join("");
+  $("pname").textContent=CONFIG.productName;$("pprice").textContent=CONFIG.price;
+  $("bul").innerHTML=CONFIG.bullets.map(function(x){return"<li>"+x+"</li>"}).join("");
+  if(CONFIG.productImg)$("pim").outerHTML='<img class="pim" src="'+CONFIG.productImg+'" alt="">';
+  document.querySelector("#order [name=name]").value=name;
+  show("result");track("step","S90 Offer page");track("kpi","3 Offer");
+  if(window.IntersectionObserver)new IntersectionObserver(function(e){$("stick").style.display=e[0].isIntersecting?"none":"block"}).observe($("order"));
 }
 
 window.addEventListener("load",function(){
-  if(CONFIG.pixelId&&window.fbq){fbq("init",CONFIG.pixelId);fbq("track","PageView")}
-  track("step","S01 Príchod","-",true);track("kpi","1 Príchod","-",true);header();
+  if(CONFIG.social)$("social").textContent=CONFIG.social;
+  document.getElementById("order").addEventListener("focusin",function(){track("kpi","4 Form started")});
+  track("step","S01 Landing");track("kpi","1 Visit");header();
 });
-</script>
-
-<!-- Meta Pixel loader (aktivuje sa len ak vyplníš pixelId) -->
-<script>
-if(CONFIG.pixelId){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js')}
 </script>
 
 <!-- DR.CASH API -->
@@ -189,7 +274,7 @@ drlead.init({
   params:{token:CONFIG.token,stream_code:CONFIG.stream,thanks_page:CONFIG.thanks},
   subs:{sub1:drlead.queryGet("sub1"),sub2:drlead.queryGet("sub2"),sub3:drlead.queryGet("sub3"),sub4:drlead.queryGet("sub4"),sub5:drlead.queryGet("sub5")},
   callback:function(error,response){
-    if(!error){track("kpi","4 LEAD","-",true)}   // Lead sa zapíše len po úspešnom odoslaní do dr.cash
+    if(!error){track("kpi","5 LEAD")}   // Lead (tabuľka + Meta) sa odpáli len po úspešnom odoslaní do dr.cash
   }
 });
 </script>
