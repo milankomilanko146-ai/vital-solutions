@@ -1,1046 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Neck Pain Insider</title>
-<!--
-  SETUP CHECKLIST:
-  1. Replace [YOUR PRODUCT NAME] with real name
-  2. Replace hero image src (id="heroImg")
-  3. Replace product images in slider (advSlides data)
-  4. Set Stripe key OR use Shopify checkout (see JS comments)
-  5. Set real variant IDs for Shopify bundles
--->
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Georgia&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet"/>
-<script src="https://js.stripe.com/v3/"></script>
-<style>
-/* ─── RESET ─────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-img{display:block;max-width:100%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Diagnostic Assessment</title>
+    <style>
+        /* CLEAN, FAST, WHITE DESIGN */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #ffffff; color: #1a1a1a; margin: 0; padding: 0; line-height: 1.6; }
+        .container { max-width: 550px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; padding: 20px 0; border-bottom: 2px solid #f0f0f0; margin-bottom: 30px; font-weight: bold; color: #888; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+        
+        /* Steps Logic */
+        .step { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ─── TOKENS ─────────────────────────────── */
-:root{
-  --navy:#1a2e5a;
-  --green:#2e7d32;
-  --green-bg:#e8f5e9;
-  --green-border:#a5d6a7;
-  --red:#c62828;
-  --orange:#e65100;
-  --gray:#5f6368;
-  --lightgray:#f7f8fa;
-  --border:#e0e0e0;
-  --text:#1a1a1a;
-}
+        /* Typography */
+        h1, h2 { text-align: center; color: #111; margin-bottom: 10px; }
+        h1 { font-size: 26px; line-height: 1.3; }
+        h2 { font-size: 22px; }
+        p.subtitle { text-align: center; color: #666; font-size: 16px; margin-bottom: 30px; }
+        
+        /* Buttons */
+        .btn-answer { display: block; width: 100%; padding: 18px; margin-bottom: 15px; background-color: #fdfdfd; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; text-align: left; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); color: #333; }
+        .btn-answer:hover, .btn-answer:active { background-color: #f0f7ff; border-color: #0066cc; color: #0066cc; }
+        .btn-primary { display: block; width: 100%; padding: 20px; background-color: #0066cc; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; text-align: center; margin-top: 20px; box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3); }
+        .btn-primary:hover { background-color: #0052a3; }
 
-/* ─── BODY ────────────────────────────────── */
-body{
-  font-family:'Source Sans 3',sans-serif;
-  background:#fff;
-  color:var(--text);
-  font-size:17px;
-  line-height:1.85;
-}
+        /* Loading Screen */
+        .loading-wrap { text-align: center; padding: 60px 0; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #0066cc; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 30px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* ─── STICKY TOP TRUST BAR ───────────────── */
-.trust-bar{
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  padding:8px 16px;
-  text-align:center;
-  font-size:12px;
-  color:var(--gray);
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:14px;
-}
-.trust-bar span{display:flex;align-items:center;gap:4px}
+        /* Result & Sales Page */
+        .result-box { background: #f9f9f9; border-left: 5px solid #0066cc; padding: 20px; border-radius: 4px; margin-bottom: 30px; }
+        .result-box h3 { margin-top: 0; color: #0066cc; }
+        .product-img { width: 100%; max-width: 250px; display: block; margin: 0 auto 20px; border-radius: 10px; }
+        
+        /* Order Form */
+        .orderForm { background: #fff; padding: 25px; border: 2px solid #eee; border-radius: 12px; }
+        .orderForm input[type="text"], .orderForm input[type="tel"] { width: 100%; padding: 16px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; background: #fafafa; }
+        .orderForm input[type="submit"] { width: 100%; padding: 20px; background-color: #28a745; color: white; border: none; border-radius: 8px; font-size: 20px; font-weight: bold; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3); transition: background 0.3s; }
+        .orderForm input[type="submit"]:hover { background-color: #218838; }
+        .price-tag { text-align: center; font-size: 24px; font-weight: bold; color: #e74c3c; margin-bottom: 20px; }
+    </style>
 
-/* ─── SITE HEADER ────────────────────────── */
-.site-header{
-  background:var(--navy);
-  padding:13px 16px;
-  text-align:center;
-}
-.site-header .brand{
-  color:#fff;
-  font-family:'Source Sans 3',sans-serif;
-  font-weight:700;
-  font-size:13px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-}
-
-/* ─── LAYOUT ──────────────────────────────── */
-.page-layout{
-  max-width:700px;
-  margin:0 auto;
-  padding:0 16px 60px;
-}
-
-/* ─── META ────────────────────────────────── */
-.article-meta{
-  font-size:13px;
-  color:var(--gray);
-  margin:20px 0 12px;
-}
-
-/* ─── H1 ──────────────────────────────────── */
-h1.headline{
-  font-family:'Merriweather',Georgia,serif;
-  font-size:clamp(22px,5.5vw,33px);
-  font-weight:900;
-  line-height:1.22;
-  color:var(--text);
-  margin-bottom:18px;
-}
-
-/* ─── PULL QUOTE / GREEN BOX ──────────────── */
-.pull-quote{
-  background:var(--green-bg);
-  border-left:4px solid var(--green);
-  padding:14px 18px;
-  margin:0 0 22px;
-  border-radius:0 6px 6px 0;
-  font-style:italic;
-  font-size:15px;
-  color:#1b5e20;
-  line-height:1.72;
-}
-
-/* ─── HERO IMAGE ──────────────────────────── */
-.hero-wrap{
-  margin:0 0 28px;
-  border-radius:5px;
-  overflow:hidden;
-  background:var(--lightgray);
-}
-.hero-wrap img{
-  width:100%;
-  height:auto;
-  max-height:340px;
-  object-fit:cover;
-}
-.hero-placeholder{
-  width:100%;
-  height:240px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:13px;
-  color:var(--gray);
-  background:linear-gradient(135deg,#e3e8f0,#c9d4e8);
-}
-
-/* ─── BODY TEXT ───────────────────────────── */
-.body-text p{
-  margin-bottom:20px;
-  line-height:1.9;
-}
-.body-text strong{font-weight:700}
-.body-text em{font-style:italic}
-
-.hook-line{
-  font-family:'Merriweather',Georgia,serif;
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:20px;
-  line-height:1.35;
-}
-
-/* ─── H2 SECTION HEADS ────────────────────── */
-.body-text h2{
-  font-family:'Merriweather',Georgia,serif;
-  font-size:clamp(17px,4vw,22px);
-  font-weight:900;
-  margin:36px 0 14px;
-  line-height:1.3;
-  color:var(--text);
-}
-
-/* ─── HIGHLIGHT BOX ───────────────────────── */
-.highlight-box{
-  background:#fff8e1;
-  border:1px solid #ffe082;
-  border-radius:7px;
-  padding:18px 20px;
-  margin:24px 0;
-}
-.highlight-box p{margin-bottom:10px}
-.highlight-box p:last-child{margin-bottom:0}
-
-/* ─── BULLET LIST ─────────────────────────── */
-.fail-list{
-  margin:16px 0 20px 4px;
-  padding:0;
-  list-style:none;
-}
-.fail-list li{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  font-size:16px;
-  line-height:1.6;
-  align-items:flex-start;
-}
-.fail-list li::before{
-  content:"✕";
-  color:var(--red);
-  font-weight:700;
-  flex-shrink:0;
-  margin-top:1px;
-}
-
-/* ─── CTA BUTTON ──────────────────────────── */
-.cta-btn{
-  display:block;
-  width:100%;
-  background:var(--navy);
-  color:#fff;
-  text-align:center;
-  font-family:'Source Sans 3',sans-serif;
-  font-size:16px;
-  font-weight:700;
-  padding:17px 20px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  margin:28px 0 8px;
-  letter-spacing:.3px;
-  text-decoration:none;
-  transition:background .18s;
-}
-.cta-btn:hover{background:#243e7a}
-.cta-sub{
-  text-align:center;
-  font-size:13px;
-  color:var(--gray);
-  margin-bottom:26px;
-}
-
-/* ─── TESTIMONIAL ─────────────────────────── */
-.testimonial{
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:18px 20px;
-  margin:18px 0;
-  background:#fff;
-}
-.t-stars{color:#f9a825;font-size:15px;margin-bottom:6px}
-.t-text{font-style:italic;font-size:15px;line-height:1.75;margin-bottom:10px}
-.t-name{font-weight:700;font-size:14px}
-.t-loc{font-size:13px;color:var(--gray)}
-
-/* ─── DISCLAIMER ──────────────────────────── */
-.disclaimer{
-  font-size:11px;
-  color:var(--gray);
-  border-top:1px solid var(--border);
-  padding-top:18px;
-  margin-top:36px;
-  line-height:1.6;
-}
-
-/* ═══════════════════════════════════════════
-   CHECKOUT MODAL
-═══════════════════════════════════════════ */
-.modal-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  z-index:9000;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-}
-.modal-overlay.open{display:block}
-
-.modal-box{
-  background:#fff;
-  max-width:500px;
-  margin:12px auto;
-  border-radius:10px;
-  overflow:hidden;
-  position:relative;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
-}
-
-/* Modal trust bar at top */
-.modal-trust-top{
-  background:#e8f5e9;
-  border-bottom:1px solid #a5d6a7;
-  padding:9px 16px;
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:12px;
-  font-size:12px;
-  color:#1b5e20;
-  font-weight:600;
-}
-.modal-trust-top span{display:flex;align-items:center;gap:4px}
-
-.modal-header{
-  background:var(--navy);
-  padding:12px 48px 12px 18px;
-}
-.modal-header p{
-  color:#fff;
-  font-size:12px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  font-weight:600;
-  margin:0;
-}
-.modal-close{
-  position:absolute;
-  top:34px;right:14px;
-  background:none;border:none;
-  color:#fff;font-size:24px;
-  cursor:pointer;line-height:1;
-  padding:4px;
-}
-
-.modal-body{padding:18px 18px 26px}
-
-/* Image slider */
-.img-slider{
-  position:relative;
-  width:100%;
-  aspect-ratio:3/2;
-  background:var(--lightgray);
-  border-radius:8px;
-  overflow:hidden;
-  margin-bottom:12px;
-}
-.img-slide{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .35s;
-  font-size:12px;color:var(--gray);
-}
-.img-slide img{width:100%;height:100%;object-fit:cover}
-.img-slide.active{opacity:1}
-.slider-dots{
-  display:flex;justify-content:center;
-  gap:6px;margin-bottom:14px;
-}
-.sdot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--border);border:none;cursor:pointer;
-  padding:0;transition:background .2s;
-}
-.sdot.active{background:var(--navy)}
-
-/* Product title block */
-.prod-title{
-  font-family:'Merriweather',serif;
-  font-size:17px;font-weight:900;
-  margin-bottom:3px;line-height:1.3;
-}
-.prod-sub{font-size:13px;color:var(--gray);margin-bottom:12px}
-.prod-stars{
-  display:flex;align-items:center;gap:6px;margin-bottom:14px;
-}
-.prod-stars .st{color:#f9a825;font-size:14px}
-.prod-stars span{font-size:13px;color:var(--gray)}
-
-/* Bundle selector */
-.bundle-label{
-  font-weight:700;font-size:12px;
-  text-transform:uppercase;letter-spacing:1px;
-  margin-bottom:9px;
-}
-.bundles{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
-.bundle{
-  border:2px solid var(--border);border-radius:8px;
-  padding:12px 14px;cursor:pointer;
-  display:flex;align-items:center;justify-content:space-between;
-  transition:border-color .18s,background .18s;
-  position:relative;
-}
-.bundle.sel{border-color:var(--navy);background:#f0f4ff}
-.bundle-left{display:flex;align-items:center;gap:11px}
-.brad{
-  width:17px;height:17px;border-radius:50%;
-  border:2px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:border-color .18s;
-}
-.bundle.sel .brad{border-color:var(--navy)}
-.brad::after{
-  content:'';width:8px;height:8px;border-radius:50%;
-  background:var(--navy);display:none;
-}
-.bundle.sel .brad::after{display:block}
-.bname{font-weight:700;font-size:14px}
-.bper{font-size:11px;color:var(--gray)}
-.bright{text-align:right}
-.bprice{font-size:17px;font-weight:700}
-.borig{font-size:11px;color:var(--gray);text-decoration:line-through}
-.bbadge{
-  display:inline-block;background:var(--red);color:#fff;
-  font-size:10px;font-weight:700;
-  padding:1px 6px;border-radius:20px;margin-left:5px;
-}
-.bpop{
-  background:var(--orange);color:#fff;
-  font-size:10px;font-weight:700;
-  padding:2px 9px;border-radius:4px;
-  position:absolute;top:-9px;left:50%;
-  transform:translateX(-50%);white-space:nowrap;
-}
-
-/* Divider */
-.mdivider{border:none;border-top:1px solid var(--border);margin:16px 0}
-
-/* Form */
-.fsec-title{
-  font-weight:700;font-size:12px;
-  text-transform:uppercase;letter-spacing:1px;
-  margin-bottom:10px;color:var(--navy);
-}
-.frow{display:flex;gap:9px;margin-bottom:10px}
-.frow .fg{flex:1}
-.fg{margin-bottom:10px}
-.fg label{
-  display:block;font-size:11px;font-weight:700;
-  color:#444;margin-bottom:3px;
-  text-transform:uppercase;letter-spacing:.4px;
-}
-.fg input,.fg select{
-  width:100%;padding:11px 12px;
-  border:1px solid #d0d0d0;border-radius:6px;
-  font-size:15px;font-family:inherit;
-  outline:none;transition:border-color .18s;
-  background:#fff;
-}
-.fg input:focus,.fg select:focus{border-color:var(--navy)}
-
-/* Card element */
-.card-wrap{
-  border:1px solid #d0d0d0;border-radius:6px;
-  padding:12px;background:#fff;
-  transition:border-color .18s;
-}
-.card-wrap.focused{border-color:var(--navy)}
-
-/* SSL */
-.ssl-line{
-  display:flex;align-items:center;gap:6px;
-  font-size:11px;color:var(--gray);
-  margin:7px 0 14px;
-}
-
-/* Order summary */
-.order-sum{
-  background:var(--lightgray);border-radius:7px;
-  padding:13px 15px;margin-bottom:14px;
-}
-.orow{
-  display:flex;justify-content:space-between;
-  font-size:14px;margin-bottom:5px;
-}
-.orow:last-child{margin-bottom:0}
-.orow.total{
-  font-weight:700;font-size:16px;
-  border-top:1px solid var(--border);
-  padding-top:8px;margin-top:8px;
-}
-.free-tag{color:var(--green);font-weight:700}
-.save-tag{color:var(--red);font-weight:700}
-
-/* Submit */
-.submit-btn{
-  width:100%;padding:16px;
-  background:#2e7d32;color:#fff;
-  font-size:17px;font-weight:700;
-  border:none;border-radius:7px;
-  cursor:pointer;font-family:inherit;
-  transition:background .18s;letter-spacing:.3px;
-}
-.submit-btn:hover{background:#1b5e20}
-.submit-btn:disabled{background:#9e9e9e;cursor:not-allowed}
-
-/* Bottom trust badges */
-.modal-badges{
-  display:flex;flex-wrap:wrap;gap:7px;
-  justify-content:center;margin-top:14px;
-}
-.mbadge{
-  display:flex;align-items:center;gap:4px;
-  font-size:11px;color:#333;
-  background:var(--lightgray);
-  border:1px solid var(--border);
-  padding:5px 9px;border-radius:5px;
-}
-
-/* Guarantee */
-.modal-guarantee{
-  background:#e8f5e9;border:1px solid #a5d6a7;
-  border-radius:8px;padding:13px 15px;
-  margin-top:12px;display:flex;
-  align-items:flex-start;gap:10px;
-}
-.mg-icon{font-size:26px;flex-shrink:0}
-.mg-title{font-weight:700;font-size:13px;margin-bottom:2px}
-.mg-text{font-size:12px;color:#2e7d32;line-height:1.5}
-
-/* Error */
-.form-err{
-  color:var(--red);font-size:13px;
-  margin-top:8px;text-align:center;display:none;
-}
-
-/* Success */
-.success-screen{
-  display:none;text-align:center;
-  padding:40px 18px;
-}
-.success-screen .ck{font-size:52px;margin-bottom:14px}
-.success-screen h3{font-size:20px;font-weight:900;margin-bottom:9px}
-.success-screen p{color:var(--gray);font-size:15px}
-
-@media(max-width:540px){
-  .modal-box{margin:0;border-radius:0;min-height:100svh}
-  .frow{flex-direction:column;gap:0}
-  .modal-trust-top{gap:8px;font-size:11px}
-}
-</style>
+    <!-- META PIXEL CODE (PRE-PREPARED) -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      // fbq('init', 'VLOZTE_META_PIXEL_ID_NESKOR'); 
+      // fbq('track', 'PageView');
+    </script>
 </head>
 <body>
 
-<!-- Trust bar -->
-<div class="trust-bar">
-  <span>🛡️ 30-Day Money-Back Guarantee</span>
-  <span>🚚 Free Shipping</span>
-  <span>↩️ Easy Returns</span>
-  <span>🔒 Secure Checkout</span>
+<div class="header">Independent Health Diagnostic Portal</div>
+
+<div class="container">
+    
+    <!-- WELCOME SCREEN -->
+    <div id="welcome" class="step">
+        <h1>Urinary Tract & Bladder Capacity Assessment</h1>
+        <p class="subtitle">Complete this 40-second diagnostic test to identify the root cause of frequent urges, pressure, or nighttime waking.</p>
+        <img src="https://images.unsplash.com/photo-1576091160550-2173ff9e5eb3?auto=format&fit=crop&w=500&q=80" alt="Doctor" style="width:100%; border-radius: 10px; margin-bottom: 20px;">
+        <button class="btn-primary" onclick="nextStep('welcome', 'q1', 'Started_Quiz')">Start Diagnostic Test</button>
+    </div>
+
+    <!-- Q1 -->
+    <div id="q1" class="step">
+        <h2>Question 1/6</h2>
+        <p class="subtitle">What is your current age group?</p>
+        <button class="btn-answer" onclick="nextStep('q1', 'q2', 'Q1_Answered_40-49')">40 - 49 years old</button>
+        <button class="btn-answer" onclick="nextStep('q1', 'q2', 'Q1_Answered_50-59')">50 - 59 years old</button>
+        <button class="btn-answer" onclick="nextStep('q1', 'q2', 'Q1_Answered_60+')">60+ years old</button>
+    </div>
+
+    <!-- Q2 -->
+    <div id="q2" class="step">
+        <h2>Question 2/6</h2>
+        <p class="subtitle">How often do you wake up during the night to use the bathroom?</p>
+        <button class="btn-answer" onclick="nextStep('q2', 'q3', 'Q2_Answered_Once')">Once per night</button>
+        <button class="btn-answer" onclick="nextStep('q2', 'q3', 'Q2_Answered_2-3')">2 to 3 times</button>
+        <button class="btn-answer" onclick="nextStep('q2', 'q3', 'Q2_Answered_4+')">More than 3 times (Disrupts sleep)</button>
+    </div>
+
+    <!-- Q3 -->
+    <div id="q3" class="step">
+        <h2>Question 3/6</h2>
+        <p class="subtitle">Do you experience pressure, mild burning, or a feeling of incomplete emptying?</p>
+        <button class="btn-answer" onclick="nextStep('q3', 'q4', 'Q3_Answered_Frequent')">Yes, quite frequently</button>
+        <button class="btn-answer" onclick="nextStep('q3', 'q4', 'Q3_Answered_Sometimes')">Sometimes, especially in the cold</button>
+        <button class="btn-answer" onclick="nextStep('q3', 'q4', 'Q3_Answered_Rarely')">Only mild discomfort</button>
+    </div>
+
+    <!-- Q4 -->
+    <div id="q4" class="step">
+        <h2>Question 4/6</h2>
+        <p class="subtitle">How much does this condition affect your daily life, travel, or work?</p>
+        <button class="btn-answer" onclick="nextStep('q4', 'q5', 'Q4_Answered_Significantly')">Significantly, I always look for a toilet</button>
+        <button class="btn-answer" onclick="nextStep('q4', 'q5', 'Q4_Answered_Moderate')">It's annoying but manageable</button>
+    </div>
+
+    <!-- Q5 -->
+    <div id="q5" class="step">
+        <h2>Question 5/6</h2>
+        <p class="subtitle">Have you tried pharmacy teas or basic supplements, only to have the problem return?</p>
+        <button class="btn-answer" onclick="nextStep('q5', 'q6', 'Q5_Answered_Yes_Failed')">Yes, the relief is only temporary</button>
+        <button class="btn-answer" onclick="nextStep('q5', 'q6', 'Q5_Answered_Not_Yet')">No, I haven't tried anything yet</button>
+    </div>
+
+    <!-- Q6 (Micro-Commitment) -->
+    <div id="q6" class="step">
+        <h2>Final Question</h2>
+        <p class="subtitle">If there was a natural, concentrated method to restore the protective lining of your urinary tract, would you be willing to try it at home?</p>
+        <button class="btn-primary" onclick="showLoading('Q6_Answered_Yes')">Yes, I want a long-term solution</button>
+    </div>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading" class="step loading-wrap">
+        <div class="loader"></div>
+        <h2 id="loading-text">Analyzing your symptoms...</h2>
+        <p style="color: #888;">Comparing with our database.</p>
+    </div>
+
+    <!-- RESULT & SALES PAGE -->
+    <div id="result" class="step">
+        <h1>Your Diagnostic Report</h1>
+        
+        <div class="result-box">
+            <h3>⚠️ Condition: Weakened Mucosal Lining</h3>
+            <p>Based on your answers, your frequent urges and discomfort are caused by a weakened protective layer in your urinary tract. <b>This is why common teas fail</b>—they only flush out fluids but do not heal the lining, allowing bacteria to attach easily.</p>
+        </div>
+        
+        <h2>The Recommended Protocol</h2>
+        <p>To stop nighttime waking and restore comfort, you need a concentrated extract of Cranberry and Blueberry bioflavonoids to form a protective shield inside your bladder.</p>
+        
+        <img src="https://images.unsplash.com/photo-1584308666744-24d5e4a831e5?auto=format&fit=crop&w=500&q=80" alt="Product" class="product-img">
+        
+        <div class="price-tag">Special Offer: 111 RON</div>
+        <p style="text-align: center; color: #555; margin-bottom: 25px;">You qualified for a discount. <b>Pay in cash upon delivery.</b> Fill out the form to reserve your package.</p>
+
+        <!-- DR.CASH ORDER FORM -->
+        <form class="orderForm">
+            <input type="text" name="name" placeholder="Full Name" required />
+            <input type="tel" name="phone" placeholder="Phone Number" required />
+            <input type="hidden" name="ip" value="" />
+            <input type="submit" value="Order Now (Pay on Delivery)">
+        </form>
+        <p style="text-align: center; font-size: 12px; color: #aaa; margin-top: 15px;">Your data is secure and encrypted.</p>
+    </div>
+
 </div>
 
-<!-- Header -->
-<header class="site-header">
-  <span class="brand">Neck Pain Insider</span>
-</header>
-
-<!-- Article -->
-<div class="page-layout">
-
-  <p class="article-meta">June 16, 2025 &nbsp;·&nbsp; Neck Pain Insider Editorial</p>
-
-  <h1 class="headline">
-    Physio Told Her to "Just Manage It." Four Years Later, She Finally Found Out Why Her Neck Pain Was Never Going to Stop on Its Own.
-  </h1>
-
-  <div class="pull-quote">
-    "Most patients who come to me have already spent thousands on treatments that gave them temporary relief. There's a reason none of it lasted — and almost nobody is honest enough to explain it." — Dr. Amanda Reeves, Pain Physiotherapy Specialist
-  </div>
-
-  <!-- HERO IMAGE — replace src with your image -->
-  <div class="hero-wrap">
-    <img id="heroImg" src="" alt="Woman with neck pain" onerror="this.parentNode.innerHTML='<div class=hero-placeholder>[Replace: woman with neck pain, natural/realistic photo]</div>'" />
-  </div>
-
-  <div class="body-text">
-
-    <p class="hook-line">I almost missed my daughter's wedding because of my neck.</p>
-
-    <p>Not because I wasn't there. I was. I was standing in the front row.</p>
-
-    <p>But during every single photo, the photographer kept telling me to "lift your chin a little." And I couldn't. The pain was so sharp I had to keep looking down.</p>
-
-    <p>I smiled through it. I cried in the bathroom afterwards — not because my daughter was getting married, but because I had missed most of it trying not to visibly wince.</p>
-
-    <p>That was four years into daily neck pain.</p>
-
-    <p>If you wake up every morning and your neck is already tense before you've touched your pillow...</p>
-
-    <p>If you've had physio, massage, heat packs, anti-inflammatories, or those little patches from the chemist...</p>
-
-    <p>If the relief lasts a day, maybe two — then it's back exactly like before...</p>
-
-    <p>If your doctor has looked at your scans and said "nothing serious" — but the pain tells a completely different story...</p>
-
-    <p><strong>Then I need you to read this.</strong> Because I spent four years being treated for the wrong thing. And when I finally found out what was actually happening, I was furious at how simple the explanation was.</p>
-
-    <h2>Everything I Tried. Everything That Failed.</h2>
-
-    <p>My name is Karen. I'm 47. I live in Brisbane with my husband and our two kids.</p>
-
-    <p>My neck pain started after a minor car accident. Nothing dramatic — a small rear-end collision in a car park. The whiplash was real but mild. My GP said it would settle in 6–8 weeks.</p>
-
-    <p>It didn't.</p>
-
-    <p>Over the next four years I tried everything I was told to try:</p>
-
-    <ul class="fail-list">
-      <li>Physiotherapy — twice a week for 6 months. Felt better during sessions. Back to square one within 48 hours.</li>
-      <li>Remedial massage — monthly, then fortnightly. Two hours of relief, then same pain again.</li>
-      <li>Ibuprofen — took it so often my stomach started protesting. Stopped working after a while anyway.</li>
-      <li>Heat packs every night — helped me fall asleep. Woke up stiff and sore every morning regardless.</li>
-      <li>A specialist chiropractor — $180 a session. Six sessions. Zero lasting change.</li>
-      <li>Acupuncture — gave it a genuine go. Felt odd. Did nothing for my neck.</li>
-    </ul>
-
-    <p>I wasn't lazy about it. I wasn't a bad patient. I showed up, I did the exercises, I followed the advice.</p>
-
-    <p><strong>The pain just kept coming back.</strong></p>
-
-    <p>And nobody ever explained why.</p>
-
-    <h2>The Thing Nobody Ever Told Me</h2>
-
-    <p>The answer came from the most unlikely place — an offhand comment from a physio I saw once for a second opinion.</p>
-
-    <p>She was looking at my notes and said, almost to herself: "After this long, it's probably not the muscle anymore. It's likely nerve sensitisation."</p>
-
-    <p>I asked her to explain that.</p>
-
-    <p>She stopped what she was doing, sat down, and said: "Your original injury healed. Or mostly healed. But the nerve pathway that was sending pain signals during the injury — it got stuck. It's still firing. Even though there's nothing to warn you about anymore, the signal keeps going. Your brain keeps receiving pain because the pathway never switched off."</p>
-
-    <p>She called it a <strong>"pain loop."</strong></p>
-
-    <p>That one sentence explained four years of my life.</p>
-
-    <div class="highlight-box">
-      <p><strong>Here is the part that made me genuinely angry:</strong></p>
-      <p>Every single treatment I had tried — physio stretches, massage, heat, anti-inflammatories — works on the muscle layer. Which is why they give temporary relief. The muscle relaxes. But the nerve pathway underneath? Still firing. Still looping. Still sending the signal.</p>
-      <p>Nobody was reaching the actual cause. They were treating a wound that had already closed, while the alarm system inside kept screaming.</p>
-      <p>Research suggests this pattern — called <strong>central sensitisation</strong> — affects up to 70% of people with chronic neck pain that lasts more than 3 months. Most of them never find out that's what it is.</p>
-    </div>
-
-    <p>I wasn't broken. I wasn't imagining it. I wasn't "just stressed."</p>
-
-    <p><strong>My nervous system had learned to stay in pain mode. And nothing I had tried was designed to reach it.</strong></p>
-
-    <h2>What Finally Broke the Loop</h2>
-
-    <p>After that conversation, I started researching obsessively. Eleven PM searches, half-finished cups of tea going cold beside me.</p>
-
-    <p>I found study after study confirming what she had said. And then I found something that the researchers kept referencing as the one method that directly reaches the nerve pathway level — not just the muscle layer above it.</p>
-
-    <p>It was called <strong>dual-frequency neuromuscular electrical stimulation</strong> — TENS and EMS combined.</p>
-
-    <p>Not the cheap TENS pads from the pharmacy. Those deliver a generic, low-level signal and mostly just distract you from pain for a while.</p>
-
-    <p>I mean <strong>clinical-grade</strong> TENS/EMS — with a waveform specifically calibrated to travel along the nerve pathways.</p>
-
-    <p>Here's what makes it different to everything else I had tried:</p>
-
-    <p>The electrical pulses travel along the same nerve pathways that are stuck in the pain loop. They don't mask the signal. They <strong>compete with it and interrupt it</strong> at the source. At the same time, the EMS component activates the deep cervical muscles that pain and tension have been keeping locked — muscles you can't voluntarily engage when everything is seized up.</p>
-
-    <p>Two things happening at once that no massage, stretch, pill or heat pack can do simultaneously.</p>
-
-    <p>I found one device that had taken this clinical technology — the kind used in hospital pain clinics — and made it accessible for home use. Specifically designed for the neck and cervical area.</p>
-
-    <p>I ordered it. Honestly, with very low expectations. I'd been disappointed so many times.</p>
-
-    <h2>What Happened After 10 Days</h2>
-
-    <p>The first session felt strange. A gentle pulsing sensation. No pain. A little warmth spreading through my neck and shoulders.</p>
-
-    <p>On day four, I woke up and lay still for a moment before getting out of bed. Something was different.</p>
-
-    <p>The tightness that was always there when I woke — the clenching feeling I had normalised over years — was noticeably less.</p>
-
-    <p>By day ten, I turned my head at dinner to answer my husband and he stopped mid-sentence.</p>
-
-    <p>"You just did that without wincing," he said.</p>
-
-    <p>I hadn't even noticed.</p>
-
-    <p>Three months on, my daily pain has dropped from what I'd describe as a 6 or 7 most days to a 1 or 2. Some days zero. I use the device for 20 minutes every morning while I have coffee.</p>
-
-    <p>I've been back to a physio since — the same one who first mentioned nerve sensitisation. She tested my cervical range of motion and said it was better than it had been in any of my notes. She asked what had changed.</p>
-
-    <p>I told her about the device. She nodded like she wasn't surprised.</p>
-
-    <p>"That's one of the few things that actually reaches the right level," she said.</p>
-
-    <button class="cta-btn" onclick="openModal()">→ Check Availability &amp; Price</button>
-    <p class="cta-sub">⚡ 55% discount currently active · Limited stock</p>
-
-    <h2>Why I'm Sharing This Here</h2>
-
-    <p>I've had so many people — friends, people in my mum's group, colleagues — ask me what changed. I've sent so many individual messages explaining it that I decided to write it all down properly.</p>
-
-    <p>That's why this article exists. Not to sell you something — I'm just a person who found something that worked after years of nothing working. I'm including the link because every time I don't, someone messages me asking for it.</p>
-
-    <p>The device I used is called <strong>[YOUR PRODUCT NAME]</strong>. It was designed specifically for neck and shoulder pain with the cervical nerve pathway calibration I've described.</p>
-
-    <p>It comes with a full 30-day money-back guarantee. If it doesn't work for you, you return it and pay nothing. That's what made me feel comfortable trying it after spending so much on things that failed.</p>
-
-    <h2>Who This Is and Isn't For</h2>
-
-    <p>This is most effective for chronic, recurring neck and shoulder pain — the kind that keeps returning despite treatment, with no clear structural cause on imaging.</p>
-
-    <p>If you have a pacemaker or implanted cardiac device, this technology is not appropriate for you.</p>
-
-    <p>If your pain started very recently (within the last few weeks), see a healthcare professional first.</p>
-
-    <p>But if you've been suffering for months or years, trying treatment after treatment with only temporary results — this is almost certainly reaching a mechanism that nothing else has.</p>
-
-    <button class="cta-btn" onclick="openModal()">→ Check Availability &amp; Get 55% Off Today</button>
-    <p class="cta-sub">🔒 Free shipping · 30-day returns · No risk</p>
-
-    <h2>What Others Are Saying</h2>
-
-    <div class="testimonial">
-      <div class="t-stars">★★★★★</div>
-      <p class="t-text">"I had neck pain every single day for six years. Physio, chiro, massage — I tried all of it. Nothing lasted more than two days. I used this device for three weeks and the daily pain just... stopped being constant. I'm not saying it's a miracle but I genuinely cannot explain why nothing else worked and this did. I'm just glad someone finally told me about it."</p>
-      <p class="t-name">Margaret T.</p>
-      <p class="t-loc">53 years old · Brisbane</p>
-    </div>
-
-    <div class="testimonial">
-      <div class="t-stars">★★★★★</div>
-      <p class="t-text">"My physio actually laughed when I told her how much my pain had improved. She said my muscle tension had reduced more than she'd seen from her sessions alone. I've been using it every morning for two months. The pain went from a 7 most days to maybe a 2 on a bad day. I wish I'd found this three years ago."</p>
-      <p class="t-name">Sandra R.</p>
-      <p class="t-loc">46 years old · Melbourne</p>
-    </div>
-
-    <div class="testimonial">
-      <div class="t-stars">★★★★★</div>
-      <p class="t-text">"I sit at a desk for nine hours a day and the neck pain had become just part of my life. I accepted it. I don't know why I decided to try this but I'm so glad I did. After two weeks I was turning to look at people without bracing myself first. Small thing. Huge difference to actually living your life."</p>
-      <p class="t-name">Diane H.</p>
-      <p class="t-loc">44 years old · Sydney</p>
-    </div>
-
-    <button class="cta-btn" onclick="openModal()">→ Check Availability &amp; Current Discount</button>
-    <p class="cta-sub">Stock is limited — discount may not last</p>
-
-  </div><!-- /body-text -->
-
-  <div class="disclaimer">
-    <strong>EDITORIAL DISCLOSURE:</strong> This article reflects the personal experience of the narrator and is not intended as medical advice. Always consult a qualified healthcare professional before beginning any new treatment. The author may receive compensation if you purchase through links in this article. Individual results vary. This article is produced as sponsored editorial content. Statements have not been evaluated by the TGA or any regulatory body.<br><br>
-    THIS IS AN ADVERTISEMENT AND NOT AN ACTUAL NEWS ARTICLE OR MEDICAL PUBLICATION.
-  </div>
-
-</div><!-- /page-layout -->
-
-
-<!-- ═══════════════════════════════════════════
-     CHECKOUT MODAL
-═══════════════════════════════════════════ -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal-box">
-
-    <!-- Trust bar at very top of modal -->
-    <div class="modal-trust-top">
-      <span>🛡️ 30-Day Guarantee</span>
-      <span>🚚 Free Shipping</span>
-      <span>↩️ Easy Returns</span>
-      <span>🔒 Secure</span>
-    </div>
-
-    <div class="modal-header">
-      <p>🔒 Secure Order — Official Stockist</p>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
-
-    <!-- SUCCESS -->
-    <div class="success-screen" id="successScreen">
-      <div class="ck">✅</div>
-      <h3>Order Confirmed!</h3>
-      <p>Check your inbox for a confirmation email.<br>[YOUR PRODUCT NAME] ships in 1–2 business days.</p>
-    </div>
-
-    <!-- ORDER FORM -->
-    <div class="modal-body" id="orderFormWrap">
-
-      <!-- Product images slider -->
-      <div class="img-slider" id="imgSlider">
-        <!-- REPLACE: add real product images here -->
-        <div class="img-slide active">[Product image 1 — front view]</div>
-        <div class="img-slide">[Product image 2 — in use on neck]</div>
-        <div class="img-slide">[Product image 3 — package contents]</div>
-      </div>
-      <div class="slider-dots">
-        <button class="sdot active" onclick="goSlide(0)"></button>
-        <button class="sdot" onclick="goSlide(1)"></button>
-        <button class="sdot" onclick="goSlide(2)"></button>
-      </div>
-
-      <p class="prod-title">[YOUR PRODUCT NAME]</p>
-      <p class="prod-sub">Cervical TENS/EMS Pain Relief Device</p>
-      <div class="prod-stars">
-        <span class="st">★★★★★</span>
-        <span>4.8/5 · 1,240 reviews</span>
-      </div>
-
-      <p class="bundle-label">Select Your Package:</p>
-      <div class="bundles">
-
-        <div class="bundle" id="b1" onclick="selBundle(1)">
-          <div class="bundle-left">
-            <div class="brad"></div>
-            <div>
-              <div class="bname">1 Device</div>
-              <div class="bper">Standard — ships today</div>
-            </div>
-          </div>
-          <div class="bright">
-            <div class="bprice">$129</div>
-            <div class="borig">Was $289</div>
-          </div>
-        </div>
-
-        <div class="bundle" id="b2" onclick="selBundle(2)" style="position:relative">
-          <span class="bpop">⭐ MOST POPULAR</span>
-          <div class="bundle-left">
-            <div class="brad"></div>
-            <div>
-              <div class="bname">2 Devices <span class="bbadge">SAVE $39</span></div>
-              <div class="bper">$110 each — for you + partner</div>
-            </div>
-          </div>
-          <div class="bright">
-            <div class="bprice">$219</div>
-            <div class="borig">Was $578</div>
-          </div>
-        </div>
-
-        <div class="bundle" id="b3" onclick="selBundle(3)">
-          <div class="bundle-left">
-            <div class="brad"></div>
-            <div>
-              <div class="bname">3 Devices <span class="bbadge">BEST VALUE</span></div>
-              <div class="bper">$96 each — share with family</div>
-            </div>
-          </div>
-          <div class="bright">
-            <div class="bprice">$289</div>
-            <div class="borig">Was $867</div>
-          </div>
-        </div>
-
-      </div>
-
-      <hr class="mdivider"/>
-      <p class="fsec-title">📦 Shipping Details</p>
-
-      <div class="frow">
-        <div class="fg"><label>First Name</label><input type="text" id="fFirst" placeholder="Jane" autocomplete="given-name"/></div>
-        <div class="fg"><label>Last Name</label><input type="text" id="fLast" placeholder="Smith" autocomplete="family-name"/></div>
-      </div>
-      <div class="fg"><label>Email</label><input type="email" id="fEmail" placeholder="jane@email.com" autocomplete="email"/></div>
-      <div class="fg"><label>Phone</label><input type="tel" id="fPhone" placeholder="+61 400 000 000" autocomplete="tel"/></div>
-      <div class="fg"><label>Street Address</label><input type="text" id="fAddr" placeholder="123 Main Street" autocomplete="street-address"/></div>
-      <div class="frow">
-        <div class="fg"><label>City</label><input type="text" id="fCity" placeholder="Sydney" autocomplete="address-level2"/></div>
-        <div class="fg"><label>Postcode</label><input type="text" id="fPost" placeholder="2000" autocomplete="postal-code"/></div>
-      </div>
-      <div class="fg">
-        <label>Country</label>
-        <select id="fCountry" autocomplete="country">
-          <option value="AU">Australia</option>
-          <option value="US">United States</option>
-          <option value="GB">United Kingdom</option>
-          <option value="CA">Canada</option>
-          <option value="NZ">New Zealand</option>
-          <option value="IE">Ireland</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-
-      <hr class="mdivider"/>
-      <p class="fsec-title">💳 Payment</p>
-
-      <div class="card-wrap" id="cardWrap">
-        <div id="cardEl"></div>
-      </div>
-      <div id="cardErr" style="color:#c62828;font-size:13px;margin-top:6px;display:none"></div>
-
-      <div class="ssl-line">
-        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        256-bit SSL · Your card details are never stored
-      </div>
-
-      <div class="order-sum">
-        <div class="orow"><span id="sumDesc">1 × [YOUR PRODUCT NAME]</span><span id="sumPrice">$129</span></div>
-        <div class="orow"><span>Shipping</span><span class="free-tag">FREE</span></div>
-        <div class="orow" id="sumSaveRow" style="display:none"><span>You save</span><span class="save-tag" id="sumSave"></span></div>
-        <div class="orow total"><span>Total Today</span><span id="sumTotal">$129</span></div>
-      </div>
-
-      <button class="submit-btn" id="submitBtn" onclick="submitOrder()">✅ Complete Secure Order →</button>
-      <div id="formErrMsg" class="form-err"></div>
-
-      <div class="modal-badges">
-        <div class="mbadge">🛡️ 30-Day Returns</div>
-        <div class="mbadge">🔒 SSL Secure</div>
-        <div class="mbadge">🚚 Free Shipping</div>
-        <div class="mbadge">⚡ Ships 24–48h</div>
-      </div>
-
-      <div class="modal-guarantee">
-        <div class="mg-icon">🛡️</div>
-        <div>
-          <div class="mg-title">30-Day Money-Back Guarantee</div>
-          <div class="mg-text">Try [YOUR PRODUCT NAME] for 30 days. If you don't feel a real difference, contact us for a full refund — no questions, no hassle.</div>
-        </div>
-      </div>
-
-    </div><!-- /orderFormWrap -->
-  </div><!-- /modal-box -->
-</div><!-- /modal-overlay -->
-
-
+<!-- MASTER LOGIC & TRACKING SCRIPT -->
 <script>
-/* ─── BUNDLE DATA ─────────────────────────── */
-const BUNDLES = {
-  1:{desc:'1 × [YOUR PRODUCT NAME]',price:129,save:0},
-  2:{desc:'2 × [YOUR PRODUCT NAME]',price:219,save:39},
-  3:{desc:'3 × [YOUR PRODUCT NAME]',price:289,save:98}
-};
-let curBundle = 1;
+    // 1. UNIVERSAL TRACKER (Google Sheets + Meta Pixel)
+    const GOOGLE_SHEETS_WEBHOOK_URL = "VLOZTE_URL_Z_GOOGLE_TABULKY_NESKOR";
 
-function selBundle(n){
-  curBundle = n;
-  [1,2,3].forEach(i=>document.getElementById('b'+i).classList.remove('sel'));
-  document.getElementById('b'+n).classList.add('sel');
-  const b = BUNDLES[n];
-  document.getElementById('sumDesc').textContent  = b.desc;
-  document.getElementById('sumPrice').textContent = '$'+b.price;
-  document.getElementById('sumTotal').textContent = '$'+b.price;
-  const sr = document.getElementById('sumSaveRow');
-  if(b.save>0){
-    sr.style.display='flex';
-    document.getElementById('sumSave').textContent='-$'+b.save;
-  } else { sr.style.display='none'; }
-}
-selBundle(1);
-
-/* ─── SLIDER ──────────────────────────────── */
-let curSlide = 0;
-const slides  = document.querySelectorAll('.img-slide');
-const dots    = document.querySelectorAll('.sdot');
-function goSlide(n){
-  slides[curSlide].classList.remove('active');
-  dots[curSlide].classList.remove('active');
-  curSlide = n;
-  slides[n].classList.add('active');
-  dots[n].classList.add('active');
-}
-setInterval(()=>goSlide((curSlide+1)%slides.length),3600);
-
-/* ─── MODAL ───────────────────────────────── */
-function openModal(){
-  document.getElementById('checkoutModal').classList.add('open');
-  document.body.style.overflow='hidden';
-  if(!stripeReady) initStripe();
-}
-function closeModal(){
-  document.getElementById('checkoutModal').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.getElementById('checkoutModal').addEventListener('click',function(e){
-  if(e.target===this) closeModal();
-});
-
-/* ─── STRIPE ──────────────────────────────── */
-let stripe, cardEl, stripeReady = false;
-function initStripe(){
-  try {
-    stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); /* ← REPLACE */
-    const els = stripe.elements();
-    cardEl = els.create('card',{
-      style:{base:{
-        fontSize:'15px',color:'#1a1a1a',
-        fontFamily:"'Source Sans 3',sans-serif",
-        '::placeholder':{color:'#9e9e9e'}
-      }}
-    });
-    cardEl.mount('#cardEl');
-    cardEl.on('focus',()=>document.getElementById('cardWrap').classList.add('focused'));
-    cardEl.on('blur', ()=>document.getElementById('cardWrap').classList.remove('focused'));
-    cardEl.on('change',e=>{
-      const el=document.getElementById('cardErr');
-      el.style.display=e.error?'block':'none';
-      if(e.error) el.textContent=e.error.message;
-    });
-    stripeReady=true;
-  } catch(e){
-    document.getElementById('cardEl').innerHTML=
-      '<input style="width:100%;border:none;outline:none;font-size:15px;font-family:inherit" placeholder="Configure Stripe key to enable card input" />';
-  }
-}
-
-/* ─── VALIDATION ──────────────────────────── */
-function validate(){
-  const ids=['fFirst','fLast','fEmail','fPhone','fAddr','fCity','fPost'];
-  for(const id of ids){
-    const el=document.getElementById(id);
-    if(!el.value.trim()){el.focus();return 'Please complete all fields.';}
-  }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('fEmail').value))
-    return 'Please enter a valid email.';
-  return null;
-}
-
-/* ─── SUBMIT ──────────────────────────────── */
-async function submitOrder(){
-  const err=validate();
-  if(err){
-    const el=document.getElementById('formErrMsg');
-    el.textContent=err; el.style.display='block'; return;
-  }
-  document.getElementById('formErrMsg').style.display='none';
-  const btn=document.getElementById('submitBtn');
-  btn.disabled=true; btn.textContent='Processing…';
-
-  try {
-    /*
-    ═══════════════════════════════════════════════════
-    SHOPIFY OPTION (recommended — no backend needed):
-    ═══════════════════════════════════════════════════
-    Replace VARIANT_ID_X with your Shopify variant IDs.
-
-    const variants = { 1:'VARIANT_ID_1', 2:'VARIANT_ID_2', 3:'VARIANT_ID_3' };
-    window.location.href = '/cart/'+variants[curBundle]+':1?checkout';
-
-    ═══════════════════════════════════════════════════
-    STRIPE OPTION (needs backend /api/create-payment-intent):
-    ═══════════════════════════════════════════════════
-    const r = await fetch('/api/create-payment-intent',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        bundle: curBundle,
-        amount: BUNDLES[curBundle].price * 100,
-        email: document.getElementById('fEmail').value,
-        name: document.getElementById('fFirst').value+' '+document.getElementById('fLast').value
-      })
-    });
-    const {clientSecret} = await r.json();
-    const result = await stripe.confirmCardPayment(clientSecret,{
-      payment_method:{
-        card: cardEl,
-        billing_details:{
-          name: document.getElementById('fFirst').value+' '+document.getElementById('fLast').value,
-          email: document.getElementById('fEmail').value
+    function trackEvent(actionName) {
+        console.log("Tracking Event: ", actionName);
+        
+        // A. Fire Meta Pixel (If initialized)
+        if(typeof fbq === 'function') {
+            if(actionName === 'Lead') {
+                fbq('track', 'Lead');
+            } else {
+                fbq('trackCustom', actionName);
+            }
         }
+
+        // B. Send to Google Sheets (If webhook is set)
+        if(GOOGLE_SHEETS_WEBHOOK_URL !== "VLOZTE_URL_Z_GOOGLE_TABULKY_NESKOR") {
+            // Pouzijeme fetch s no-cors pre rychle odoslanie bez blokovania
+            let formData = new FormData();
+            formData.append("event", actionName);
+            formData.append("timestamp", new Date().toLocaleString());
+            
+            fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            }).catch(e => console.log("Tracking error"));
+        }
+    }
+
+    // 2. QUIZ NAVIGATION & ANTI-REFRESH LOGIC
+    function initQuiz() {
+        // Skontroluje, ci uzivatel uz kviz nezacal (aby sa neobnovil po refreshi)
+        let savedStep = sessionStorage.getItem('currentQuizStep');
+        if(savedStep && document.getElementById(savedStep)) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(savedStep).classList.add('active');
+        } else {
+            document.getElementById('welcome').classList.add('active');
+            trackEvent('Page_Viewed');
+        }
+    }
+
+    function nextStep(currentId, nextId, eventName) {
+        trackEvent(eventName);
+        
+        document.getElementById(currentId).classList.remove('active');
+        document.getElementById(nextId).classList.add('active');
+        
+        // Ulozi krok do pamate proti Refreshu
+        sessionStorage.setItem('currentQuizStep', nextId);
+        window.scrollTo(0, 0);
+    }
+
+    // 3. LOADING ANIMATION LOGIC
+    function showLoading(eventName) {
+        trackEvent(eventName);
+        
+        document.getElementById('q6').classList.remove('active');
+        document.getElementById('loading').classList.add('active');
+        sessionStorage.setItem('currentQuizStep', 'loading');
+
+        setTimeout(() => { document.getElementById('loading-text').innerText = "Verifying root cause..."; }, 1500);
+        setTimeout(() => { document.getElementById('loading-text').innerText = "Generating custom protocol..."; }, 3000);
+        
+        setTimeout(() => {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('result').classList.add('active');
+            sessionStorage.setItem('currentQuizStep', 'result');
+            trackEvent('Viewed_Sales_Page');
+            window.scrollTo(0, 0);
+        }, 4500);
+    }
+
+    // Spusti kviz pri nacitani stranky
+    window.onload = initQuiz;
+</script>
+
+<!-- DR.CASH API INTEGRATION -->
+<script src="https://static.statthroat.tech/dist/api/lead-1.1.0.min.js"></script>
+<script>
+  drlead.init({
+    params: {
+      token: "MJM1MDDLOTGTZTQ3ZI00ZDE5LTK0ZDUTNJHHMWZIOGZKZDM1", 
+      stream_code: "5futh", // Váš reálny kód pre Cystiollu v RO
+      thanks_page: "./thanks.html" 
+    },
+    subs: {}, 
+    callback: function (error, response) {
+      if (!error) {
+        // Vymažeme pamať, aby po nákupe mohol začať odznova
+        sessionStorage.removeItem('currentQuizStep');
+        
+        // Odošleme finálny Lead do Googlu a Facebooku
+        trackEvent('Lead');
       }
-    });
-    if(result.error) throw new Error(result.error.message);
-    */
-
-    /* DEMO — remove in production: */
-    await new Promise(r=>setTimeout(r,1500));
-
-    document.getElementById('orderFormWrap').style.display='none';
-    document.getElementById('successScreen').style.display='block';
-
-  } catch(e){
-    const el=document.getElementById('formErrMsg');
-    el.textContent=e.message||'Payment failed. Please try again.';
-    el.style.display='block';
-    btn.disabled=false;
-    btn.textContent='✅ Complete Secure Order →';
-  }
-}
+    }
+  });
 </script>
 
 </body>
