@@ -1,654 +1,197 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, viewport-fit=cover"/>
-    <title>vital-solutions | Clinical Assessment</title>
-    
-    <style>
-        :root {
-            --brand-green: #3FA134; /* Mindway exact green */
-            --brand-green-dark: #338529;
-            --option-bg: #F4F3F0; /* Mindway warm gray card */
-            --option-border: #E6E4E0;
-            --option-selected-bg: #E5F5E3; /* Mindway selected light green */
-            --text-dark: #1A1A1A;
-            --text-muted: #666666;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #FFFFFF;
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* HEADER - Mindway Layout */
-        .quiz-header {
-            width: 100%;
-            background: #FFFFFF;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .header-inner {
-            max-width: 680px;
-            margin: 0 auto;
-            height: 62px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-        }
-
-        /* Back Button in Visible Box */
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border: 1.5px solid #D1D1D6;
-            background-color: #F8F8FA;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-            cursor: pointer;
-            visibility: hidden;
-            transition: all 0.15s ease;
-        }
-
-        .btn-back:hover {
-            border-color: var(--text-dark);
-            background-color: #EAEAEF;
-        }
-
-        /* Simple Text Logo */
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-size: 19px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--text-dark);
-            user-select: none;
-        }
-
-        .brand-logo-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            background-color: var(--brand-green);
-            color: #fff;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 900;
-        }
-
-        . brand-logo span {
-            color: var(--brand-green);
-        }
-
-        /* Step Counter */
-        .step-counter {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            min-width: 42px;
-            text-align: right;
-        }
-
-        /* Full-width thin progress bar under header */
-        .progress-track {
-            width: 100%;
-            height: 4px;
-            background-color: #EAEAEA;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background-color: var(--brand-green);
-            transition: width 0.3s ease;
-        }
-
-        /* MAIN CONTENT - TOP ALIGNED (Not centered vertically) */
-        main {
-            flex: 1;
-            width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 28px 18px 60px 18px;
-        }
-
-        .step {
-            display: none;
-            animation: fadeIn 0.22s ease-out;
-        }
-
-        .step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Typography */
-        h1, h2 {
-            font-size: 25px;
-            font-weight: 800;
-            line-height: 1.28;
-            text-align: center;
-            color: var(--text-dark);
-            margin-bottom: 8px;
-        }
-
-        p.subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            text-align: center;
-            margin-bottom: 24px;
-            line-height: 1.45;
-        }
-
-        /* Welcome Hero */
-        .hero-img {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        /* Mindway Style Options */
-        .options-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .option-card {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            width: 100%;
-            padding: 16px 18px;
-            background-color: var(--option-bg);
-            border: 1.5px solid transparent;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-dark);
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.15s ease;
-        }
-
-        .option-card:hover {
-            border-color: #CCCCCC;
-        }
-
-        .option-card.selected {
-            background-color: var(--option-selected-bg);
-            border-color: var(--brand-green);
-        }
-
-        /* Mindway Checkbox Box */
-        .check-box {
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            border-radius: 5px;
-            border: 1.5px solid #B5B5B5;
-            background: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            color: transparent;
-            transition: all 0.15s ease;
-        }
-
-        .option-card.selected .check-box {
-            background-color: var(--brand-green);
-            border-color: var(--brand-green);
-            color: #FFFFFF;
-        }
-
-        /* Primary CTA Button */
-        .cta-btn {
-            display: block;
-            width: 100%;
-            padding: 17px;
-            background-color: var(--brand-green);
-            color: #FFFFFF;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-            margin-top: 16px;
-            transition: background-color 0.2s ease;
-        }
-
-        .cta-btn:hover {
-            background-color: var(--brand-green-dark);
-        }
-
-        /* Mindway Green SVG Loader */
-        .loader-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 50px 0;
-        }
-
-        .spinner-svg {
-            width: 3.25rem;
-            height: 3.25rem;
-            margin-bottom: 18px;
-        }
-
-        /* Sales / Result Page */
-        .badge-complete {
-            display: inline-block;
-            background-color: var(--option-selected-bg);
-            color: var(--brand-green);
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: 99px;
-            margin-bottom: 10px;
-        }
-
-        .report-box {
-            background-color: var(--option-bg);
-            border-left: 4px solid var(--brand-green);
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 14.5px;
-            line-height: 1.55;
-            margin-bottom: 20px;
-            color: #222;
-        }
-
-        .product-card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: #FFFFFF;
-            border: 1.5px solid var(--option-border);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 20px;
-        }
-
-        .product-card img {
-            width: 78px;
-            height: 78px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .price-tag {
-            font-size: 21px;
-            font-weight: 800;
-            color: var(--brand-green);
-        }
-
-        /* Order Form */
-        .orderForm {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .orderForm input[type="text"],
-        .orderForm input[type="tel"] {
-            width: 100%;
-            padding: 15px 16px;
-            border: 1.5px solid #D1D1D6;
-            border-radius: 10px;
-            font-size: 15px;
-            background-color: #FAFAFA;
-            outline: none;
-        }
-
-        .orderForm input[type="text"]:focus,
-        .orderForm input[type="tel"]:focus {
-            border-color: var(--brand-green);
-            background-color: #FFFFFF;
-        }
-
-        .security-note {
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 12px;
-        }
-    </style>
-
-    <!-- Meta Pixel (Pre-prepared) -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      // fbq('init', 'VLOZ_PIXEL_ID_NESKOR');
-      // fbq('track', 'PageView');
-    </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="google" content="notranslate">
+<title>vital-solutions | Bladder Comfort Quiz</title>
+<style>
+:root{--ink:#3E3C85;--ink2:#2F2D6B;--bg:#fff;--card:#FBF7F1;--line:#E3DDD5;--txt:#14131F;--mut:#6B6A78}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+header{position:sticky;top:0;background:#fff;z-index:9}
+.hin{max-width:520px;margin:0 auto;height:64px;padding:0 16px;display:flex;align-items:center;justify-content:space-between}
+.back{width:38px;height:38px;border:1.5px solid #CFCDD8;background:#F6F5FA;border-radius:8px;font-size:18px;color:var(--txt);cursor:pointer;visibility:hidden}
+.back:hover{border-color:var(--ink)}
+.logo{display:flex;align-items:center;gap:7px;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.3px}
+.logo i{width:24px;height:24px;border-radius:50%;border:2.5px solid var(--ink);display:inline-block;position:relative}
+.logo i:after{content:"";position:absolute;left:5px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.cnt{min-width:42px;text-align:right;font-size:15px;color:var(--mut)}
+.bar{height:4px;background:#E6E5F2}.bar div{height:100%;width:0;background:var(--ink);transition:width .3s}
+main{max-width:480px;margin:0 auto;padding:34px 18px 70px}
+section{display:none;animation:in .2s ease-out}section.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){section{animation:none}}
+h1,h2{text-align:center;font-weight:800;line-height:1.22;margin-bottom:10px;font-size:clamp(25px,6.4vw,31px)}
+.sub{text-align:center;color:var(--mut);font-size:15px;line-height:1.5;margin-bottom:26px}
+.opts{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:64px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:6px;font:inherit;font-size:16px;color:var(--txt);text-align:left;cursor:pointer;transition:border-color .12s,background .12s}
+.opt:hover{border-color:#A9A7C9}
+.opt.sel{border-color:var(--ink);background:#EEEDFA}
+.opt:after{content:"›";font-size:24px;color:#8A8898;line-height:1}
+.cta{display:block;width:100%;padding:17px;background:var(--ink);color:#fff;border:0;border-radius:8px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;margin-top:18px}
+.cta:hover{background:var(--ink2)}
+.hero{width:100%;height:190px;object-fit:cover;border-radius:10px;margin-bottom:22px;background:#E6E5F2}
+.spin{width:54px;height:54px;border:5px solid #E6E5F2;border-top-color:var(--ink);border-radius:50%;animation:sp .8s linear infinite;margin:50px auto 24px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:18px;font-size:15px;line-height:1.55}
+.box li{margin:6px 0 0 18px}
+.prod{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:18px}
+.prod .img{width:84px;height:84px;border-radius:8px;background:#E6E5F2;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mut);text-align:center}
+.price{font-size:24px;font-weight:800;color:var(--ink)}
+form{display:flex;flex-direction:column;gap:12px}
+input[type=text],input[type=tel]{width:100%;padding:15px;border:1.5px solid #CFCDD8;border-radius:8px;font-size:16px;background:#FAFAFC;outline:none}
+input:focus{border-color:var(--ink);background:#fff}
+input[type=submit]{margin-top:4px}
+.note{text-align:center;font-size:12px;color:var(--mut);margin-top:14px;line-height:1.5}
+</style>
 </head>
 <body>
+<header>
+<div class="hin"><button class="back" id="back" onclick="goBack()" aria-label="Back">←</button>
+<div class="logo"><i></i>vital-solutions</div><div class="cnt" id="cnt"></div></div>
+<div class="bar"><div id="fill"></div></div>
+</header>
+<main>
+<section id="welcome" class="on">
+<img class="hero" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=700&q=75" alt="">
+<h1>Bladder comfort quiz</h1>
+<p class="sub">Answer 15 short questions about your daily routine and get a personal summary with a suggestion for what could help.</p>
+<button class="cta" onclick="startQuiz()">Start the quiz</button>
+<p class="note">Takes about 2 minutes. Not a medical diagnosis.</p>
+</section>
 
-    <!-- MINDWAY STYLE HEADER -->
-    <header class="quiz-header">
-        <div class="header-inner">
-            <button class="btn-back" id="btn-back" onclick="goBack()" aria-label="Go back">←</button>
-            <div class="brand-logo">
-                <span class="brand-logo-icon">+</span>
-                <div>vital-<span>solutions</span></div>
-            </div>
-            <div class="step-counter" id="step-counter"></div>
-        </div>
-        <div class="progress-track">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
-    </header>
+<section id="qbox"></section>
 
-    <!-- TOP-ALIGNED MAIN CONTAINER -->
-    <main>
-        
-        <!-- WELCOME SCREEN -->
-        <div class="step quiz-step active" data-step-name="1. Príchod (Welcome Screen)">
-            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80" alt="Clinical Assessment" class="hero-img"/>
-            <h1>Urinary Tract & Bladder Comfort Assessment</h1>
-            <p class="subtitle">Answer 6 quick clinical questions to identify the root cause of frequent urges, nighttime waking, and recurring discomfort.</p>
-            <button class="cta-btn" onclick="startQuiz()">Start Free Assessment →</button>
-        </div>
+<section id="loading"><div class="spin"></div><h2 id="lt">Reading your answers…</h2><p class="sub">Preparing your summary</p></section>
 
-        <!-- QUESTION 1 -->
-        <div class="step quiz-question" data-step-name="2. Otázka 1 (Vek)">
-            <h2>What is your age group?</h2>
-            <p class="subtitle">Select one option to continue:</p>
-            <div class="options-list">
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>40 – 49 years</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>50 – 59 years</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>60+ years</span></button>
-            </div>
-        </div>
+<section id="doctor">
+<h2>Please see a doctor first</h2>
+<p class="sub">Fever, blood in urine or strong back or side pain can point to an infection that needs medical care. A food supplement is not the right first step. Please contact your doctor or urgent care.</p>
+</section>
 
-        <!-- QUESTION 2 -->
-        <div class="step quiz-question" data-step-name="3. Otázka 2 (Nočné budenie)">
-            <h2>How often do you wake up at night to use the bathroom?</h2>
-            <p class="subtitle">Interrupted sleep indicates heightened bladder wall sensitivity:</p>
-            <div class="options-list">
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Once per night</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>2 to 3 times per night</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>More than 3 times (Severe sleep loss)</span></button>
-            </div>
-        </div>
+<section id="result">
+<h2>Your personal summary</h2>
+<p class="sub">Based on your answers</p>
+<div class="box"><ul id="sumlist" style="list-style:disc"></ul></div>
+<div class="box" id="why"></div>
+<div class="prod"><div class="img" id="pimg">Product photo</div>
+<div><div style="font-weight:700;font-size:17px" id="pname"></div><div style="font-size:13px;color:var(--mut);margin:2px 0 4px">Pay the courier on delivery</div><div class="price" id="pprice"></div></div></div>
+<form class="orderForm">
+<input type="text" name="name" placeholder="Full name" required>
+<input type="tel" name="phone" placeholder="Phone number" required>
+<input type="hidden" name="ip" value="">
+<input type="submit" class="cta" value="Order now, pay on delivery">
+</form>
+<p class="note">No online payment. Our team will call you to confirm the order.<br>This quiz is not a medical diagnosis. Food supplements are not a substitute for medical treatment or a varied diet.</p>
+</section>
+</main>
 
-        <!-- QUESTION 3 -->
-        <div class="step quiz-question" data-step-name="4. Otázka 3 (Hlavný symptóm)">
-            <h2>Which symptom bothers you the most?</h2>
-            <p class="subtitle">Choose the primary issue you want to eliminate:</p>
-            <div class="options-list">
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Burning sensation or sharp discomfort</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Constant pressure in the lower abdomen</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Feeling of incomplete emptying ("two drops")</span></button>
-            </div>
-        </div>
+<script>
+/* ================= JEDINÉ MIESTO, KDE UPRAVUJEŠ ================= */
+var CONFIG={
+  webhook:"",            // Web App URL z Google Apps Scriptu
+  pixelId:"",            // Meta Pixel ID (prázdne = pixel vypnutý)
+  token:"MJM1MDDLOTGTZTQ3ZI00ZDE5LTK0ZDUTNJHHMWZIOGZKZDM1", // POZOR: skopíruj znova z dr.cash "api examples"
+  stream:"5futh",
+  thanks:"./thanks.html",
+  productName:"Cystiolla",
+  price:"111 RON",
+  productImg:"",         // URL fotky krabičky z dr.cash Product Materials
+  why:"Based on your answers, a daily routine focused on urinary comfort may suit you. <b>Cystiolla</b> is a food supplement. Replace this text with the exact wording from the official offer materials."
+};
+/* sum:1 = odpoveď sa zobrazí v súhrne na konci. red:[index] = odpoveď, po ktorej sa kvíz ukončí odporúčaním lekára */
+var Q=[
+{k:"Vek",q:"What is your age group?",s:"Select one option to continue.",sum:1,o:["Under 40","40 – 49","50 – 59","60 or older"]},
+{k:"Ako dlho",q:"How long have you had these troubles?",s:"",sum:1,o:["Less than 1 month","1 – 6 months","6 – 12 months","More than a year","I'm not sure"]},
+{k:"Nočné budenie",q:"How often do you wake up at night to use the bathroom?",s:"",sum:1,o:["Not at all","Once","2 – 3 times","More than 3 times"]},
+{k:"Cez deň",q:"How often do you need the bathroom during the day?",s:"",o:["Every 3 – 4 hours or less often","Every 2 – 3 hours","Almost every hour"]},
+{k:"Varovné príznaky",q:"Do you currently have fever, blood in your urine or strong back or side pain?",s:"Your safety comes first.",red:[0],o:["Yes","No"]},
+{k:"Hlavný problém",q:"Which problem bothers you the most?",s:"",sum:1,o:["Burning or stinging","Pressure in the lower belly","Feeling the bladder is not empty","Sudden urgent need to go"]},
+{k:"Spúšťače",q:"What usually makes it worse?",s:"",o:["Cold or damp weather","Stress","Certain drinks or food","Long sitting","Nothing specific"]},
+{k:"Návrat",q:"How often do the troubles come back?",s:"",o:["Every few weeks","A few times a year","They never fully go away","This is the first time"]},
+{k:"Lekár",q:"Have you talked to a doctor about it?",s:"",o:["Yes, recently","Yes, long ago","Not yet"]},
+{k:"Čo skúšala",q:"What have you tried so far?",s:"",o:["Herbal teas","Pharmacy products","More water","Nothing yet"]},
+{k:"Spánok",q:"How much does it affect your sleep and energy?",s:"",o:["A lot","Somewhat","Only a little","Not at all"]},
+{k:"Cestovanie",q:"Does it limit your trips, walks or social life?",s:"",o:["Yes, I always plan around toilets","Sometimes","Rarely","No"]},
+{k:"Pitný režim",q:"How much water do you drink on a typical day?",s:"",o:["Less than 1 litre","1 – 1.5 litres","1.5 – 2 litres","More than 2 litres"]},
+{k:"Prístup",q:"What kind of support would you prefer?",s:"",o:["A natural daily supplement","Something recommended by a pharmacist","Whatever works best"]},
+{k:"Záväzok",q:"Would you follow a simple daily routine for a few weeks?",s:"It takes about a minute a day.",sum:1,o:["Yes, definitely","Yes, if it is easy","I'm not sure yet"]}
+];
+/* ================================================================ */
 
-        <!-- QUESTION 4 -->
-        <div class="step quiz-question" data-step-name="5. Otázka 4 (Skúsenosť s čajmi)">
-            <h2>Have you tried herbal teas or pharmacy products before?</h2>
-            <p class="subtitle">Past results help us evaluate mucosal resistance:</p>
-            <div class="options-list">
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Yes, but the problem always comes back</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Only gave me short relief for a few days</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>No, I haven't tried anything specific yet</span></button>
-            </div>
-        </div>
+var i=-1,ans=[],sent={};
+var $=function(x){return document.getElementById(x)};
+function show(id){document.querySelectorAll("section").forEach(function(s){s.classList.remove("on")});$(id).classList.add("on");window.scrollTo(0,0)}
+function pad(n){return(n<10?"0":"")+n}
 
-        <!-- QUESTION 5 -->
-        <div class="step quiz-question" data-step-name="6. Otázka 5 (Dopad na život)">
-            <h2>How much does this limit your daily activities or travel?</h2>
-            <p class="subtitle">Select the statement that fits best:</p>
-            <div class="options-list">
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Severely — I always check where toilets are</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Moderately — it causes daily discomfort</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Mildly — mostly bothers me at night or in cold</span></button>
-            </div>
-        </div>
+/* TRACKING: Google Sheets + Meta Pixel */
+function track(type,name,answer,once){
+  var key=type+"|"+name+"|"+(type==="answer"?"":answer);
+  if(once&&sent[key])return;sent[key]=1;
+  if(window.fbq){type==="kpi"&&name.indexOf("LEAD")>-1?fbq("track","Lead"):fbq("trackCustom",type==="answer"?"Answer":"Step",{name:name,answer:answer})}
+  if(CONFIG.webhook){var f=new FormData();f.append("type",type);f.append("name",name);f.append("answer",answer||"-");
+    try{fetch(CONFIG.webhook,{method:"POST",mode:"no-cors",body:f,keepalive:true})}catch(e){}}
+}
+function stepName(n){return"S"+pad(n+2)+" "+Q[n].k}
 
-        <!-- QUESTION 6 -->
-        <div class="step quiz-question" data-step-name="7. Otázka 6 (Mikrozáväzok)">
-            <h2>Would you follow a natural home routine to restore your bladder lining?</h2>
-            <p class="subtitle">Takes less than 1 minute per day:</p>
-            <div class="options-list">
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Yes, I want permanent relief</span></button>
-                <button class="option-card" onclick="pickAnswer(this)"><div class="check-box">✓</div><span>Yes, if it is 100% natural</span></button>
-            </div>
-        </div>
+function header(){
+  var t=Q.length,inQ=i>=0&&i<t;
+  $("back").style.visibility=inQ?"visible":"hidden";
+  $("cnt").textContent=inQ?(i+1)+"/"+t:"";
+  $("fill").style.width=(i<0?0:Math.min(100,(i+1)/t*100))+"%";
+}
+function renderQ(){
+  var d=Q[i],h='<h2>'+d.q+'</h2>'+(d.s?'<p class="sub">'+d.s+'</p>':'<p class="sub" style="margin-bottom:22px"></p>')+'<div class="opts">';
+  d.o.forEach(function(o,n){h+='<button class="opt'+(ans[i]===o?" sel":"")+'" onclick="pick('+n+',this)">'+o+'</button>'});
+  $("qbox").innerHTML=h+'</div>';show("qbox");header();
+  track("step",stepName(i),"-",true);
+}
+function startQuiz(){i=0;track("kpi","2 Štart","-",true);renderQ()}
+function pick(n,el){
+  var d=Q[i],o=d.o[n];ans[i]=o;
+  el.parentNode.querySelectorAll(".opt").forEach(function(b){b.classList.remove("sel")});el.classList.add("sel");
+  track("answer",stepName(i),o,true);
+  setTimeout(function(){
+    if(d.red&&d.red.indexOf(n)>-1){track("step","S98 Odporúčanie lekára","-",true);i=Q.length;header();show("doctor");return}
+    if(i+1<Q.length){i++;renderQ()}else{i=Q.length;header();analyse()}
+  },200);
+}
+function goBack(){if(i>0){i--;renderQ()}else if(i===0){i=-1;header();show("welcome")}}
 
-        <!-- LOADING SCREEN (Exact Mindway Green Spinner) -->
-        <div class="step" id="step-loading">
-            <div class="loader-wrap">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="spinner-svg">
-                    <path fill="#3FA134" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity="0.25"></path>
-                    <path fill="#3FA134" d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z">
-                        <animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"></animateTransform>
-                    </path>
-                </svg>
-                <h2 id="loading-title">Analyzing your responses...</h2>
-                <p class="subtitle" id="loading-sub">Calculating mucosal barrier profile</p>
-            </div>
-        </div>
+function analyse(){
+  show("loading");var m=["Reading your answers…","Comparing your habits…","Preparing your summary…"];
+  m.forEach(function(t,n){setTimeout(function(){$("lt").textContent=t},n*1000)});
+  setTimeout(function(){
+    var h="";Q.forEach(function(d,n){if(d.sum&&ans[n])h+="<li><b>"+d.k+":</b> "+ans[n]+"</li>"});
+    $("sumlist").innerHTML=h;$("why").innerHTML=CONFIG.why;
+    $("pname").textContent=CONFIG.productName;$("pprice").textContent=CONFIG.price;
+    if(CONFIG.productImg)$("pimg").outerHTML='<img class="img" src="'+CONFIG.productImg+'" alt="">';
+    track("step","S90 Dokončil kvíz (ponuka)","-",true);track("kpi","3 Ponuka","-",true);show("result");
+  },3000);
+}
 
-        <!-- FINAL SALES / RESULT PAGE -->
-        <div class="step" id="step-result" data-step-name="90. Dokončili kvíz (Videli ponuku)">
-            <div style="text-align: center;">
-                <span class="badge-complete">Diagnostic Report Ready</span>
-            </div>
-            <h2>Weakened Mucosal Lining Detected</h2>
-            <p class="subtitle" style="margin-bottom: 16px;">Your profile points to reduced protective barrier function in the urinary tract.</p>
+window.addEventListener("load",function(){
+  if(CONFIG.pixelId&&window.fbq){fbq("init",CONFIG.pixelId);fbq("track","PageView")}
+  track("step","S01 Príchod","-",true);track("kpi","1 Príchod","-",true);header();
+});
+</script>
 
-            <div class="report-box">
-                <strong>Why pharmacy teas failed you:</strong> Ordinary teas only flush water through the bladder, leaving the irritated lining exposed. To stop nighttime waking and recurring burning, you need concentrated <strong>Cranberry, Blueberry & Grapefruit bioflavonoids</strong> to form a protective shield so bacteria cannot attach.
-            </div>
+<!-- Meta Pixel loader (aktivuje sa len ak vyplníš pixelId) -->
+<script>
+if(CONFIG.pixelId){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js')}
+</script>
 
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1584308666744-24d5e4a831e5?auto=format&fit=crop&w=300&q=80" alt="Cystiolla"/>
-                <div>
-                    <div style="font-weight: 800; font-size: 17px;">Cystiolla Active Complex</div>
-                    <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;">50% Diagnostic Discount Unlocked</div>
-                    <div class="price-tag">111 RON</div>
-                </div>
-            </div>
-
-            <!-- DR.CASH ORDER FORM -->
-            <form class="orderForm">
-                <input type="text" name="name" placeholder="Full Name" required />
-                <input type="tel" name="phone" placeholder="Phone Number (for courier)" required />
-                <input type="hidden" name="ip" value="" />
-                <input type="submit" class="cta-btn" value="Claim 50% Discount Now →" />
-            </form>
-            <div class="security-note">🔒 Pay in cash upon delivery. No credit card required online.</div>
-        </div>
-
-    </main>
-
-    <!-- DYNAMIC QUIZ & TRACKING ENGINE (No session persistence on refresh) -->
-    <script>
-        // VLOŽ SEM SVOJU WEB APP URL Z GOOGLE TABUĽKY:
-        const GOOGLE_SHEETS_WEBHOOK_URL = "VLOZTE_URL_Z_GOOGLE_TABULKY_TU";
-
-        const questionEls = Array.from(document.querySelectorAll('.quiz-question'));
-        const welcomeEl = document.querySelector('.quiz-step');
-        const loadingEl = document.getElementById('step-loading');
-        const resultEl = document.getElementById('step-result');
-
-        let currentQuestionIndex = -1; // -1 = Welcome screen
-
-        // Univerzálna funkcia, ktorá posiela agregované dáta do Google Tabuľky a Mety
-        function trackToSheets(type, stepIndex, stepName, answerText) {
-            if (typeof fbq === 'function') {
-                if (stepIndex === 100) {
-                    fbq('track', 'Lead');
-                } else {
-                    fbq('trackCustom', stepName, { answer: answerText });
-                }
-            }
-
-            if (GOOGLE_SHEETS_WEBHOOK_URL.startsWith("http")) {
-                const fd = new FormData();
-                fd.append("type", type);
-                fd.append("step_index", String(stepIndex));
-                fd.append("step_name", stepName);
-                fd.append("answer", answerText || "-");
-
-                fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
-                    method: "POST",
-                    mode: "no-cors",
-                    body: fd
-                }).catch(() => {});
-            }
-        }
-
-        function renderHeader() {
-            const backBtn = document.getElementById('btn-back');
-            const counter = document.getElementById('step-counter');
-            const fill = document.getElementById('progress-fill');
-            const totalQ = questionEls.length;
-
-            if (currentQuestionIndex >= 0 && currentQuestionIndex < totalQ) {
-                backBtn.style.visibility = 'visible';
-                counter.innerText = (currentQuestionIndex + 1) + '/' + totalQ;
-                fill.style.width = Math.round(((currentQuestionIndex + 1) / totalQ) * 100) + '%';
-            } else if (currentQuestionIndex >= totalQ) {
-                backBtn.style.visibility = 'hidden';
-                counter.innerText = '';
-                fill.style.width = '100%';
-            } else {
-                backBtn.style.visibility = 'hidden';
-                counter.innerText = '';
-                fill.style.width = '0%';
-            }
-        }
-
-        function showStepElement(targetEl) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            targetEl.classList.add('active');
-            window.scrollTo(0, 0);
-            renderHeader();
-        }
-
-        function startQuiz() {
-            currentQuestionIndex = 0;
-            const firstQ = questionEls[0];
-            showStepElement(firstQ);
-            trackToSheets("step", 2, firstQ.getAttribute('data-step-name'), "-");
-        }
-
-        function pickAnswer(btnEl) {
-            const currentQEl = questionEls[currentQuestionIndex];
-            const stepName = currentQEl.getAttribute('data-step-name') || ('Otázka ' + (currentQuestionIndex + 1));
-            const answerText = btnEl.querySelector('span').innerText.trim();
-            const stepIdx = currentQuestionIndex + 2;
-
-            // Mindway green highlight effect before transition
-            currentQEl.querySelectorAll('.option-card').forEach(b => b.classList.remove('selected'));
-            btnEl.classList.add('selected');
-
-            // Zápis zvolenej odpovede do Google Tabuľky
-            trackToSheets("answer", stepIdx, stepName, answerText);
-
-            setTimeout(() => {
-                if (currentQuestionIndex + 1 < questionEls.length) {
-                    currentQuestionIndex++;
-                    const nextQ = questionEls[currentQuestionIndex];
-                    showStepElement(nextQ);
-                    trackToSheets("step", currentQuestionIndex + 2, nextQ.getAttribute('data-step-name'), "-");
-                } else {
-                    currentQuestionIndex = questionEls.length;
-                    runLoadingSequence();
-                }
-            }, 220);
-        }
-
-        function goBack() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                showStepElement(questionEls[currentQuestionIndex]);
-            } else if (currentQuestionIndex === 0) {
-                currentQuestionIndex = -1;
-                showStepElement(welcomeEl);
-            }
-        }
-
-        function runLoadingSequence() {
-            showStepElement(loadingEl);
-            setTimeout(() => {
-                document.getElementById('loading-title').innerText = "Checking recurrence factors...";
-            }, 1300);
-            setTimeout(() => {
-                document.getElementById('loading-title').innerText = "Preparing your custom report...";
-            }, 2600);
-            setTimeout(() => {
-                showStepElement(resultEl);
-                trackToSheets("step", 90, resultEl.getAttribute('data-step-name'), "-");
-            }, 3800);
-        }
-
-        // Pri každom načítaní/refreshi začína odznova (žiadny sessionStorage bug)
-        window.onload = function() {
-            currentQuestionIndex = -1;
-            showStepElement(welcomeEl);
-            trackToSheets("step", 1, welcomeEl.getAttribute('data-step-name'), "-");
-        };
-    </script>
-
-    <!-- DR.CASH API INTEGRATION -->
-    <script src="https://static.statthroat.tech/dist/api/lead-1.1.0.min.js"></script>
-    <script>
-      drlead.init({
-        params: {
-          token: "MJM1MDDLOTGTZTQ3ZI00ZDE5LTK0ZDUTNJHHMWZIOGZKZDM1",
-          stream_code: "5futh",
-          thanks_page: "./thanks.html"
-        },
-        subs: {
-          sub1: drlead.formInputGet("sub1") || drlead.queryGet("sub1"),
-          sub2: drlead.formInputGet("sub2") || drlead.queryGet("sub2"),
-          sub3: drlead.formInputGet("sub3") || drlead.queryGet("sub3"),
-          sub4: drlead.formInputGet("sub4") || drlead.queryGet("sub4"),
-          sub5: drlead.formInputGet("sub5") || drlead.queryGet("sub5")
-        },
-        callback: function (error, response) {
-          if (!error) {
-            trackToSheets("step", 100, "100. 🔥 ODOSLANÝ LEAD (Opt-in)", "LEAD");
-          }
-        }
-      });
-    </script>
+<!-- DR.CASH API -->
+<script src="https://static.statthroat.tech/dist/api/lead-1.1.0.min.js"></script>
+<script>
+drlead.init({
+  params:{token:CONFIG.token,stream_code:CONFIG.stream,thanks_page:CONFIG.thanks},
+  subs:{sub1:drlead.queryGet("sub1"),sub2:drlead.queryGet("sub2"),sub3:drlead.queryGet("sub3"),sub4:drlead.queryGet("sub4"),sub5:drlead.queryGet("sub5")},
+  callback:function(error,response){
+    if(!error){track("kpi","4 LEAD","-",true)}   // Lead sa zapíše len po úspešnom odoslaní do dr.cash
+  }
+});
+</script>
 </body>
 </html>
