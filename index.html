@@ -16,7 +16,14 @@ h3{font-size:16px;font-weight:700;margin-bottom:.3em}
 .w{max-width:1040px;margin:0 auto;padding:0 20px}
 section{padding:72px 0}
 .alt{background:var(--bg)}
-.site{background:var(--b);}.site .w{display:flex;align-items:center;justify-content:center;height:64px}.logo{display:flex;align-items:center;gap:10px;font:700 21px Montserrat,sans-serif;letter-spacing:.01em;color:#fff}
+.site{
+  background:var(--b);
+  box-shadow:0 1px 0 rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.14);
+  position:relative;
+  z-index:30;
+}
+.site .w{display:flex;align-items:center;justify-content:center;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font:700 21px Montserrat,sans-serif;letter-spacing:.01em;color:#fff}
 .oprice{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 18px}
 .amt{display:none;font:800 46px/1 Montserrat,sans-serif;color:var(--b)}
 .pay{font:700 13px Montserrat,sans-serif;color:var(--b);border:1.5px solid var(--b);border-radius:6px;padding:6px 10px}
