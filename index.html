@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LioStrong – Ice first. Fire second.</title>
+<title>LioStrong – Întâi gheață, apoi foc</title>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0d2f44;--tx:#33485a;--mut:#64798a;--line:#d8e4ec;--bg:#f2f7fa;--teal:#0e86a3;--cold:#2f9bd6;--heat:#f0562a;--cta:#d4491b;--cta2:#b33a12;color-scheme:light}
 *,*::before,*::after{box-sizing:border-box;min-width:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 body{margin:0;font:400 16px/1.5 Figtree,system-ui,sans-serif;color:var(--tx);background:#fff;overflow-x:clip;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
-img,svg{max-width:100%;display:block}
+img{max-width:100%;height:auto;display:block}svg{max-width:100%;display:block}
 h1,h2,h3{color:var(--ink);line-height:1.1;margin:0 0 .45em;letter-spacing:-.02em}
 h1{font-size:clamp(38px,11vw,64px);font-weight:800}
 h2{font-size:clamp(26px,6.5vw,36px);font-weight:800}
@@ -24,10 +24,7 @@ section{padding:40px 0}
 .btn:hover{background:var(--cta2)}.btn[disabled]{opacity:.6;cursor:wait}
 
 /* top + hero */
-.top{border-bottom:1px solid var(--line);padding:12px 0}
-.top .w{display:flex;justify-content:space-between;align-items:center}
-.brand{font-weight:800;font-size:21px;color:var(--ink);letter-spacing:-.02em}.brand i{font-style:normal;color:var(--teal)}
-.chip{font-size:12.5px;font-weight:600;color:var(--teal);border:1.5px solid var(--teal);border-radius:99px;padding:3px 10px;white-space:nowrap}
+.top{background:#0f2f4f}.top .w{display:flex;justify-content:center;align-items:center;height:56px}.logo{font-weight:800;font-size:22px;color:#fff;letter-spacing:-.02em}
 .hero{padding:22px 0 34px;background:linear-gradient(180deg,var(--bg),#fff)}
 .hero h1 .c{color:var(--cold)}.hero h1 .h{color:var(--heat)}.hero h1 span{display:block}
 .hero .sub{font-size:17.5px;margin:8px 0 16px}
@@ -46,7 +43,7 @@ section{padding:40px 0}
 .fm input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px rgba(14,134,163,.2)}
 .fm .ck{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--mut);margin:2px 0 12px}
 .fm .ck input{margin-top:2px;width:17px;height:17px;flex:none}.fm .ck a{color:var(--ink)}
-.fm .note{font-size:12.5px;color:var(--mut);text-align:center;margin:10px 0 0}
+.fm .note{font-size:12.5px;color:var(--mut);text-align:center;margin:10px 0 0}.fm .note a{color:var(--ink)}
 .ok{display:none;text-align:center;padding:6px 0}.ok h3{font-size:21px}
 
 /* graphic blocks */
@@ -63,9 +60,14 @@ section{padding:40px 0}
 .zones{display:grid;gap:8px}
 .zones div{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-weight:600;color:var(--ink)}
 .zones i{width:12px;height:12px;border-radius:50%;background:var(--heat);flex:none;box-shadow:0 0 0 4px rgba(240,86,42,.18)}
-.rv{display:grid;gap:10px;margin-top:16px}
-.rc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-.rc .s{color:var(--heat);letter-spacing:2px}.rc p{margin:4px 0;color:var(--ink);font-weight:500}.rc b{font-size:13.5px;color:var(--mut);font-weight:600}.rc img{margin-top:8px;border-radius:10px;max-width:200px}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:10px}
+.gal::-webkit-scrollbar{display:none}
+.gs{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1/1;background:#fff}
+.gs img{width:100%;height:100%;object-fit:contain}
+.th{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.th button{width:54px;height:54px;padding:2px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;opacity:.65}
+.th button.on{border-color:var(--teal);opacity:1}
+.th img{width:100%;height:100%;object-fit:cover;border-radius:6px}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 18px}
 .steps div{text-align:center;font-size:13.5px;font-weight:600;line-height:1.3;color:#cfe3ee}
 .steps b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--ink);margin:0 auto 6px}
@@ -88,10 +90,12 @@ dialog button{background:var(--ink);color:#fff;border:0;border-radius:8px;paddin
 #cb{position:fixed;left:10px;right:10px;bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:50;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:12.5px;display:none;box-shadow:0 10px 30px rgba(0,0,0,.25);gap:10px;align-items:center}
 #cb p{margin:0;flex:1}#cb button{border:0;border-radius:8px;padding:9px 12px;font:700 13px Figtree,sans-serif;cursor:pointer;background:var(--ink);color:#fff}#cb .n{background:#e6eef3;color:var(--ink)}
 
+
+.btn small{display:block;font-size:12.5px;font-weight:500;opacity:.92;margin-top:2px}
 @media(min-width:821px){
  body{font-size:17px;padding-bottom:0}section{padding:64px 0}
  .hero .g{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
- .two{grid-template-columns:1fr 1fr}.act{grid-template-columns:repeat(4,1fr)}.rv{grid-template-columns:repeat(3,1fr)}
+ .two{grid-template-columns:1fr 1fr}.act{grid-template-columns:repeat(4,1fr)}
  .sticky{display:none}#cb{left:16px;right:auto;bottom:16px;max-width:480px}.final .fm{max-width:480px;margin:0 auto}
  .body{grid-template-columns:200px 1fr;max-width:640px}
 }
@@ -100,114 +104,102 @@ dialog button{background:var(--ink);color:#fff;border:0;border-radius:8px;paddin
 </head>
 <body>
 
-<div class="top"><div class="w"><span class="brand">Lio<i>Strong</i></span><span class="chip">Cosmetic · external use</span></div></div>
+<div class="top"><div class="w"><span class="logo">LioStrong</span></div></div>
 
 <header class="hero"><div class="w"><div class="g">
  <div>
-  <h1><span class="c">Ice first.</span><span class="h">Fire second.</span></h1>
-  <p class="sub">The dual-phase cooling and warming balm for knees, shoulders and back. Cold the moment you apply it, deep heat minutes later.</p>
+  <h1><span class="c">Întâi gheață.</span><span class="h">Apoi foc.</span></h1>
+  <p class="sub"><b style="color:var(--ink)">Majoritatea cremelor au o singură fază: ori rece, ori cald.</b> LioStrong le are pe amândouă. Mai întâi răcorește zona, apoi o încălzește. De aceea este mult mai bun decât un gel obișnuit.</p>
   <div class="icons">
-   <div><svg viewBox="0 0 32 32" fill="none" stroke="#2f9bd6" stroke-width="2.4" stroke-linecap="round"><path d="M16 3v26M5 9.5l22 13M27 9.5l-22 13M12 5l4 3 4-3M12 27l4-3 4 3"/></svg>Instant cooling</div>
-   <div><svg viewBox="0 0 32 32" fill="none" stroke="#f0562a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c1 6 8 8 8 15a8 8 0 0 1-16 0c0-3 2-5 3-7 1 2 2 3 3 3 1-3 1-6 2-11z"/></svg>Lasting warmth</div>
-   <div><svg viewBox="0 0 32 32" fill="none" stroke="#0e86a3" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4c5 6 8 10 8 14a8 8 0 0 1-16 0c0-4 3-8 8-14z"/></svg>Absorbs fast, not greasy</div>
+   <div><svg viewBox="0 0 32 32" fill="none" stroke="#2f9bd6" stroke-width="2.4" stroke-linecap="round"><path d="M16 3v26M5 9.5l22 13M27 9.5l-22 13M12 5l4 3 4-3M12 27l4-3 4 3"/></svg>Răcoare imediată</div>
+   <div><svg viewBox="0 0 32 32" fill="none" stroke="#f0562a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c1 6 8 8 8 15a8 8 0 0 1-16 0c0-3 2-5 3-7 1 2 2 3 3 3 1-3 1-6 2-11z"/></svg>Căldură de durată</div>
+   <div><svg viewBox="0 0 32 32" fill="none" stroke="#0e86a3" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4c5 6 8 10 8 14a8 8 0 0 1-16 0c0-4 3-8 8-14z"/></svg>Se absoarbe repede, nu unge</div>
   </div>
  </div>
  <div>
-  <div class="pimg"><b>50 ml</b><img src="https://i.ibb.co/v4kvbJ1F/Liostrong-Joint-Balm-Studio-Display.png" alt="LioStrong balm, 50 ml tube" width="800" height="800" fetchpriority="high"></div>
+  <div class="pimg"><b>50 ml</b><div class="gal" id="gal"><div class="gs"><img fetchpriority="high" src="https://i.ibb.co/v4kvbJ1F/Liostrong-Joint-Balm-Studio-Display.png" alt="LioStrong"></div><div class="gs"><img loading="lazy" src="https://i.ibb.co/6xk30Kt/file-1.webp" alt="LioStrong"></div><div class="gs"><img loading="lazy" src="https://i.ibb.co/pvgs1sjK/file.webp" alt="LioStrong"></div><div class="gs"><img loading="lazy" src="https://i.ibb.co/zVxQgswG/Ruka-dr-iaca-tubu-kr-mu-LIO-STRONG.png" alt="LioStrong"></div></div><div class="th" id="th"><button type="button" class="on" aria-label="Foto 1"><img src="https://i.ibb.co/v4kvbJ1F/Liostrong-Joint-Balm-Studio-Display.png" alt=""></button><button type="button" aria-label="Foto 2"><img src="https://i.ibb.co/6xk30Kt/file-1.webp" alt=""></button><button type="button" aria-label="Foto 3"><img src="https://i.ibb.co/pvgs1sjK/file.webp" alt=""></button><button type="button" aria-label="Foto 4"><img src="https://i.ibb.co/zVxQgswG/Ruka-dr-iaca-tubu-kr-mu-LIO-STRONG.png" alt=""></button></div></div>
   <div class="fm-mount"></div>
  </div>
 </div></div></header>
 
 <section><div class="w">
- <h2>Two phases. One application.</h2>
+ <h2>Majoritatea cremelor au o singură fază. LioStrong le are pe amândouă.</h2>
  <div class="chart">
-  <svg viewBox="0 0 320 150" role="img" aria-label="Illustration: cooling sensation first, then warming sensation">
+  <svg viewBox="0 0 320 150" role="img" aria-label="Ilustrație: mai întâi răcoare, apoi căldură">
    <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#2f9bd6"/><stop offset=".45" stop-color="#9bb9c9"/><stop offset=".6" stop-color="#f0562a"/><stop offset="1" stop-color="#f0562a"/></linearGradient></defs>
    <line x1="10" y1="75" x2="310" y2="75" stroke="#cbd9e3" stroke-dasharray="4 4"/>
    <path d="M10 75C40 75 50 128 80 128S120 85 150 70S200 22 235 22S295 34 310 40" fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/>
-   <text x="80" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#2f9bd6">Phase 1: cold</text>
-   <text x="235" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#f0562a">Phase 2: heat</text>
-   <text x="310" y="68" text-anchor="end" font-size="10" fill="#64798a">time</text>
+   <text x="80" y="146" text-anchor="middle" font-size="12" font-weight="700" fill="#2f9bd6">Faza 1: rece</text>
+   <text x="235" y="14" text-anchor="middle" font-size="12" font-weight="700" fill="#f0562a">Faza 2: cald</text>
+   <text x="310" y="68" text-anchor="end" font-size="10" fill="#64798a">timp</text>
   </svg>
-  <small>Illustration of the typical sensation. Individual experience varies.</small>
+  <small>Ilustrație. Fiecare persoană simte puțin diferit.</small>
  </div>
- <div class="two"><div><b>Phase 1.</b> Menthol cools instantly.</div><div class="hot"><b>Phase 2.</b> Capsicum and camphor bring deep warmth.</div></div>
+ <div class="two"><div><b>Faza 1.</b> Mentolul răcorește imediat.</div><div class="hot"><b>Faza 2.</b> Capsicul și camforul aduc căldură în profunzime.</div></div>
 </div></section>
 
 <section class="alt"><div class="w">
- <h2>The active complex</h2>
+ <h2>Ce conține</h2>
  <div class="act">
-  <div><svg viewBox="0 0 32 32" fill="none" stroke="#2f9bd6" stroke-width="2.2" stroke-linecap="round"><path d="M16 3v26M5 9.5l22 13M27 9.5l-22 13"/></svg><b>Menthol</b><span>Cooling</span></div>
-  <div><svg viewBox="0 0 32 32" fill="none" stroke="#f0562a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c1 6 8 8 8 15a8 8 0 0 1-16 0c0-3 2-5 3-7 1 2 2 3 3 3 1-3 1-6 2-11z"/></svg><b>Capsicum</b><span>Warming</span></div>
-  <div><svg viewBox="0 0 32 32" fill="none" stroke="#0e86a3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="5"/><path d="M16 3v5M16 24v5M3 16h5M24 16h5"/></svg><b>Camphor</b><span>Invigorating</span></div>
-  <div><svg viewBox="0 0 32 32" fill="none" stroke="#3a8a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 26C6 12 14 6 27 5c0 13-6 21-19 21zM6 26L18 14"/></svg><b>Comfrey + chestnut</b><span>Plant extracts</span></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="#2f9bd6" stroke-width="2.2" stroke-linecap="round"><path d="M16 3v26M5 9.5l22 13M27 9.5l-22 13"/></svg><b>Mentol</b><span>Răcorește</span></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="#f0562a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c1 6 8 8 8 15a8 8 0 0 1-16 0c0-3 2-5 3-7 1 2 2 3 3 3 1-3 1-6 2-11z"/></svg><b>Capsicum</b><span>Încălzește</span></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="#0e86a3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="5"/><path d="M16 3v5M16 24v5M3 16h5M24 16h5"/></svg><b>Camfor</b><span>Senzație de prospețime</span></div>
+  <div><svg viewBox="0 0 32 32" fill="none" stroke="#3a8a5a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 26C6 12 14 6 27 5c0 13-6 21-19 21zM6 26L18 14"/></svg><b>Tătăneasă + castan</b><span>Extracte din plante</span></div>
  </div>
- <p style="text-align:center;font-size:13.5px;color:var(--mut);margin-top:14px">Plus fir, eucalyptus, maritime pine and lemon oils. Full formula in the FAQ.</p>
+ <p style="text-align:center;font-size:13.5px;color:var(--mut);margin-top:14px">Plus uleiuri de brad, eucalipt, pin maritim și lămâie. Formula completă este în întrebările frecvente.</p>
 </div></section>
 
 <section><div class="w">
- <h2>Where to apply</h2>
+ <h2>Unde se aplică</h2>
  <div class="body">
   <svg viewBox="0 0 120 220" aria-hidden="true"><g fill="#e3edf3" stroke="#b4c6d3" stroke-width="1.5"><circle cx="60" cy="20" r="14"/><path d="M36 44h48a8 8 0 0 1 8 8v52a8 8 0 0 1-8 8H36a8 8 0 0 1-8-8V52a8 8 0 0 1 8-8z"/><rect x="12" y="46" width="14" height="62" rx="7"/><rect x="94" y="46" width="14" height="62" rx="7"/><rect x="34" y="114" width="23" height="96" rx="11"/><rect x="63" y="114" width="23" height="96" rx="11"/></g><g fill="#f0562a" stroke="#fff" stroke-width="2"><circle cx="36" cy="54" r="6"/><circle cx="84" cy="54" r="6"/><circle cx="60" cy="86" r="6"/><circle cx="42" cy="118" r="6"/><circle cx="78" cy="118" r="6"/><circle cx="46" cy="166" r="6"/><circle cx="74" cy="166" r="6"/></g></svg>
-  <div class="zones"><div><i></i>Shoulders</div><div><i></i>Back</div><div><i></i>Hips</div><div><i></i>Knees</div></div>
+  <div class="zones"><div><i></i>Umeri</div><div><i></i>Spate</div><div><i></i>Șolduri</div><div><i></i>Genunchi</div></div>
  </div>
- <p style="margin-top:16px;font-size:14.5px;color:var(--mut)">Thin layer, gentle massage, 2–3 times a day. Recommended routine: 2–3 months, repeated twice a year.</p>
+ <p style="margin-top:16px;font-size:14.5px;color:var(--mut)">Strat subțire, masaj ușor, de 2–3 ori pe zi. Cură recomandată: 2–3 luni, repetată de 2 ori pe an.</p>
 </div></section>
 
-<section id="reviews" class="alt" hidden><div class="w"><h2>Customer feedback</h2><div class="rv" id="rv"></div></div></section>
 
 <section class="final" id="order"><div class="w">
- <h2>Pay only when it arrives.</h2>
- <div class="steps"><div><b>1</b>Leave name and number</div><div><b>2</b>We call to confirm</div><div><b>3</b>Courier delivers, you pay</div></div>
+ <h2>Plătiți doar când primiți coletul.</h2>
+ <div class="steps"><div><b>1</b>Lăsați numele și numărul</div><div><b>2</b>Vă sunăm să confirmăm</div><div><b>3</b>Curierul livrează, dvs. plătiți</div></div>
  <div class="fm-mount"></div>
 </div></section>
 
 <section><div class="w" style="max-width:760px">
- <h2>Quick answers</h2>
- <details><summary>Does it burn like chili creams?</summary><p>It starts cold, then warmth builds. Capsicum can feel stronger on sensitive skin, so start with a thin layer.</p></details>
- <details><summary>Is it a medicine? Is it safe?</summary><p>It’s a cosmetic product for external use, not a medicine. Don’t use on broken skin, near eyes, or if allergic to any ingredient (contains methyl salicylate). Wash hands after use. If pregnant, nursing or under treatment, ask your doctor first.</p></details>
- <details><summary>What happens after I order?</summary><p>We call to confirm your address, the courier delivers, and you pay on receipt.</p></details>
- <details><summary>Full ingredients (INCI)</summary><p style="font-size:13px">Aqua, Alcohol, Glycerin, Paraffinum Liquidum, Menthol, Symphytum Officinale Leaf Extract, PEG-40 Hydrogenated Castor Oil, Phenoxyethanol, Ethylhexylglycerin, Capsicum Frutescens Resin, Camphor, Eucalyptus Globulus Leaf Oil, Abies Sibirica Oil, Pinus Pinaster Oil, Citrus Limon Peel Oil, Methyl Salicylate, Propylene Glycol, Aesculus Hippocastanum Seed Extract, Carbomer, Xanthan Gum, Niacinamide, Triethanolamine.</p></details>
+ <h2>Întrebări frecvente</h2>
+ <details><summary>De ce costă mai mult decât un gel obișnuit?</summary><p>Ingredientele din interior sunt scumpe: mentol, capsicum, camfor și extracte din plante, precum tătăneasa și castanul. Iar o singură aplicare vă dă și răcoare, și căldură.</p></details><details><summary>De ce miroase atât de puternic?</summary><p>Mirosul vine de la mentol, camfor, eucalipt și ulei de brad. Este mirosul clasic al unui balsam.</p></details><details><summary>Pot să îl folosesc zilnic?</summary><p>Da. Aplicați-l de 2–3 ori pe zi, cu un masaj ușor. Cura recomandată este de 2–3 luni, repetată de 2 ori pe an.</p></details><details><summary>Plătesc ceva acum?</summary><p>Nu. Un coleg vă sună să confirme comanda, curierul livrează, iar dvs. plătiți la primire.</p></details><details><summary>Este medicament? Este sigur?</summary><p>Este un produs cosmetic pentru uz extern, nu un medicament. Nu-l folosiți pe piele rănită, lângă ochi sau dacă sunteți alergic la vreun ingredient (conține salicilat de metil). Spălați-vă pe mâini după aplicare. Dacă sunteți însărcinată, alăptați sau urmați un tratament, întrebați mai întâi medicul.</p></details><details><summary>Lista completă de ingrediente</summary><p style="font-size:13px">Aqua, Alcohol, Glycerin, Paraffinum Liquidum, Menthol, Symphytum Officinale Leaf Extract, PEG-40 Hydrogenated Castor Oil, Phenoxyethanol, Ethylhexylglycerin, Capsicum Frutescens Resin, Camphor, Eucalyptus Globulus Leaf Oil, Abies Sibirica Oil, Pinus Pinaster Oil, Citrus Limon Peel Oil, Methyl Salicylate, Propylene Glycol, Aesculus Hippocastanum Seed Extract, Carbomer, Xanthan Gum, Niacinamide, Triethanolamine.</p></details>
 </div></section>
 
 <footer><div class="w">
- <a data-m="pm">Privacy policy</a>|<a data-m="tm">Terms</a>|<a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener">ANPC SAL</a>|<a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener">SOL</a>
- <div style="margin-top:8px">LioStrong is a cosmetic product for external use only.<br>
- <!-- FILL IN seller details from your network -->
- [Company name] · VAT/CUI [number] · [Address] · [Phone] · [Email]</div>
+ <a data-m="pm">Politica de confidențialitate</a>|<a data-m="tm">Terms</a>
+ <div style="margin-top:8px">LioStrong este un produs cosmetic pentru uz extern.</div>
 </div></footer>
 
-<dialog id="pm"><h2>Privacy policy</h2><p>We collect only your name and phone number, based on your consent when you submit the form.</p><p>Data is shared with the distributor and the courier solely to confirm your order by phone and deliver the parcel, in line with GDPR. Access, correction or deletion: [email].</p><button data-x>Close</button></dialog>
-<dialog id="tm"><h2>Terms</h2><p>By submitting the form you request a phone call to confirm your order. The order is final after confirmation.</p><p>The price of 119 RON includes VAT. Payment is made on delivery. Delivery cost: [fill in].</p><p>You may withdraw within 14 days of receipt under applicable law. Seller details and conditions: [fill in].</p><button data-x>Close</button></dialog>
+<dialog id="pm"><h2>Politica de confidențialitate</h2><p>Colectăm doar numele și numărul de telefon, pe baza acordului dvs. la trimiterea formularului.</p><p>Datele sunt transmise distribuitorului și firmei de curierat exclusiv pentru confirmarea telefonică a comenzii și livrarea coletului, conform GDPR.</p><button data-x>Închide</button></dialog>
+<dialog id="tm"><h2>Termeni și condiții</h2><p>Prin trimiterea formularului solicitați un apel telefonic pentru confirmarea comenzii. Comanda este finală după confirmare.</p><p>Prețul de 119 lei include TVA. Plata se face la livrare.</p><p>Detaliile despre livrare și returnare vă sunt explicate de call center la apelul de confirmare.</p><button data-x>Închide</button></dialog>
 
 <template id="ft">
  <div class="fm fmx">
   <form action="#" method="POST">
-   <div class="pr"><b>LioStrong 50 ml</b><span>119 RON</span></div>
-   <label class="f">Full name<input type="text" name="name" autocomplete="name" required minlength="3" placeholder="Your name"></label>
-   <label class="f">Phone number<input type="tel" name="phone" autocomplete="tel" inputmode="tel" required minlength="9" placeholder="07xx xxx xxx"></label>
-   <label class="ck"><input type="checkbox" required checked><span>I agree to the <a href="#" data-m="tm">Terms</a> and <a href="#" data-m="pm">Privacy policy</a>.</span></label>
-   <button type="submit" class="btn">Order now, pay on delivery</button>
-   <p class="note">We call within 24 h to confirm. Please answer.</p>
+   <div class="pr"><b>LioStrong</b><span>119 lei</span></div>
+   <label class="f">Nume complet<input type="text" name="name" autocomplete="name" required minlength="3" placeholder="Numele dvs."></label>
+   <label class="f">Număr de telefon<input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="07xx xxx xxx"></label>
+      <button type="submit" class="btn">Comandă acum<small>Un coleg vă sună pentru confirmare</small></button>
+   <p class="note">Un coleg vă va suna pentru confirmare. Prin comandă acceptați <a href="#" data-m="tm">Termenii</a> și <a href="#" data-m="pm">Politica de confidențialitate</a>.</p>
   </form>
-  <div class="ok"><h3>Thank you, your order is in.</h3><p>Our team will call you shortly. Keep your phone close.</p></div>
+  <div class="ok"><h3>Mulțumim, comanda dvs. a fost înregistrată.</h3><p>Un coleg vă va suna în curând. Țineți telefonul aproape.</p></div>
  </div>
 </template>
 
-<div class="sticky" id="st"><div>Pay on delivery<b>119 RON</b></div><a class="btn" href="#order">Order now</a></div>
-<div id="cb" role="dialog" aria-label="Cookies"><p>We use cookies for the site and to measure ads.</p><button class="n" id="kn">Decline</button><button id="ky">Accept</button></div>
+<div class="sticky" id="st"><div>Plata la livrare<b>119 lei</b></div><a class="btn" href="#order">Comandă acum<small>Vă sunăm pentru confirmare</small></a></div>
+<div id="cb" role="dialog" aria-label="Cookies"><p>Folosim cookie-uri pentru funcționarea site-ului și pentru măsurarea reclamelor.</p><button class="n" id="kn">Refuz</button><button id="ky">Accept</button></div>
 
 <script>
-// Excerpts from the reviews on your original page. KEEP ONLY IF REAL. Add "img" for a real photo.
-var REVIEWS=[
- {n:"Elena M.",s:4,t:"“…The feeling of cold and then heat is different.”"},
- {n:"Andrei P.",s:5,t:"“…It absorbs quickly and isn’t greasy.”"},
- {n:"Ioana D.",s:4,t:"“The scent is quite strong, but I got used to it.”"}
-];
 (function(){
  var $=function(s){return document.querySelector(s)},$$=function(s){return document.querySelectorAll(s)};
- if(REVIEWS.length){var h="";REVIEWS.forEach(function(r){var st="";for(var i=0;i<5;i++)st+=i<r.s?"★":"☆";h+='<div class="rc"><span class="s">'+st+'</span><p></p><b></b>'+(r.img?'<img loading="lazy" alt="">':"")+'</div>'});
-  $("#rv").innerHTML=h;var c=$$(".rc");REVIEWS.forEach(function(r,i){c[i].querySelector("p").textContent=r.t;c[i].querySelector("b").textContent=r.n;if(r.img)c[i].querySelector("img").src=r.img});$("#reviews").hidden=false}
+ var g=$("#gal"),tb=$$("#th button");
+ tb.forEach(function(b,i){b.onclick=function(){g.scrollTo({left:i*g.clientWidth,behavior:"smooth"})}});
+ g.addEventListener("scroll",function(){var i=Math.round(g.scrollLeft/g.clientWidth);tb.forEach(function(b,j){b.classList.toggle("on",j===i)})},{passive:true});
  var t=$("#ft");$$(".fm-mount").forEach(function(m){m.appendChild(t.content.cloneNode(true))});
  $$("[data-m]").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();document.getElementById(a.dataset.m).showModal()})});
  $$("[data-x]").forEach(function(b){b.addEventListener("click",function(){b.closest("dialog").close()})});
@@ -217,9 +209,10 @@ var REVIEWS=[
  if(v==="y")pix();else if(v===null)$("#cb").style.display="flex";
  function setC(x){try{localStorage.setItem("ck",x)}catch(e){}$("#cb").style.display="none";if(x==="y")pix()}
  $("#ky").onclick=function(){setC("y")};$("#kn").onclick=function(){setC("n")};
+ function okPhone(v){var p=v.replace(/[^\d+]/g,""),d=p.replace(/\D/g,"");if(/^(\+40|0040)/.test(p))return d.replace(/^(00)?40/,"").replace(/^0/,"").length===9;if(/^(\+|00)/.test(p))return d.length>=8&&d.length<=15;if(/^07/.test(d))return d.length===10;if(/^7/.test(d))return d.length===9;return d.length>=8&&d.length<=15}
  $$(".fmx form").forEach(function(f){f.addEventListener("submit",function(e){
-  var p=f.phone;if(p.value.replace(/\D/g,"").length<9){e.preventDefault();p.setCustomValidity("Enter a valid phone number");p.reportValidity();p.oninput=function(){p.setCustomValidity("")};return}
-  var b=f.querySelector(".btn");b.disabled=true;b.textContent="Sending…";
+  var p=f.phone;if(!okPhone(p.value)){e.preventDefault();p.setCustomValidity("Verificați numărul, de exemplu 07xx xxx xxx sau +40 7xx xxx xxx");p.reportValidity();p.oninput=function(){p.setCustomValidity("")};return}
+  var b=f.querySelector(".btn");b.disabled=true;b.textContent="Se trimite…";
   /* Set action + field names from your network. Fire Lead on the thank-you page. */
  })});
 })();
