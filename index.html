@@ -238,10 +238,10 @@ body.nostk #cookie-banner{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
   // ============================================================
   // ⚙️ KONFIGURÁCIA ARKNET
   // ============================================================
-  var ARKNET_TOKEN = '405-eb9fdc0e315e72d899207dceea54e44b';
   var ARKNET_OFFER = 1738;
-  var ARKNET_FLOW  = null; // ← ak dostaneš chybu "noflow", doplň sem ID flow
-  var ARKNET_URL   = 'https://arknet.group/api/leads/add.json?id=' + ARKNET_TOKEN;
+var ARKNET_FLOW  = null; // ← ak dostaneš chybu "noflow", doplň sem ID flow
+var ARKNET_URL   = 'https://arknet-proxy.jannnkovadomai.workers.dev';
+// ARKNET_TOKEN je teraz bezpečne uložený v Cloudflare Workeri, nie vo verejnom HTML
   // ============================================================
 
   var DEBUG=/[?&]debug=1/.test(location.search); // otvor stránku s ?debug=1 a uvidíš technickú chybu pod tlačidlom
