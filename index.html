@@ -43,12 +43,6 @@ body {
   letter-spacing: 3px; text-transform: uppercase;
   text-decoration: none; display: inline-block; line-height: 1;
 }
-.hdr-tagline {
-  display: block; text-decoration: none; cursor: pointer;
-  font-size: 9px; color: #8da0c8; letter-spacing: 2px;
-  text-transform: uppercase; margin-top: 6px; font-weight: 600;
-}
-
 /* ===== Article ===== */
 .wrap { max-width: 620px; margin: 0 auto; padding: 0 22px 40px; }
 
@@ -308,6 +302,7 @@ dialog button {
 }
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -319,7 +314,6 @@ dialog button {
 <header class="site-header">
   <div class="hdr-main">
     <a href="#" class="hdr-logo">The Vital Magazine</a>
-    <a href="#" class="hdr-tagline" id="taglineLink">Health · Movement · Recovery</a>
   </div>
 </header>
 
@@ -338,7 +332,7 @@ dialog button {
   <div class="author">
     <img src="https://assets.checkoutchamp.com/3bfe8e34-c374-43b9-b02d-43313733689b/1753906993660_1724920880_dr_blane_1_.webp" alt="Editorial team">
     <div class="author-info">
-      <strong>The Vital Magazine Editorial Team</strong>
+      <strong>Posted by Vital Magazine Team</strong>
       <span class="dynamic-date" id="authorDate">May 5, 2025</span>
     </div>
   </div>
@@ -603,10 +597,6 @@ dialog button {
   document.querySelectorAll('.more-card').forEach(function (el) {
     el.addEventListener('click', function (e) { e.preventDefault(); });
   });
-
-  // Header tagline: clickable but no action
-  var tag = document.getElementById('taglineLink');
-  if (tag) tag.addEventListener('click', function (e) { e.preventDefault(); });
 
   // Close dialogs when clicking outside them (backdrop)
   document.querySelectorAll('dialog').forEach(function (dlg) {
