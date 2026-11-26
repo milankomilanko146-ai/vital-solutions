@@ -8,6 +8,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <title>Why Does Your Cooling Gel Feel Great for Two Minutes and Then Stop? | The Vital Magazine</title>
+
+<!-- ============================================================
+     META PIXEL (do buducna):
+     Sem vloz standardny kod Meta Pixelu (fbq init + PageView).
+     Pozor: spustanie "Lead" eventu po uspesnom odoslani formulara
+     sa doplni do existujuceho JS handlera (nahradit cast .then()).
+     ============================================================ -->
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -22,7 +29,7 @@ body {
 /* ===== Top bar ===== */
 .top-bar {
   background: #000;
-  color: #8a8a8a;
+  color: #555;
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -33,7 +40,7 @@ body {
   align-items: center;
   gap: 16px;
 }
-.top-bar .top-date { color: #666; }
+.top-bar .top-date { color: #d9d9d9; }
 
 /* ===== Compact magazine header ===== */
 .site-header { background: #1a3560; }
@@ -303,6 +310,7 @@ dialog button {
 </style>
 <base target="_blank">
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -411,10 +419,10 @@ dialog button {
     <div class="product-price">119 lei</div>
 
     <label class="f">Full name
-      <input type="text" name="name" autocomplete="name" required>
+      <input type="text" name="name" autocomplete="name" placeholder="Your full name" required>
     </label>
     <label class="f">Phone number
-      <input type="tel" name="phone" autocomplete="tel" required>
+      <input type="tel" name="phone" autocomplete="tel" placeholder="+40 7XX XXX XXX" required>
     </label>
 
     <div class="err" id="err">Please enter your name and a valid phone number.</div>
@@ -615,6 +623,51 @@ dialog button {
     });
   }
 
+  // ============================================================
+  // KONFIGURACIA ARKNET
+  // ============================================================
+  var ARKNET_OFFER = 1738;
+  var ARKNET_FLOW  = null; // ak dostanes chybu "noflow", dopln sem ID flow
+  var ARKNET_URL   = 'https://arknet-proxy.jannnkovadomai.workers.dev';
+  // ARKNET_TOKEN je bezpecne ulozeny v Cloudflare Workeri, nie vo verejnom HTML
+  // ============================================================
+
+  var DEBUG = /[?&]debug=1/.test(location.search); // otvor stranku s ?debug=1 a uvidis technicku chybu pod tlacidlom
+
+  // Telefon: akceptuje 07xxxxxxxx, 7xxxxxxxx, +40..., 0040... a bezne medzinarodne formaty
+  function okPhone(v) {
+    var d = v.replace(/[^\d]/g, '');
+    return d.length >= 8 && d.length <= 15;
+  }
+  function toIntlPhone(v) {
+    var p = v.replace(/[^\d+]/g, ''), d = p.replace(/\D/g, '');
+    if (/^(\+40|0040)/.test(p)) return '40' + d.replace(/^(00)?40/, '').replace(/^0/, '');
+    if (/^07/.test(d) && d.length === 10) return '4' + d;
+    if (/^7/.test(d) && d.length === 9) return '40' + d;
+    return d.replace(/^00/, '');
+  }
+  function makeSubid() { return 'LS-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8); }
+
+  function sendLead(name, phone) {
+    var q = new URLSearchParams(window.location.search);
+    var payload = {
+      offer: ARKNET_OFFER, name: name, phone: toIntlPhone(phone), country: 'ro', lang: 'ro', ip: 'auto',
+      ua: navigator.userAgent, domain: window.location.hostname, subid: makeSubid(),
+      utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '',
+      utm_campaign: q.get('utm_campaign') || '', utm_content: q.get('utm_content') || '',
+      utm_term: q.get('utm_term') || ''
+    };
+    if (ARKNET_FLOW) payload.flow = ARKNET_FLOW;
+    return fetch(ARKNET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    });
+  }
+
   // Form
   var form = document.getElementById('order');
   var err = document.getElementById('err');
@@ -625,10 +678,10 @@ dialog button {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var name = form.querySelector('input[name=name]').value.trim();
-      var phone = form.querySelector('input[name=phone]').value.trim();
-      var phoneDigits = phone.replace(/\D/g, '');
+      var phoneRaw = form.querySelector('input[name=phone]').value;
 
-      if (name.length < 2 || phoneDigits.length < 9) {
+      if (name.length < 3 || !okPhone(phoneRaw)) {
+        err.textContent = 'Please enter your name and a valid phone number (e.g. +40 7XX XXX XXX).';
         err.style.display = 'block';
         ok.style.display = 'none';
         return;
@@ -638,11 +691,21 @@ dialog button {
       btn.disabled = true;
       btn.textContent = 'Sending…';
 
-      setTimeout(function () {
-        form.querySelectorAll('input, button').forEach(function (el) { el.disabled = true; });
-        btn.style.display = 'none';
-        ok.style.display = 'block';
-      }, 700);
+      sendLead(name, phoneRaw).then(function (r) {
+        if (r.status === 'ok' || (r.error === 'duplicate' && r.pin)) {
+          if (r.status === 'ok' && window.fbq) { try { fbq('track', 'Lead'); } catch (x) {} }
+          form.querySelectorAll('input, button').forEach(function (el) { el.disabled = true; });
+          btn.style.display = 'none';
+          ok.style.display = 'block';
+          return;
+        }
+        throw new Error(JSON.stringify(r));
+      }).catch(function (ex) {
+        btn.disabled = false;
+        btn.textContent = 'ORDER NOW';
+        err.textContent = 'Something went wrong. Please try again.' + (DEBUG && ex ? ' [' + (ex.message || ex) + ']' : '');
+        err.style.display = 'block';
+      });
     });
   }
 })();
