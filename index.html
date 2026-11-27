@@ -21,7 +21,7 @@ img,video{max-width:100%;height:auto}
 .page{max-width:680px;margin:0 auto;padding:0 15px 0}
 .crumb{font:12px Helvetica,Arial,sans-serif;color:#b7b7b7;padding:14px 0 6px;line-height:1.4}
 .page h1{font-size:40px;line-height:1.2;font-weight:700;margin:6px 0 12px;font-family:'Open Sans',sans-serif}
-.sub{font-size:18px;font-style:italic;font-weight:400;line-height:32px;margin:0 0 24px;letter-spacing:.1px}
+.sub{font-size:18px;font-style:italic;font-weight:400;line-height:36px;margin:0 0 24px;letter-spacing:.1px}
 mark.hl{background:#ff0;color:#000}
 .page p{margin:0 0 20px}
 .page h2{font-size:33px;font-weight:800;line-height:40px;padding-bottom:20px;margin:10px 0 0;text-transform:uppercase}
@@ -54,7 +54,6 @@ ol.o-list li{margin-bottom:20px}
 .fm .note{font-size:12.5px;color:#666;text-align:center;margin:14px 0 0}
 .fm .note a{color:#1a3560;text-decoration:underline}
 .err{display:none;margin:10px 0 0;padding:10px 12px;border-radius:6px;background:#fdecec;color:#9b1c1c;font-size:14px;line-height:1.45}
-
 /* ===== Dialogs (general) ===== */
 dialog{border:0;border-radius:10px;padding:24px;max-width:560px;width:92%;max-height:88vh;color:#222;font-size:15px;line-height:1.6;overflow-y:auto}
 dialog::backdrop{background:rgba(10,20,40,.55)}
@@ -64,14 +63,12 @@ dialog p{font-size:14.5px;margin-bottom:10px}
 dialog ul{margin:8px 0 12px 20px;font-size:14.5px}
 dialog li{margin-bottom:4px}
 dialog button{background:#1a3560;color:#fff;border:0;border-radius:6px;padding:10px 20px;font:700 14px 'Open Sans',sans-serif;cursor:pointer;margin-top:8px}
-
 /* ===== Thank-you dialog ===== */
 #dlg-thanks{max-width:480px;text-align:center;padding:32px 26px}
 #dlg-thanks h2{font-size:28px;line-height:1.15;font-weight:800;margin:0 0 12px;color:#000}
 #dlg-thanks p{font-size:16px;line-height:24px;margin:0 0 14px;color:#222}
 #dlg-thanks .call{font-size:18px;line-height:26px;font-weight:700;margin:6px 0 18px;padding:18px 14px;border:2px solid #1a1a1a;border-radius:8px;background:#FFE400;color:#000}
 #dlg-thanks button{background:#1a1a1a;color:#fff;border:0;border-radius:6px;padding:12px 26px;font:700 15px 'Open Sans',sans-serif;cursor:pointer;margin-top:6px}
-
 .fm{background:#fff;border:1px solid #dadada;box-shadow:none;border-radius:10px;margin:20px 0 0;scroll-margin-top:16px}
 .fm .product-name,.fm .product-price{color:#000}
 .fm input:focus{border-color:#000}
@@ -88,7 +85,7 @@ footer{margin-top:36px;padding:30px 15px 60px;text-align:center;background:#000;
 footer .dsc{font-size:13px;line-height:20px;color:#a1a7b2;margin:0 auto 14px;max-width:680px}
 footer a{color:#a1a7b2;font-size:13px;margin:0 6px;text-decoration:none;cursor:pointer}
 @media (max-width:768px){.page h2{font-size:26px}}
-@media (max-width:600px){.page h1{font-size:28px;line-height:36px}.sub{line-height:30px}#dlg-thanks h2{font-size:24px}#dlg-thanks .call{font-size:16px;line-height:24px}}
+@media (max-width:600px){.page h1{font-size:28px;line-height:36px}.sub{line-height:34px}#dlg-thanks h2{font-size:24px}#dlg-thanks .call{font-size:16px;line-height:24px}}
 @media (max-width:480px){
 .page h2{font-size:24px;line-height:30px}
 .cta,.btn-cta{font-size:20px;line-height:25px;padding:12px 10px}
@@ -96,7 +93,6 @@ footer a{color:#a1a7b2;font-size:13px;margin:0 6px;text-decoration:none;cursor:p
 .logo{font-size:24px}
 footer .t{font-size:13px;line-height:20px}
 }
-
 </style>
 </head>
 <body>
@@ -105,7 +101,7 @@ footer .t{font-size:13px;line-height:20px}
 <div class="crumb">Home &gt; Wellness &gt; Everyday Comfort</div>
 <h1>“I’m 54, and I Finally Figured Out Why Every Knee Cream Quits After Two Minutes”</h1>
 <p class="sub">A garden, a staircase, and a cabinet full of half-working tubes, plus <mark class="hl">the one thing the cream aisle keeps refusing to put in a single tube</mark>.</p>
-<img class="sec-img" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&h=450&fit=crop&q=80" alt="Up and down the stairs, every day" loading="lazy" onerror="this.remove()">
+<img class="sec-img" src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=800&h=450&fit=crop&q=80" alt="Up and down the stairs, every day" loading="eager" fetchpriority="high" onerror="this.remove()">
 <div class="by"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=faces&q=80" alt="" onerror="this.style.visibility='hidden'"><p>Written by <span data-name>Karen</span>, 54 | <span class="d dynamic-date" id="authorDate"></span></p></div>
 <p class="note-s" id="storyNote"></p>
 <p>I’m about to annoy every brand in the cream aisle.</p>
@@ -245,29 +241,21 @@ footer .t{font-size:13px;line-height:20px}
 <p>P.S. I’m writing this from the garden. Yes, I still own the old cooling gel. It’s a doorstop now.</p>
 <a class="cta" href="#order">Get LioStrong — Pay on Delivery →</a>
 <form class="fm" id="order" method="post" action="#" novalidate>
-
     <div class="product-name">LioStrong Balm</div>
-
     <img class="product-img" src="https://i.ibb.co/4gMM4SST/Screenshot-2026-11-25-212603.png" alt="LioStrong Balm">
-
     <div class="product-price">119 lei</div>
-
     <label class="f">Full name
       <input type="text" name="name" autocomplete="name" placeholder="Your full name" required>
     </label>
     <label class="f">Phone number
       <input type="tel" name="phone" autocomplete="tel" inputmode="tel" placeholder="07XX XXX XXX" required>
     </label>
-
     <div class="err" id="err" role="alert">Please enter your name and a valid phone number.</div>
-
     <button type="submit" class="btn-cta" id="submitBtn">ORDER NOW</button>
-
     <div class="callback-box">
       <p><strong>A representative will call you</strong> shortly to confirm your order.</p>
       <p><strong>Cash on delivery</strong> — you pay when it arrives.</p>
     </div>
-
     <p class="note">By submitting, you agree to our <a href="#" data-dialog="terms">Terms &amp; Conditions</a> and <a href="#" data-dialog="privacy">Privacy Policy</a>.</p>
   </form>
 <section class="rec">
@@ -279,7 +267,6 @@ footer .t{font-size:13px;line-height:20px}
   <a class="rec-a" href="#">How to Read a Cream Label Like You Actually Mean It<span>Wellness &middot; 5 min read</span></a>
 </section>
 </div>
-
 <!-- ===== Thank-you popup ===== -->
 <dialog id="dlg-thanks">
   <h2>Thank you!</h2>
@@ -288,7 +275,6 @@ footer .t{font-size:13px;line-height:20px}
   <p>Payment is cash on delivery — you pay when your parcel arrives.</p>
   <button data-close>Back to page</button>
 </dialog>
-
 <footer>
 <p class="dsc"><b>DISCLAIMER:</b> <span id="discStory"></span> LioStrong is a cosmetic product for external use only. It is not a medicine and is not intended to diagnose, treat, cure or prevent any disease. Individual experience varies. This page is not medical advice. If you are pregnant, nursing, under treatment or have a medical condition, ask your doctor before use. Contains methyl salicylate; do not use if allergic to any ingredient. Ingredients: Aqua, Alcohol, Glycerin, Paraffinum Liquidum, Menthol, Symphytum Officinale Leaf Extract, PEG-40 Hydrogenated Castor Oil, Phenoxyethanol, Ethylhexylglycerin, Capsicum Frutescens Resin, Camphor, Eucalyptus Globulus Leaf Oil, Abies Sibirica Oil, Pinus Pinaster Oil, Citrus Limon Peel Oil, Methyl Salicylate, Propylene Glycol, Aesculus Hippocastanum Seed Extract, Carbomer, Xanthan Gum, Niacinamide, Triethanolamine.</p>
 <div><a data-dialog="terms">Terms &amp; Conditions</a> | <a data-dialog="privacy">Privacy Policy</a></div>
@@ -297,69 +283,43 @@ footer .t{font-size:13px;line-height:20px}
 <!-- ===== Terms ===== -->
 <dialog id="dlg-terms">
   <h2>Terms &amp; Conditions</h2>
-
-  <p>This website is an <strong>affiliate advertorial page</strong>. We are an independent affiliate partner of the product seller. We do not sell the product ourselves, we do not process payments, and we do not store your order data.</p>
-
+  <p>This website is an <strong>affiliate advertorial page</strong>. We are an independent affiliate partner of the product seller. We do not sell the product ourselves and we do not process payments.</p>
   <h3>1. Lead form</h3>
-  <p>The form on this page collects only your <strong>name and phone number</strong>. These details are sent <strong>directly to the seller / affiliate network</strong>, whose representative will call you to confirm your order and delivery details.</p>
-
+  <p>The form on this page collects only your <strong>name and phone number</strong>. These details are sent to the seller / affiliate network, whose representative will call you to confirm your order and delivery details.</p>
   <h3>2. Order confirmation</h3>
   <p>The form itself is not a purchase. Your order becomes binding only after phone confirmation with the seller's representative.</p>
-
   <h3>3. Payment</h3>
   <p>No payment is collected on this website. Payment is made on delivery (cash on delivery), unless agreed otherwise during the confirmation call.</p>
-
   <h3>4. Delivery</h3>
   <p>Delivery is arranged by the seller through a courier service. No advance payment is required.</p>
-
   <h3>5. Product information</h3>
-  <p>LioStrong Balm is a cosmetic product for external use only. It is not a medicine and is not intended to diagnose, treat, cure or prevent any disease.</p>
-
+  <p>LioStrong Balm is a cosmetic product for external use only. It is not a medicine and is not intended to diagnose, treat, cure or prevent any disease. Individual experience varies.</p>
   <h3>6. Advertising measurement</h3>
   <p>This page uses the Meta Pixel to measure the performance of our advertising (page visits and form submissions). Details are described in the Privacy Policy.</p>
-
-  <h3>7. Contact</h3>
-  <p>This website is operated by an independent affiliate partner. For any questions about your order, please use the contact details provided by the representative during the confirmation call or on the delivery documents.</p>
-
+  <h3>7. Responsibility</h3>
+  <p>The seller is responsible for the product, its delivery, returns and the fulfilment of your order. The operator of this page is not responsible for the product, the delivery or the seller's actions. For any questions about your order, please use the contact details provided by the representative during the confirmation call or on the delivery documents.</p>
   <button data-close>Close</button>
 </dialog>
-
 <!-- ===== Privacy ===== -->
 <dialog id="dlg-privacy">
   <h2>Privacy Policy</h2>
-
-  <p>This page explains how your data is handled when you submit the form, in accordance with the GDPR.</p>
-
+  <p>This page explains how your data is handled when you submit the form.</p>
   <h3>1. Who is responsible</h3>
-  <p>This website is an affiliate advertorial page. Its operator is an independent affiliate partner and <strong>does not process or store your order data</strong>. The seller / affiliate network acts as the data controller for the data you submit.</p>
-
+  <p>This website is an affiliate advertorial page operated by an independent affiliate partner. The <strong>seller / affiliate network acts as the data controller</strong> for the order data you submit.</p>
   <h3>2. What data is collected</h3>
   <ul>
     <li>Full name</li>
     <li>Phone number</li>
+    <li>Technical and campaign data sent together with the form: browser user agent, website domain, advertising campaign parameters (UTM) and a generated order reference ID</li>
   </ul>
-
   <h3>3. How it is used</h3>
-  <p>Your details are sent <strong>directly from the form to the seller / affiliate network</strong> and are used solely so their representative can call you to confirm your order and arrange delivery. We do not have access to this data.</p>
-
+  <p>Your details are used solely so the seller's representative can call you to confirm your order and arrange delivery. The form data is passed on to the seller / affiliate network through a technical relay service (Cloudflare Workers), which only forwards it. We do not keep a copy of your name or phone number.</p>
   <h3>4. Meta Pixel</h3>
-  <p>This page uses the <strong>Meta Pixel</strong> (Meta Platforms, Inc.) to measure how our advertising performs. The Pixel records page visits and form submission events. This measurement data is processed by Meta under its own privacy policy. The Pixel <strong>does not</strong> give us access to the name or phone number you enter — those are transmitted only to the seller / affiliate network.</p>
-
+  <p>This page uses the <strong>Meta Pixel</strong> (Meta Platforms, Inc.) to measure how our advertising performs. The Pixel records page visits and form submission events. This measurement data is processed by Meta under its own privacy policy. The Pixel <strong>does not</strong> receive the name or phone number you enter.</p>
   <h3>5. Sharing</h3>
-  <p>Your form data is shared only with the seller / affiliate network and their delivery partner. We never sell your data.</p>
-
-  <h3>6. Retention</h3>
-  <p>Your data is kept only as long as necessary to process the order and to meet legal obligations.</p>
-
-  <h3>7. Your rights</h3>
-  <p>Under the GDPR you have the right to access, correct, delete, restrict or object to the processing of your data, and to withdraw your consent at any time. To exercise these rights, contact the seller / affiliate network using the contact details provided during the confirmation call or on the delivery documents.</p>
-
-  <h3>8. Complaints</h3>
-  <p>If you believe your data has been handled improperly, you have the right to lodge a complaint with your local data protection authority.</p>
-
+  <p>Your form data is shared only with the seller / affiliate network, their delivery partner and the technical relay service mentioned above. We never sell your data.</p>
   <button data-close>Close</button>
 </dialog>
-
 <script>
 // 'illustrative' = fictional narrator (label shown). Use 'real' ONLY for a real person who agreed to share their experience.
 var ADV={name:'Karen',storyType:'illustrative'};
@@ -367,7 +327,7 @@ var ADV={name:'Karen',storyType:'illustrative'};
  document.querySelectorAll('[data-name]').forEach(function(e){e.textContent=ADV.name});
  var real=ADV.storyType==='real';
  document.getElementById('storyNote').textContent=real?'Shared with permission. Individual experience varies.':'';
- document.getElementById('discStory').textContent=real?'The story reflects one person’s own experience.':'';
+ document.getElementById('discStory').textContent=real?'The story reflects one person’s own experience.':'This story is illustrative. The name, person and images are fictional.';
 })();
 </script>
 <script>
@@ -379,19 +339,15 @@ var ADV={name:'Karen',storyType:'illustrative'};
   var OFFER = 1738;   // ArkNet offer ID
   var FLOW  = null;   // ak ArkNet vrati chybu "noflow", dopln ID flow
   // ============================================================
-
   var DEBUG = /[?&]debug=1/.test(location.search); // otvor stranku s ?debug=1 a pod tlacidlom uvidis technicku chybu
-
   // Date 3 days back
   var d = new Date();
   d.setDate(d.getDate() - 3);
   var dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   var authorDate = document.getElementById('authorDate');
   if (authorDate) authorDate.textContent = dateStr;
-
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
-
   // ===== Smooth scroll for CTA buttons =====
   function scrollToOrder(e) {
     e.preventDefault();
@@ -404,7 +360,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
   document.querySelectorAll('.cta, a[href="#order"]').forEach(function (el) {
     el.addEventListener('click', scrollToOrder);
   });
-
   // Dialogs
   document.querySelectorAll('[data-dialog]').forEach(function (el) {
     el.addEventListener('click', function (e) {
@@ -425,7 +380,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
       if (e.target === dlg) dlg.close();
     });
   });
-
   // ===== Phone =====
   function okPhone(v) {
     var p = v.replace(/[^\d+]/g, ''), n = p.replace(/\D/g, '');
@@ -445,7 +399,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
   function makeSubid() {
     return 'LS-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
   }
-
   // ===== Form =====
   var form = document.getElementById('order');
   var err = document.getElementById('err');
@@ -456,7 +409,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
     data: 'Please check your name and phone number.',
     generic: 'The order could not be sent. Please try again.'
   };
-
   function showErr(msg, detail) {
     err.textContent = msg + (DEBUG && detail ? ' [DEBUG: ' + detail + ']' : '');
     err.style.display = 'block';
@@ -468,7 +420,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
     btn.disabled = false;
     btn.textContent = 'ORDER NOW';
   }
-
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     err.style.display = 'none';
@@ -478,10 +429,8 @@ var ADV={name:'Karen',storyType:'illustrative'};
       showErr(DEFAULT_ERR);
       return;
     }
-
     btn.disabled = true;
     btn.textContent = 'Sending…';
-
     var q = new URLSearchParams(window.location.search);
     var payload = {
       offer: OFFER,
@@ -499,7 +448,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
       utm_term: q.get('utm_term') || ''
     };
     if (FLOW) payload.flow = FLOW;
-
     try {
       var res = await fetch(WORKER_URL, {
         method: 'POST',
@@ -507,7 +455,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
         body: JSON.stringify(payload)
       });
       var r = await res.json();
-
       if (r.status === 'ok' || (r.error === 'duplicate' && r.pin)) {
         if (r.status === 'ok' && window.fbq) { try { fbq('track', 'Lead'); } catch (x) {} }
         showDone();
@@ -519,7 +466,6 @@ var ADV={name:'Karen',storyType:'illustrative'};
       console.error('Lead failed:', x);
       showErr(MSG.generic, String(x && x.message || x));
     }
-
     btn.disabled = false;
     btn.textContent = 'ORDER NOW';
   });
