@@ -18,10 +18,10 @@ img,video{max-width:100%;height:auto}
 .logo{color:#fff;font-size:28px;line-height:1;font-weight:300;letter-spacing:-.5px;text-decoration:none}
 .logo b{font-weight:800;font-style:italic;letter-spacing:-1px}
 .adv{color:#8c8c8c;font-size:12px;font-weight:600;letter-spacing:.6px;white-space:nowrap}
-.page{max-width:680px;margin:0 auto;padding:0 15px 20px}
+.page{max-width:680px;margin:0 auto;padding:0 15px 0}
 .crumb{font:12px Helvetica,Arial,sans-serif;color:#b7b7b7;padding:14px 0 6px;line-height:1.4}
 .page h1{font-size:40px;line-height:1.2;font-weight:700;margin:6px 0 12px;font-family:'Open Sans',sans-serif}
-.sub{font-size:18px;font-style:italic;font-weight:400;line-height:26px;margin:0 0 20px}
+.sub{font-size:18px;font-style:italic;font-weight:400;line-height:32px;margin:0 0 24px;letter-spacing:.1px}
 mark.hl{background:#ff0;color:#000}
 .page p{margin:0 0 20px}
 .page h2{font-size:33px;font-weight:800;line-height:40px;padding-bottom:20px;margin:10px 0 0;text-transform:uppercase}
@@ -55,16 +55,7 @@ ol.o-list li{margin-bottom:20px}
 .fm .note a{color:#1a3560;text-decoration:underline}
 .err{display:none;margin:10px 0 0;padding:10px 12px;border-radius:6px;background:#fdecec;color:#9b1c1c;font-size:14px;line-height:1.45}
 
-/* ===== Thank you page ===== */
-.thanks{display:none;max-width:680px;margin:0 auto;padding:70px 20px 40px;text-align:center}
-.thanks.show{display:block}
-.thanks h1{font-size:44px;line-height:1.15;font-weight:800;margin:0 0 18px}
-.thanks .lead{font-size:20px;line-height:30px;margin:0 0 26px;font-style:italic;color:#333}
-.thanks .call{font-size:22px;line-height:32px;font-weight:700;margin:0 0 22px;padding:24px 18px;border:2px solid #1a1a1a;border-radius:10px;background:#FFE400;color:#000}
-.thanks p{margin:0 0 16px;font-size:17px;line-height:26px}
-.thanks .small{font-size:15px;line-height:22px;color:#555}
-
-/* ===== Dialogs ===== */
+/* ===== Dialogs (general) ===== */
 dialog{border:0;border-radius:10px;padding:24px;max-width:560px;width:92%;max-height:88vh;color:#222;font-size:15px;line-height:1.6;overflow-y:auto}
 dialog::backdrop{background:rgba(10,20,40,.55)}
 dialog h2{font-size:21px;margin:0 0 12px}
@@ -74,6 +65,12 @@ dialog ul{margin:8px 0 12px 20px;font-size:14.5px}
 dialog li{margin-bottom:4px}
 dialog button{background:#1a3560;color:#fff;border:0;border-radius:6px;padding:10px 20px;font:700 14px 'Open Sans',sans-serif;cursor:pointer;margin-top:8px}
 
+/* ===== Thank-you dialog ===== */
+#dlg-thanks{max-width:480px;text-align:center;padding:32px 26px}
+#dlg-thanks h2{font-size:28px;line-height:1.15;font-weight:800;margin:0 0 12px;color:#000}
+#dlg-thanks p{font-size:16px;line-height:24px;margin:0 0 14px;color:#222}
+#dlg-thanks .call{font-size:18px;line-height:26px;font-weight:700;margin:6px 0 18px;padding:18px 14px;border:2px solid #1a1a1a;border-radius:8px;background:#FFE400;color:#000}
+#dlg-thanks button{background:#1a1a1a;color:#fff;border:0;border-radius:6px;padding:12px 26px;font:700 15px 'Open Sans',sans-serif;cursor:pointer;margin-top:6px}
 
 .fm{background:#fff;border:1px solid #dadada;box-shadow:none;border-radius:10px;margin:20px 0 0;scroll-margin-top:16px}
 .fm .product-name,.fm .product-price{color:#000}
@@ -81,17 +78,17 @@ dialog button{background:#1a3560;color:#fff;border:0;border-radius:6px;padding:1
 .fm .btn-cta{font-size:24px;line-height:28px}
 .callback-box{background:#fefbd9;border:2px solid #dbdb95;color:#000}
 .fm .note a{color:#000}
-.rec{margin:70px 0 20px;border-top:2px solid #1a1a1a;padding-top:26px}
+.rec{margin:50px 0 0;border-top:2px solid #1a1a1a;padding-top:26px}
 .rec h2{font-size:15px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin:0 0 18px;color:#1a1a1a}
 .rec-a{display:block;padding:16px 0;border-bottom:1px solid #e2e2e2;color:#1a1a1a;text-decoration:none;font-size:17px;line-height:24px;font-weight:600;cursor:pointer;transition:color .15s}
 .rec-a:hover{color:#4d5358}
 .rec-a:active{color:#9aa0a6}
 .rec-a span{display:block;font-size:12px;font-weight:400;color:#8c8c8c;margin-top:4px}
-footer{margin-top:100px;padding:0 15px 60px;text-align:center;background:#000;color:#a1a7b2}
+footer{margin-top:36px;padding:30px 15px 60px;text-align:center;background:#000;color:#a1a7b2}
 footer .dsc{font-size:13px;line-height:20px;color:#a1a7b2;margin:0 auto 14px;max-width:680px}
 footer a{color:#a1a7b2;font-size:13px;margin:0 6px;text-decoration:none;cursor:pointer}
 @media (max-width:768px){.page h2{font-size:26px}}
-@media (max-width:600px){.page h1{font-size:28px;line-height:36px}.thanks h1{font-size:32px}.thanks .call{font-size:18px;line-height:26px}}
+@media (max-width:600px){.page h1{font-size:28px;line-height:36px}.sub{line-height:30px}#dlg-thanks h2{font-size:24px}#dlg-thanks .call{font-size:16px;line-height:24px}}
 @media (max-width:480px){
 .page h2{font-size:24px;line-height:30px}
 .cta,.btn-cta{font-size:20px;line-height:25px;padding:12px 10px}
@@ -101,7 +98,6 @@ footer .t{font-size:13px;line-height:20px}
 }
 
 </style>
-<base target="_blank">
 </head>
 <body>
 <header class="top"><div class="in"><a class="logo" href="#"><b>Vita</b>Daily</a><span class="adv">Sponsored</span></div></header>
@@ -284,14 +280,14 @@ footer .t{font-size:13px;line-height:20px}
 </section>
 </div>
 
-<!-- ===== Thank you page ===== -->
-<div class="thanks" id="thanks">
-  <h1>Thank you!</h1>
-  <p class="lead">Your request has been received.</p>
-  <p class="call">Our representative will call you shortly to confirm your order.</p>
-  <p>Please keep your phone nearby so we can reach you.</p>
-  <p class="small">Payment is cash on delivery — you pay when your parcel arrives.</p>
-</div>
+<!-- ===== Thank-you popup ===== -->
+<dialog id="dlg-thanks">
+  <h2>Thank you!</h2>
+  <p>Your request has been received.</p>
+  <p class="call">Please keep your phone nearby — our representative will call you shortly to confirm your order.</p>
+  <p>Payment is cash on delivery — you pay when your parcel arrives.</p>
+  <button data-close>Back to page</button>
+</dialog>
 
 <footer>
 <p class="dsc"><b>DISCLAIMER:</b> <span id="discStory"></span> LioStrong is a cosmetic product for external use only. It is not a medicine and is not intended to diagnose, treat, cure or prevent any disease. Individual experience varies. This page is not medical advice. If you are pregnant, nursing, under treatment or have a medical condition, ask your doctor before use. Contains methyl salicylate; do not use if allergic to any ingredient. Ingredients: Aqua, Alcohol, Glycerin, Paraffinum Liquidum, Menthol, Symphytum Officinale Leaf Extract, PEG-40 Hydrogenated Castor Oil, Phenoxyethanol, Ethylhexylglycerin, Capsicum Frutescens Resin, Camphor, Eucalyptus Globulus Leaf Oil, Abies Sibirica Oil, Pinus Pinaster Oil, Citrus Limon Peel Oil, Methyl Salicylate, Propylene Glycol, Aesculus Hippocastanum Seed Extract, Carbomer, Xanthan Gum, Niacinamide, Triethanolamine.</p>
@@ -390,27 +386,23 @@ var ADV={name:'Karen',storyType:'illustrative'};
   var d = new Date();
   d.setDate(d.getDate() - 3);
   var dateStr = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  var topDate = document.getElementById('topDate');
   var authorDate = document.getElementById('authorDate');
-  if (topDate) topDate.textContent = dateStr;
   if (authorDate) authorDate.textContent = dateStr;
 
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
 
-  // Back to top
-  var backTop = document.getElementById('backTop');
-  if (backTop) backTop.addEventListener('click', function (e) {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // "Show me the alternative" -> opt-in form
-  var altBtn = document.getElementById('altBtn');
-  if (altBtn) altBtn.addEventListener('click', function (e) {
+  // ===== Smooth scroll for CTA buttons =====
+  function scrollToOrder(e) {
     e.preventDefault();
     var f = document.getElementById('order');
-    if (f) f.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (f) {
+      var y = f.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }
+  document.querySelectorAll('.cta, a[href="#order"]').forEach(function (el) {
+    el.addEventListener('click', scrollToOrder);
   });
 
   // Dialogs
@@ -425,6 +417,12 @@ var ADV={name:'Karen',storyType:'illustrative'};
     el.addEventListener('click', function () {
       var dlg = el.closest('dialog');
       if (dlg) dlg.close();
+    });
+  });
+  // Click on backdrop closes any dialog
+  document.querySelectorAll('dialog').forEach(function (dlg) {
+    dlg.addEventListener('click', function (e) {
+      if (e.target === dlg) dlg.close();
     });
   });
 
@@ -464,11 +462,11 @@ var ADV={name:'Karen',storyType:'illustrative'};
     err.style.display = 'block';
   }
   function showDone() {
-    var page = document.querySelector('.page');
-    var thanks = document.getElementById('thanks');
-    if (page) page.style.display = 'none';
-    if (thanks) thanks.classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var dlg = document.getElementById('dlg-thanks');
+    if (dlg) dlg.showModal();
+    try { form.reset(); } catch (x) {}
+    btn.disabled = false;
+    btn.textContent = 'ORDER NOW';
   }
 
   form.addEventListener('submit', async function (e) {
